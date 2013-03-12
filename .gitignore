@@ -13,4 +13,8 @@ build
 nbproject/
 .idea
 
+/.htaccess
+db.php
+logs
+
 /fuel/app/config/crypt.php
