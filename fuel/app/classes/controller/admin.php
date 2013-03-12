@@ -6,20 +6,12 @@ class Controller_Admin extends Controller_Base {
 
 	public function before()
 	{
-		parent::before();
+	  parent::before();
 
-		if (Auth::check())
-		{
-			if ( ! Auth::member(100) and ! in_array(Request::active()->action, array('login', 'logout')))
-			{
-				Session::set_flash('error', e('You don\'t have access to the admin panel'));
-				Response::redirect('/');
-			}
-		}
-		else
-		{
-			Response::redirect('admin/login');
-		}
+    if (!Sentry::user()->is_admin())
+    {
+      Response::redirect('access_denied');
+    }
 	}
 
 	public function action_login()

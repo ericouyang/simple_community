@@ -1,5 +1,5 @@
 {
-    "hash": "af03ada27c179259242381963c1b6175",
+    "hash": "1b0b2a40f7eed051ba2a76a4fecd1dbc",
     "packages": [
         {
             "name": "cartalyst/sentry",
@@ -317,20 +317,12 @@
             "time": "2013-01-14 16:49:31"
         }
     ],
-    "packages-dev": [
-
-    ],
+    "packages-dev": null,
     "aliases": [
 
     ],
     "minimum-stability": "dev",
     "stability-flags": [
-
-    ],
-    "platform": [
-
-    ],
-    "platform-dev": [
 
     ]
 }
