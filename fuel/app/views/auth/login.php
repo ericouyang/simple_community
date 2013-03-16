@@ -9,7 +9,7 @@
     <label for="password">Password:</label>
     <div class="input">
       <input class="xlarge" name="password" placeholder="" type="password" required="true">
-      <span class="help-block">Forgot your password? Click <a href="auth/reset_password">here</a> to reset it</span>
+      <span class="help-block">Forgot your password? Click <a href="/auth/reset_password">here</a> to reset it</span>
     </div>
   </div>
   <div class="clearfix">

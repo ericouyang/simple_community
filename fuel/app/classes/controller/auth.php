@@ -14,6 +14,8 @@ class Controller_Auth extends Controller_Base
       try
       {
         $user = Sentry::authenticate($credentials);
+        
+        Response::redirect('/');
       }
       
       catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
@@ -64,10 +66,50 @@ class Controller_Auth extends Controller_Base
   
   public function action_reset_password()
   {
+    if(Input::method() == 'POST')
+    {
+      $email = Input::post('email');
+      try
+      {
+          // Find the user using the user email address
+          $user = Sentry::getUserProvider()->findByLogin($email);
+      
+          // Get the password reset code
+          $resetCode = $user->getResetPasswordCode();
+          
+          $resetUrl = Uri::create('auth/reset_password_confirm/'.$resetCode);
+      
+          Session::set_flash('success', 'Your reset confirmation email has been sent to '.$email);
+          Response::redirect('/');
+      }
+      catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+      {
+          echo 'User was not found.';
+      }
+    }
+    $this->template->title = 'Change Password';
+    $this->template->content = View::forge('auth/new_password');
   }
   
   public function action_reset_password_confirm()
   {
+    if(Input::method() == 'POST')
+    {
+      
+    }
+    try
+    {
+      // Find the user using the user id
+      $user = Sentry::getUserProvider()->findByResetPasswordCode(Uri::segment(3));
+  
+      $this->template->title = 'Reset Password';
+      $this->template->content = View::forge('auth/reset_password');
+    }
+    catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+    {
+        Session::set_flash('error', 'That reset password is not valid.');
+        Response::redirect('/');
+    }
   }
   
   public static function send_activation_email($email, $url)
