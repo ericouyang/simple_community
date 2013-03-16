@@ -145,12 +145,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "bc08b36fe9f538ee0675a0101c0797d6c662c81d"
+                "reference": "1e2215f9199954b2abfebcdbd00aac1d24f0a28a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/bc08b36fe9f538ee0675a0101c0797d6c662c81d",
-                "reference": "bc08b36fe9f538ee0675a0101c0797d6c662c81d",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/1e2215f9199954b2abfebcdbd00aac1d24f0a28a",
+                "reference": "1e2215f9199954b2abfebcdbd00aac1d24f0a28a",
                 "shasum": ""
             },
             "require": {
@@ -191,7 +191,7 @@
                 "orm",
                 "sql"
             ],
-            "time": "2013-03-14 21:11:13"
+            "time": "2013-03-16 02:22:52"
         },
         {
             "name": "illuminate/events",
