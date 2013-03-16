@@ -1,5 +1,5 @@
 {
-    "hash": "1b0b2a40f7eed051ba2a76a4fecd1dbc",
+    "hash": "af03ada27c179259242381963c1b6175",
     "packages": [
         {
             "name": "cartalyst/sentry",
@@ -7,12 +7,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cartalyst/sentry.git",
-                "reference": "e0960ef75a5efb312bebc95276189a665542daa7"
+                "reference": "e291bd35f3e1bb1487222b5a02fd62196db89cc9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cartalyst/sentry/zipball/e0960ef75a5efb312bebc95276189a665542daa7",
-                "reference": "e0960ef75a5efb312bebc95276189a665542daa7",
+                "url": "https://api.github.com/repos/cartalyst/sentry/zipball/e291bd35f3e1bb1487222b5a02fd62196db89cc9",
+                "reference": "e291bd35f3e1bb1487222b5a02fd62196db89cc9",
                 "shasum": ""
             },
             "require": {
@@ -35,6 +35,12 @@
             "type": "library",
             "extra": {
                 "component": "package",
+                "frameworks": [
+                    "Laravel 3",
+                    "Laravel 4",
+                    "CodeIgniter 3",
+                    "FuelPHP 1"
+                ],
                 "versions": {
                     "1": "1.1/master",
                     "2": "master"
@@ -84,15 +90,15 @@
                     "role": "Developer"
                 }
             ],
-            "description": "PHP 5.3+ fully-featured authentication & authorization system",
+            "description": "PHP 5.3+ Fully-featured Authentication & Authorization System",
             "keywords": [
-                "Authentication",
                 "auth",
-                "laravel3",
-                "laravel4",
+                "codeigniter",
+                "fuelphp",
+                "laravel",
                 "security"
             ],
-            "time": "2013-03-11 03:23:51"
+            "time": "2013-03-15 21:18:06"
         },
         {
             "name": "illuminate/container",
@@ -139,12 +145,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "71396d4ad96401dd8866ae53f926c2190dfe21a4"
+                "reference": "bc08b36fe9f538ee0675a0101c0797d6c662c81d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/71396d4ad96401dd8866ae53f926c2190dfe21a4",
-                "reference": "71396d4ad96401dd8866ae53f926c2190dfe21a4",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/bc08b36fe9f538ee0675a0101c0797d6c662c81d",
+                "reference": "bc08b36fe9f538ee0675a0101c0797d6c662c81d",
                 "shasum": ""
             },
             "require": {
@@ -185,7 +191,7 @@
                 "orm",
                 "sql"
             ],
-            "time": "2013-03-10 19:51:44"
+            "time": "2013-03-14 21:11:13"
         },
         {
             "name": "illuminate/events",
@@ -238,12 +244,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "dfa68cb87ae5ebf7ebc006ca2d0ff549a5b15f59"
+                "reference": "b46d591dd8fe100603777ea84ace34a5314c48a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/dfa68cb87ae5ebf7ebc006ca2d0ff549a5b15f59",
-                "reference": "dfa68cb87ae5ebf7ebc006ca2d0ff549a5b15f59",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/b46d591dd8fe100603777ea84ace34a5314c48a3",
+                "reference": "b46d591dd8fe100603777ea84ace34a5314c48a3",
                 "shasum": ""
             },
             "require": {
@@ -275,7 +281,7 @@
                 }
             ],
             "description": "Various utilities and support functions.",
-            "time": "2013-03-09 04:26:45"
+            "time": "2013-03-15 03:55:30"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -317,12 +323,20 @@
             "time": "2013-01-14 16:49:31"
         }
     ],
-    "packages-dev": null,
+    "packages-dev": [
+
+    ],
     "aliases": [
 
     ],
     "minimum-stability": "dev",
     "stability-flags": [
+
+    ],
+    "platform": [
+
+    ],
+    "platform-dev": [
 
     ]
 }

@@ -1,100 +1,5 @@
 [
     {
-        "name": "cartalyst/sentry",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/cartalyst/sentry.git",
-            "reference": "e0960ef75a5efb312bebc95276189a665542daa7"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/cartalyst/sentry/zipball/e0960ef75a5efb312bebc95276189a665542daa7",
-            "reference": "e0960ef75a5efb312bebc95276189a665542daa7",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "illuminate/cookie": "4.0.*",
-            "illuminate/database": "4.0.*",
-            "illuminate/session": "4.0.*",
-            "ircmaxell/password-compat": "1.0.*",
-            "mockery/mockery": "0.7.2"
-        },
-        "suggest": {
-            "dhorrigan/capsule": "Capsule is a small utility for managing database connections given to illuminate/database outside of Laravel 4.",
-            "illuminate/cookie": "Sentry provides an Illuminate cookie driver for cookie integration.",
-            "illuminate/database": "Sentry provides Eloquent models for User, Group and Throttle providers.",
-            "illuminate/session": "Sentry provides an Illuminate session driver for storage integration.",
-            "ircmaxell/password-compat": "A forward-compatible PHP 5.5 password package for password_* functions can be used as a hasher (NativeHasher) in Sentry."
-        },
-        "time": "2013-03-11 03:23:51",
-        "type": "library",
-        "extra": {
-            "component": "package",
-            "versions": {
-                "1": "1.1/master",
-                "2": "master"
-            },
-            "branch-alias": {
-                "dev-master": "2.0-dev"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "classmap": [
-                "src/Cartalyst/Sentry/Groups/Exceptions.php",
-                "src/Cartalyst/Sentry/Throttling/Exceptions.php",
-                "src/Cartalyst/Sentry/Users/Exceptions.php",
-                "src/migrations"
-            ],
-            "psr-0": {
-                "Cartalyst\\Sentry": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD License (3-clause)"
-        ],
-        "authors": [
-            {
-                "name": "Ben Corlett",
-                "email": "ben.corlett@cartalyst.com",
-                "role": "Developer"
-            },
-            {
-                "name": "Cartalyst LLC",
-                "email": "help@cartalyst.com"
-            },
-            {
-                "name": "Bruno Gaspar",
-                "email": "bruno.gaspar@cartalyst.com",
-                "role": "Developer"
-            },
-            {
-                "name": "Dan Syme",
-                "email": "dan.syme@cartalyst.com",
-                "role": "Creator & Designer"
-            },
-            {
-                "name": "Daniel Petrie",
-                "email": "dan.petrie@cartalyst.com",
-                "role": "Developer"
-            }
-        ],
-        "description": "PHP 5.3+ fully-featured authentication & authorization system",
-        "keywords": [
-            "Authentication",
-            "auth",
-            "laravel3",
-            "laravel4",
-            "security"
-        ]
-    },
-    {
         "name": "ircmaxell/password-compat",
         "version": "1.0.x-dev",
         "version_normalized": "1.0.9999999.9999999-dev",
@@ -176,54 +81,6 @@
         ]
     },
     {
-        "name": "illuminate/support",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "target-dir": "Illuminate/Support",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/illuminate/support.git",
-            "reference": "dfa68cb87ae5ebf7ebc006ca2d0ff549a5b15f59"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/illuminate/support/zipball/dfa68cb87ae5ebf7ebc006ca2d0ff549a5b15f59",
-            "reference": "dfa68cb87ae5ebf7ebc006ca2d0ff549a5b15f59",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "require-dev": {
-            "mockery/mockery": "0.7.2",
-            "patchwork/utf8": "1.0.*"
-        },
-        "time": "2013-03-09 04:26:45",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "4.0-dev"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "psr-0": {
-                "Illuminate\\Support": ""
-            },
-            "files": [
-                "Illuminate/Support/helpers.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "authors": [
-            {
-                "name": "Taylor Otwell",
-                "email": "taylorotwell@gmail.com"
-            }
-        ],
-        "description": "Various utilities and support functions."
-    },
-    {
         "name": "illuminate/events",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -270,6 +127,155 @@
         "description": "A simple, powerful events system."
     },
     {
+        "name": "cartalyst/sentry",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/cartalyst/sentry.git",
+            "reference": "e291bd35f3e1bb1487222b5a02fd62196db89cc9"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/cartalyst/sentry/zipball/e291bd35f3e1bb1487222b5a02fd62196db89cc9",
+            "reference": "e291bd35f3e1bb1487222b5a02fd62196db89cc9",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "illuminate/cookie": "4.0.*",
+            "illuminate/database": "4.0.*",
+            "illuminate/session": "4.0.*",
+            "ircmaxell/password-compat": "1.0.*",
+            "mockery/mockery": "0.7.2"
+        },
+        "suggest": {
+            "dhorrigan/capsule": "Capsule is a small utility for managing database connections given to illuminate/database outside of Laravel 4.",
+            "illuminate/cookie": "Sentry provides an Illuminate cookie driver for cookie integration.",
+            "illuminate/database": "Sentry provides Eloquent models for User, Group and Throttle providers.",
+            "illuminate/session": "Sentry provides an Illuminate session driver for storage integration.",
+            "ircmaxell/password-compat": "A forward-compatible PHP 5.5 password package for password_* functions can be used as a hasher (NativeHasher) in Sentry."
+        },
+        "time": "2013-03-15 21:18:06",
+        "type": "library",
+        "extra": {
+            "component": "package",
+            "frameworks": [
+                "Laravel 3",
+                "Laravel 4",
+                "CodeIgniter 3",
+                "FuelPHP 1"
+            ],
+            "versions": {
+                "1": "1.1/master",
+                "2": "master"
+            },
+            "branch-alias": {
+                "dev-master": "2.0-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/Cartalyst/Sentry/Groups/Exceptions.php",
+                "src/Cartalyst/Sentry/Throttling/Exceptions.php",
+                "src/Cartalyst/Sentry/Users/Exceptions.php",
+                "src/migrations"
+            ],
+            "psr-0": {
+                "Cartalyst\\Sentry": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD License (3-clause)"
+        ],
+        "authors": [
+            {
+                "name": "Ben Corlett",
+                "email": "ben.corlett@cartalyst.com",
+                "role": "Developer"
+            },
+            {
+                "name": "Cartalyst LLC",
+                "email": "help@cartalyst.com"
+            },
+            {
+                "name": "Bruno Gaspar",
+                "email": "bruno.gaspar@cartalyst.com",
+                "role": "Developer"
+            },
+            {
+                "name": "Dan Syme",
+                "email": "dan.syme@cartalyst.com",
+                "role": "Creator & Designer"
+            },
+            {
+                "name": "Daniel Petrie",
+                "email": "dan.petrie@cartalyst.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "PHP 5.3+ Fully-featured Authentication & Authorization System",
+        "keywords": [
+            "auth",
+            "codeigniter",
+            "fuelphp",
+            "laravel",
+            "security"
+        ]
+    },
+    {
+        "name": "illuminate/support",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "target-dir": "Illuminate/Support",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/illuminate/support.git",
+            "reference": "b46d591dd8fe100603777ea84ace34a5314c48a3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/illuminate/support/zipball/b46d591dd8fe100603777ea84ace34a5314c48a3",
+            "reference": "b46d591dd8fe100603777ea84ace34a5314c48a3",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "mockery/mockery": "0.7.2",
+            "patchwork/utf8": "1.0.*"
+        },
+        "time": "2013-03-15 03:55:30",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "4.0-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Illuminate\\Support": ""
+            },
+            "files": [
+                "Illuminate/Support/helpers.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "authors": [
+            {
+                "name": "Taylor Otwell",
+                "email": "taylorotwell@gmail.com"
+            }
+        ],
+        "description": "Various utilities and support functions."
+    },
+    {
         "name": "illuminate/database",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -277,12 +283,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/illuminate/database.git",
-            "reference": "71396d4ad96401dd8866ae53f926c2190dfe21a4"
+            "reference": "bc08b36fe9f538ee0675a0101c0797d6c662c81d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/illuminate/database/zipball/71396d4ad96401dd8866ae53f926c2190dfe21a4",
-            "reference": "71396d4ad96401dd8866ae53f926c2190dfe21a4",
+            "url": "https://api.github.com/repos/illuminate/database/zipball/bc08b36fe9f538ee0675a0101c0797d6c662c81d",
+            "reference": "bc08b36fe9f538ee0675a0101c0797d6c662c81d",
             "shasum": ""
         },
         "require": {
@@ -298,7 +304,7 @@
             "illuminate/support": "4.0.x",
             "mockery/mockery": "0.7.2"
         },
-        "time": "2013-03-10 19:51:44",
+        "time": "2013-03-14 21:11:13",
         "type": "library",
         "extra": {
             "branch-alias": {
