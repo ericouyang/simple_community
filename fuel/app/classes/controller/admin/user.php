@@ -27,29 +27,29 @@ class Controller_Admin_User extends Controller_Admin
 
 			if ($val->run())
 			{
-				$user = Model_User::forge(array(
-					'id' => Input::post('id'),
+				$user_fields = array(
 					'email' => Input::post('email'),
 					'first_name' => Input::post('first_name'),
 					'last_name' => Input::post('last_name'),
-					'permissions' => Input::post('permissions'),
-					'activated' => Input::post('activated'),
-					'activation_code' => Input::post('activation_code'),
-					'persist_code' => Input::post('persist_code'),
-					'reset_password_code' => Input::post('reset_password_code'),
-				));
-
-				if ($user and $user->save())
-				{
-					Session::set_flash('success', e('Added user #'.$user->id.'.'));
-
-					Response::redirect('admin/user');
-				}
-
-				else
-				{
-					Session::set_flash('error', e('Could not save user.'));
-				}
+					'password' => Input::post('password')
+				);
+    
+        try {
+          
+          $user = Sentry::getUserProvider()->create($user_fields);
+        }
+        catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
+        {
+            Session::set_flash('error', 'Login field is required.');
+        }
+        catch (Cartalyst\Sentry\Users\PasswordRequiredException $e)
+        {
+            Session::set_flash('error', 'Password field is required.');
+        }
+        catch (Cartalyst\Sentry\Users\UserExistsException $e)
+        {
+            Session::set_flash('error', 'User with this login already exists.');
+        }
 			}
 			else
 			{

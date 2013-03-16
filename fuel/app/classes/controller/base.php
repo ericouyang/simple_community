@@ -6,7 +6,7 @@ class Controller_Base extends Controller_Template {
   {
     parent::before();
     
-    $this->current_user = Sentry::check() ? Sentry::user() : null;
+    $this->current_user = Sentry::check() ? Sentry::getUser() : null;
     
     if (Sentry::check())
     {

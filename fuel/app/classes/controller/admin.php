@@ -2,13 +2,14 @@
 
 class Controller_Admin extends Controller_Base {
 
-	public $template = 'admin/template';
+	public $template = 'template';
 
 	public function before()
 	{
 	  parent::before();
 
-    if (!Sentry::user()->is_admin())
+    $admin = Sentry::getGroupProvider()->findByName('Admin');
+    if (Sentry::check() && Sentry::getUser()->inGroup($admin))
     {
       Response::redirect('access_denied');
     }
