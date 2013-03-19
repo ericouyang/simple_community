@@ -31,12 +31,16 @@ class Controller_Admin_User extends Controller_Admin
 					'email' => Input::post('email'),
 					'first_name' => Input::post('first_name'),
 					'last_name' => Input::post('last_name'),
-					'password' => Input::post('password')
+					'password' => Input::post('password'),
+					'activated' => 1
 				);
     
         try {
-          
           $user = Sentry::getUserProvider()->create($user_fields);
+          
+          Session::set_flash('success', e('Created new user' . $user->id));
+
+          Response::redirect('admin/user');
         }
         catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
         {
@@ -69,7 +73,6 @@ class Controller_Admin_User extends Controller_Admin
 
 		if ($val->run())
 		{
-			$user->id = Input::post('id');
 			$user->email = Input::post('email');
 			$user->first_name = Input::post('first_name');
 			$user->last_name = Input::post('last_name');
@@ -78,6 +81,9 @@ class Controller_Admin_User extends Controller_Admin
 			$user->activation_code = Input::post('activation_code');
 			$user->persist_code = Input::post('persist_code');
 			$user->reset_password_code = Input::post('reset_password_code');
+      $user->about = Input::post('about');
+      $user->user_data = Input::post('user_data');
+      $user->profile_image = Input::post('profile_image');
 
 			if ($user->save())
 			{
@@ -96,7 +102,6 @@ class Controller_Admin_User extends Controller_Admin
 		{
 			if (Input::method() == 'POST')
 			{
-				$user->id = $val->validated('id');
 				$user->email = $val->validated('email');
 				$user->first_name = $val->validated('first_name');
 				$user->last_name = $val->validated('last_name');
@@ -105,6 +110,9 @@ class Controller_Admin_User extends Controller_Admin
 				$user->activation_code = $val->validated('activation_code');
 				$user->persist_code = $val->validated('persist_code');
 				$user->reset_password_code = $val->validated('reset_password_code');
+        $user->about = $val->validated('about');
+        $user->user_data = $val->validated('user_data');
+        $user->profile_image = $val->validated('profile_image');
 
 				Session::set_flash('error', $val->error());
 			}

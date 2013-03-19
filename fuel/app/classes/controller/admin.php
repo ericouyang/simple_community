@@ -9,7 +9,7 @@ class Controller_Admin extends Controller_Base {
 	  parent::before();
 
     $admin = Sentry::getGroupProvider()->findByName('Admin');
-    if (Sentry::check() && Sentry::getUser()->inGroup($admin))
+    if (Sentry::check() && !Sentry::getUser()->inGroup($admin))
     {
       Response::redirect('access_denied');
     }

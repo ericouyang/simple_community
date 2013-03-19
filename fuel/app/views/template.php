@@ -28,27 +28,40 @@
       <div class="container">
         <a href="/" class="brand">Simple Community</a>
           <ul class="nav">
-  					 <?php foreach (glob(APPPATH.'classes/controller/admin/*.php') as $controller): ?>
-  
-  						<?php
-              $section_segment = basename($controller, '.php');
-              $section_title = Inflector::humanize($section_segment);
-  						?>
-  
-  	                <li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
-  						<?php echo Html::anchor('admin/'.$section_segment, $section_title) ?>
-  					</li>
-  					<?php endforeach; ?>
+            <?php if (Uri::segment(1) == 'admin'): ?>
+    					 <?php foreach (glob(APPPATH.'classes/controller/admin/*.php') as $controller): ?>
+    
+    						<?php
+                $section_segment = basename($controller, '.php');
+                $section_title = Inflector::humanize($section_segment);
+    						?>
+    
+    	                <li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+    						<?php echo Html::anchor('admin/'.$section_segment, $section_title) ?>
+    					</li>
+    					<?php endforeach; ?>
+    			  <?php elseif(Sentry::check()): ?>
+    			  <li>
+              <?php echo Html::anchor('directory', 'Directory') ?>
+            </li>
+  					<?php endif; ?>
 	        </ul>
 	        <ul class="nav pull-right">
           <?php if (Sentry::check()): ?>
-             <li class="<?php echo Uri::segment(2) == '' ? 'active' : '' ?>">
-              <?php echo Html::anchor('admin', 'Dashboard') ?>
+             <li class="<?php echo Uri::segment(1) == 'dashboard' ? 'active' : '' ?>">
+              <?php echo Html::anchor('dashboard', 'Dashboard') ?>
              </li>
+              <?php if($is_admin): ?>
+                <li>
+                  <?php echo Html::anchor('admin', 'Admin') ?>
+                </li>
+              <?php endif; ?>
 	            <li class="dropdown">
-	              <a data-toggle="dropdown" class="dropdown-toggle" href="#"><?php //echo $current_user->username ?> <b class="caret"></b></a>
+	              <a data-toggle="dropdown" class="dropdown-toggle" href="#"><?php echo $full_name; ?> <b class="caret"></b></a>
 	              <ul class="dropdown-menu">
-	               <li><?php echo Html::anchor('admin/logout', 'Logout') ?></li>
+	                <li><?php echo Html::anchor(Model_User::get_url($user_id), 'My Profile') ?></li>
+	                <li><?php echo Html::anchor('user/preferences', 'Change Preferences') ?></li>
+	                <li><?php echo Html::anchor('auth/logout', 'Logout') ?></li>
 	              </ul>
 	            </li>
           <?php else: ?>
@@ -64,24 +77,26 @@
 	<div class="container">
 		<div class="row">
 			<div class="span12">
-			  <div class="page-header">
-				  <h2><?php echo $title; ?></h2>
-				</div>
-<?php if (Session::get_flash('success')): ?>
-				<div class="alert alert-success">
-					<button class="close" data-dismiss="alert">×</button>
-					<p><?php echo implode('</p><p>', (array)Session::get_flash('success')); ?></p>
-				</div>
-<?php endif; ?>
-<?php if (Session::get_flash('error')): ?>
-				<div class="alert alert-error">
-					<button class="close" data-dismiss="alert">×</button>
-					<p><?php echo implode('</p><p>', (array)Session::get_flash('error')); ?></p>
-				</div>
-<?php endif; ?>
+			  <?php if (Session::get_flash('success')): ?>
+          <div class="alert alert-success">
+            <button class="close" data-dismiss="alert">×</button>
+            <?php echo implode('<br>', (array)Session::get_flash('success')); ?>
+          </div>
+        <?php endif; ?>
+        <?php if (Session::get_flash('error')): ?>
+          <div class="alert alert-error">
+            <button class="close" data-dismiss="alert">×</button>
+            <?php echo implode('<br>', (array)Session::get_flash('error')); ?>
+          </div>
+        <?php endif; ?>
+        <?php if(empty($hide_title)): ?>
+  			  <div class="page-header">
+  				  <h2><?php echo $title; ?></h2>
+  				</div>
+				<?php endif; ?>
 			</div>
 			<div class="span12">
-<?php echo $content; ?>
+        <?php echo $content; ?>
 			</div>
 		</div>
 		<hr/>

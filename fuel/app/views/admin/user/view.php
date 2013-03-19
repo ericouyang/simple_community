@@ -27,6 +27,15 @@
 <p>
 	<strong>Reset password code:</strong>
 	<?php echo $user->reset_password_code; ?></p>
+<p>
+  <strong>About:</strong>
+  <?php echo $user->about; ?></p>
+<p>
+  <strong>User data:</strong>
+  <?php echo $user->user_data; ?></p>
+<p>
+  <strong>Profile Image:</strong>
+  <?php echo $user->profile_image; ?></p>
 
 <?php echo Html::anchor('admin/user/edit/'.$user->id, 'Edit'); ?> |
 <?php echo Html::anchor('admin/user', 'Back'); ?>

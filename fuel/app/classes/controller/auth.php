@@ -2,6 +2,11 @@
 
 class Controller_Auth extends Controller_Base
 {
+  public function action_index()
+  {
+    Response::redirect('user/login');
+  }
+  
   public function action_login()
   {
     if (Input::method() == 'POST')
@@ -15,7 +20,10 @@ class Controller_Auth extends Controller_Base
       {
         $user = Sentry::authenticate($credentials);
         
-        Response::redirect('/');
+        if (isset($_GET['dest']))
+          Response::redirect($_GET['dest']);
+        else
+          Response::redirect('/');
       }
       
       catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
@@ -79,6 +87,8 @@ class Controller_Auth extends Controller_Base
           
           $resetUrl = Uri::create('auth/reset_password_confirm/'.$resetCode);
       
+          send_auth_email($email, $resetUrl);
+          
           Session::set_flash('success', 'Your reset confirmation email has been sent to '.$email);
           Response::redirect('/');
       }
@@ -87,7 +97,7 @@ class Controller_Auth extends Controller_Base
           echo 'User was not found.';
       }
     }
-    $this->template->title = 'Change Password';
+    $this->template->title = 'Reset Password';
     $this->template->content = View::forge('auth/new_password');
   }
   
@@ -112,8 +122,22 @@ class Controller_Auth extends Controller_Base
     }
   }
   
-  public static function send_activation_email($email, $url)
+  public static function send_auth_email($email, $url)
   {
+    // Create an instance
+    $email = Email::forge();
+
+    // Set the from address
+    $email->from('test@email.me', 'Test');
+
+    // Set the to address
+    $email->to($email);
+
+    // Set a subject
+    $email->subject('Test Email');
+
+    // And set the body.
+    $email->body($url);
   }
 }  
 ?>
