@@ -51,7 +51,7 @@
     </div>
     <div class="actions">
       <?php echo Form::submit('submit', 'Save', array('class' => 'btn btn-primary')); ?>
-
+      <?php echo Html::anchor(Model_User::get_url($user_id), 'Cancel', array('class' => 'btn')); ?>
     </div>
   </fieldset>
 <?php echo Form::close(); ?>

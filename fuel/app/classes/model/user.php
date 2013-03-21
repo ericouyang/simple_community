@@ -60,6 +60,6 @@ class Model_User extends \Orm\Model
   
   public static function get_url($id)
   {
-    return 'p/'.$id;
+    return 'u/'.$id;
   }
 }

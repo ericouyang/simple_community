@@ -6,10 +6,12 @@
         if ($user->profile_image)
           echo Html::anchor(Model_User::get_url($user->id), Html::img($user->profile_image));
         else
-          // echo Html:img(DEFAULT);
+          echo '<img src="http://placehold.it/210x240"/>';
       ?>
-      <h5><?php echo Html::anchor(Model_User::get_url($user->id), $user->first_name.' '.$user->last_name); ?></h5>
-      <p>More data...</p>
+      <div class="caption">
+        <h5><?php echo Html::anchor(Model_User::get_url($user->id), $user->first_name.' '.$user->last_name); ?></h5>
+        <p>More data...</p>
+      </div>
     </div>
   </li>
 <?php endforeach; ?>

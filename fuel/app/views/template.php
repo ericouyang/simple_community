@@ -41,9 +41,12 @@
     					</li>
     					<?php endforeach; ?>
     			  <?php elseif(Sentry::check()): ?>
-    			  <li>
+    			  <li class="<?php echo Uri::segment(1) == 'directory' ? 'active' : '' ?>">
               <?php echo Html::anchor('directory', 'Directory') ?>
             </li>
+            <li class="<?php echo Uri::segment(1) == 'forum' ? 'active' : '' ?>">
+              <?php echo Html::anchor('forum', 'Forum') ?>
+             </li>
   					<?php endif; ?>
 	        </ul>
 	        <ul class="nav pull-right">
@@ -66,6 +69,7 @@
 	            </li>
           <?php else: ?>
             <li><?php echo Html::anchor('auth/login', 'Login') ?></li>
+            <li><?php echo Html::anchor('auth/register', 'Register') ?></li>
 	        <?php endif; ?>
 	        </ul>
 	        </div>
@@ -103,8 +107,9 @@
 		<footer>
 			<p class="pull-right">Page rendered in {exec_time}s using {mem_usage}mb of memory.</p>
 			<p>
-				<a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.<br>
-				<small>Version: <?php echo e(Fuel::VERSION); ?></small>
+				<a href="https://github.com/ericouyang/simple_community">Simple Community</a> and
+				<a href="http://fuelphp.com">FuelPHP</a> are released under the MIT license.<br>
+				<small>Simple Community Version: 0.1 - FuelPHP Version: <?php echo e(Fuel::VERSION); ?></small>
 			</p>
 		</footer>
 	</div>

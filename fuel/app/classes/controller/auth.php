@@ -51,8 +51,10 @@ class Controller_Auth extends Controller_Base
           Session::set_flash('error', 'Your account is banned.');
       }
     }
-    $this->template->title = 'Login';
+
+  	$this->template->title = 'Login';
     $this->template->content = View::forge('auth/login');
+    
   }
   
   public function action_logout()
@@ -65,11 +67,69 @@ class Controller_Auth extends Controller_Base
   
   public function action_register()
   {
+    if (Input::method() == 'POST')
+    {
+      $credentials = array(
+        'email' => Input::post('email'),
+        'first_name' => Input::post('first_name'),
+        'last_name' => Input::post('last_name'),
+        'password' => Input::post('password')
+      );
+      
+      try
+      {
+          // Let's register a user.
+          $user = Sentry::register($credentials);
+      
+          // Let's get the activation code
+          $activationCode = $user->getActivationCode();
+      
+          // Send activation code to the user so he can activate the account
+          
+          
+          Session::set_flash('success', 'The activation code is '.$activationCode);
+          Response::redirect('/');
+      }
+      catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
+      {
+          Session::set_flash('error', 'Login field is required.');
+      }
+      catch (Cartalyst\Sentry\Users\UserExistsException $e)
+      {
+          Session::set_flash('error', 'User with this email already exists.');
+      }
+    }
+
+    $this->template->title = 'Register';
+    $this->template->content = View::forge('auth/register');
     
   }
   
-  public function action_activate()
+  public function action_activate($activation_code)
   {
+    try
+    {
+        // Find the user using the user activation code
+        $user = Sentry::getUserProvider()->findByActivationCode($activation_code);
+        
+    
+        // Attempt to activate the user
+        if ($user->attemptActivation($activation_code))
+        {
+            // User activation passed
+            Session::set_flash('success', 'Your account is now active! You can now login');
+        }
+        else
+        {
+            // User activation failed
+            Session::set_flash('error', 'There was an issue with activation. Please try again.'); 
+        }
+    }
+    catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+    {
+        Session::set_flash('error', 'Activation code not found.');
+    }
+    Response::redirect('/');
   }
   
   public function action_reset_password()
@@ -101,7 +161,7 @@ class Controller_Auth extends Controller_Base
     $this->template->content = View::forge('auth/new_password');
   }
   
-  public function action_reset_password_confirm()
+  public function action_reset_password_confirm($reset_code)
   {
     if(Input::method() == 'POST')
     {
@@ -110,7 +170,7 @@ class Controller_Auth extends Controller_Base
     try
     {
       // Find the user using the user id
-      $user = Sentry::getUserProvider()->findByResetPasswordCode(Uri::segment(3));
+      $user = Sentry::getUserProvider()->findByResetPasswordCode($reset_code);
   
       $this->template->title = 'Reset Password';
       $this->template->content = View::forge('auth/reset_password');
