@@ -26,7 +26,7 @@
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
-        <a href="/" class="brand">Simple Community</a>
+        <a href="/" class="brand">Simple Community [alpha1]</a>
           <ul class="nav">
             <?php if (Uri::segment(1) == 'admin'): ?>
     					 <?php foreach (glob(APPPATH.'classes/controller/admin/*.php') as $controller): ?>
