@@ -5,6 +5,7 @@ return array(
 	'dashboard' => 'user/dashboard',
 	'u/(:num)' => 'user/profile/$1',
 	'directory' => 'user/directory',
+	'forums' => 'forum/index',
 	
 	'hello(/:name)?' => array('welcome/hello', 'name' => 'hello'),
 );

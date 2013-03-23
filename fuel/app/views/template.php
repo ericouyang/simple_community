@@ -45,7 +45,7 @@
               <?php echo Html::anchor('directory', 'Directory') ?>
             </li>
             <li class="<?php echo Uri::segment(1) == 'forum' ? 'active' : '' ?>">
-              <?php echo Html::anchor('forum', 'Forum') ?>
+              <?php echo Html::anchor('forums', 'Forums') ?>
              </li>
   					<?php endif; ?>
 	        </ul>
@@ -62,7 +62,7 @@
 	            <li class="dropdown">
 	              <a data-toggle="dropdown" class="dropdown-toggle" href="#"><?php echo $full_name; ?> <b class="caret"></b></a>
 	              <ul class="dropdown-menu">
-	                <li><?php echo Html::anchor(Model_User::get_url($user_id), 'My Profile') ?></li>
+	                <li><?php echo Html::anchor(Model_User::get_url_by_id($user_id), 'My Profile') ?></li>
 	                <li><?php echo Html::anchor('user/preferences', 'Change Preferences') ?></li>
 	                <li><?php echo Html::anchor('auth/logout', 'Logout') ?></li>
 	              </ul>

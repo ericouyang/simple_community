@@ -20,10 +20,7 @@ class Controller_Auth extends Controller_Base
       {
         $user = Sentry::authenticate($credentials);
         
-        if (isset($_GET['dest']))
-          Response::redirect($_GET['dest']);
-        else
-          Response::redirect('/');
+        Response::redirect(Input::post('dest')); // go to set dest (which defaults to dashboard)
       }
       
       catch (Cartalyst\Sentry\Users\LoginRequiredException $e)

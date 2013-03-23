@@ -1,9 +1,9 @@
 <?php
 class Model_Thread extends \Orm\Model
 {
-  protected static $_belongs_to = array('forum');
+  protected static $_belongs_to = array('forum', 'user');
   
-  protected static $_has_many = array('messages');
+  protected static $_has_many = array('posts');
   
 	protected static $_properties = array(
 		'id',

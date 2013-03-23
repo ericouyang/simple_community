@@ -1,6 +1,8 @@
 <?php
 class Model_User extends \Orm\Model
 {
+  protected static $_has_many = array('forums', 'threads', 'posts');
+  
 	protected static $_properties = array(
 		'id',
 		'email',
@@ -58,8 +60,18 @@ class Model_User extends \Orm\Model
     return $user_data;
   }
   
-  public static function get_url($id)
+  public static function get_url_by_id($id)
   {
     return 'u/'.$id;
+  }
+  
+  public function get_url()
+  {
+    return $this::get_url_by_id($this->id);
+  }
+  
+  public function get_full_name()
+  {
+    return $this->first_name.' '.$this->last_name;
   }
 }

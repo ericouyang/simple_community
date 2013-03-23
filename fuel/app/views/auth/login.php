@@ -1,6 +1,7 @@
 <div class="row">
   <div class="span8">
-    <form class="form-horizontal" action="/auth/login" method="post">
+    <?php echo Form::open(array('class' => 'form-horizontal')); ?>
+      <?php echo Form::input('dest', Input::get('dest', 'dashboard'), array('type' => 'hidden')); ?>
       <div class="control-group">
         <label class="control-label" for="email">Email:</label>
         <div class="controls">

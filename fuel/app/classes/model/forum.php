@@ -1,6 +1,8 @@
 <?php
 class Model_Forum extends \Orm\Model
 {
+  protected static $_belongs_to = array('user');
+  
   protected static $_has_many = array('threads');
   
 	protected static $_properties = array(

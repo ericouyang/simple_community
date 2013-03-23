@@ -1,12 +1,12 @@
 <?php
-class Model_Message extends \Orm\Model
+class Model_Post extends \Orm\Model
 {
-  protected static $_belongs_to = array('thread');
+  protected static $_belongs_to = array('thread', 'user');
   
 	protected static $_properties = array(
 		'id',
-		'thread_id',
 		'user_id',
+		'thread_id',
 		'body',
 		'created_at',
 		'updated_at',
@@ -26,8 +26,8 @@ class Model_Message extends \Orm\Model
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);
-		$val->add_field('thread_id', 'Thread Id', 'required|valid_string[numeric]');
 		$val->add_field('user_id', 'User Id', 'required|valid_string[numeric]');
+		$val->add_field('thread_id', 'Thread Id', 'required|valid_string[numeric]');
 		$val->add_field('body', 'Body', 'required');
 
 		return $val;
