@@ -15,7 +15,13 @@ class Controller_Forum extends Controller_Base
   
   public function action_index()
   {
-    $data['forums'] = Model_Forum::find('all');
+    $data['forums'] = Model_Forum::find('all', array(
+      'related' => array(
+          'threads' => array(
+              'limit' => 5,
+          ),
+      ),
+    ));
     
     $this->template->title = 'Forums';
     $this->template->hide_title = true;
@@ -31,9 +37,13 @@ class Controller_Forum extends Controller_Base
     $this->template->content = View::forge('forum/view_forum', $data);
   }
   
-  public function action_view_thread($thread_id)
+  public function action_view_thread($forum_id, $thread_id)
   {
     $data['thread'] = Model_Thread::find($thread_id, array('related' => array('posts')));
+    
+    // not needed to display thread, for routing consistency sake
+    if ($data['thread']->forum_id != $forum_id)
+      return Response::forge(View::forge('errors/404'), 404);
     
     $this->template->title = $data['thread']->title;
     $this->template->hide_title = true;
@@ -53,12 +63,12 @@ class Controller_Forum extends Controller_Base
           'title' => Input::post('title'),
           'description' => Input::post('description'),
         ));
-
+        
         if ($forum and $forum->save())
         {
           Session::set_flash('success', e('Added forum #'.$forum->id.'.'));
 
-          Response::redirect('forum/view'.$forum->id);
+          Response::redirect('forum/view/'.$forum->id);
         }
 
         else
@@ -72,12 +82,17 @@ class Controller_Forum extends Controller_Base
       }
     }
 
-    $this->template->title = "Forums";
-    $this->template->content = View::forge('forum/create');
+    $this->template->title = "Create a new forum";
+    $this->template->content = View::forge('forum/create_forum');
   }
   
   public function action_create_thread($forum_id)
   {
+    $forum = Model_Forum::find($forum_id);
+      
+    if ($forum == null)
+      return Response::forge(View::forge('errors/404'), 404);
+      
     if (Input::method() == 'POST')
     {
       $val = Model_Thread::validate('create');
@@ -93,8 +108,8 @@ class Controller_Forum extends Controller_Base
         if ($thread and $thread->save())
         {
           Session::set_flash('success', e('Added thread #'.$thread->id.'.'));
-
-          Response::redirect('forum/view_thread/'.$thread->id);
+          
+          $this->action_create_post($forum_id, $thread->id);
         }
 
         else
@@ -108,15 +123,21 @@ class Controller_Forum extends Controller_Base
       }
     }
 
-    $this->template->title = "Threads";
+    $this->template->title = "Create a new thread";
     $this->template->content = View::forge('forum/create_thread');
   }
   
-  public function action_create_post($thread_id)
+  public function action_create_post($forum_id, $thread_id)
   {
+    $thread = Model_Thread::find($thread_id);
+    
+    // not needed to create post, for routing consistency sake
+    if ($thread->forum_id != $forum_id) // will also catch invalid thread_ids
+      return Response::forge(View::forge('errors/404'), 404);
+    
     if (Input::method() == 'POST')
     {
-      $val = Model_Post::validate('create');
+      $val = Model_Post::validate('create_post');
 
       if ($val->run())
       {
@@ -130,7 +151,7 @@ class Controller_Forum extends Controller_Base
         {
           Session::set_flash('success', e('Added post #'.$post->id.'.'));
 
-          Response::redirect('admin/post');
+          Response::redirect('forum/'.$forum_id.'/thread/'.$thread_id);
         }
 
         else

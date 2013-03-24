@@ -25,15 +25,15 @@ class Controller_Auth extends Controller_Base
       
       catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
       {
-          Session::set_flash('error', 'Login field is required.');
+          Session::set_flash('error', 'The login field is required.');
       }
       catch (Cartalyst\Sentry\Users\UserNotActivatedException $e)
       {
-          Session::set_flash('error', 'Your account is not active.');
+          Session::set_flash('error', 'Your account has not been activate.');
       }
       catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
       {
-          Session::set_flash('error', 'Account not found.');
+          Session::set_flash('error', 'Please check your login details and try again.');
       }
       
       // Following is only needed if throttle is enabled
@@ -58,7 +58,7 @@ class Controller_Auth extends Controller_Base
   {
     // Logs the user out
     Sentry::logout();
-    Session::set_flash('success', 'You are now logged out.');
+    //Session::set_flash('success', 'You are now logged out.');
     Response::redirect('/');
   }
   
@@ -82,18 +82,17 @@ class Controller_Auth extends Controller_Base
           $activationCode = $user->getActivationCode();
       
           // Send activation code to the user so he can activate the account
-          
-          
+              
           Session::set_flash('success', 'The activation code is '.$activationCode);
           Response::redirect('/');
       }
       catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
       {
-          Session::set_flash('error', 'Login field is required.');
+          Session::set_flash('error', 'The login field is required.');
       }
       catch (Cartalyst\Sentry\Users\UserExistsException $e)
       {
-          Session::set_flash('error', 'User with this email already exists.');
+          Session::set_flash('error', 'This email has already been used. Please log in or use a different address.');
       }
     }
 
@@ -114,7 +113,7 @@ class Controller_Auth extends Controller_Base
         if ($user->attemptActivation($activation_code))
         {
             // User activation passed
-            Session::set_flash('success', 'Your account is now active! You can now login');
+            Session::set_flash('success', 'Your account is now active! You can now login.');
         }
         else
         {

@@ -26,8 +26,6 @@ class Model_Post extends \Orm\Model
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);
-		$val->add_field('user_id', 'User Id', 'required|valid_string[numeric]');
-		$val->add_field('thread_id', 'Thread Id', 'required|valid_string[numeric]');
 		$val->add_field('body', 'Body', 'required');
 
 		return $val;

@@ -28,11 +28,14 @@ class Model_Forum extends \Orm\Model
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);
-		$val->add_field('user_id', 'User Id', 'required|valid_string[numeric]');
 		$val->add_field('title', 'Title', 'required|max_length[100]');
 		$val->add_field('description', 'Description', 'required|max_length[255]');
 
 		return $val;
 	}
 
+  public function get_url()
+  {
+    return 'forum/'.$this->id;
+  }
 }

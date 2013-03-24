@@ -28,11 +28,14 @@ class Model_Thread extends \Orm\Model
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);
-		$val->add_field('forum_id', 'Forum Id', 'required|valid_string[numeric]');
-		$val->add_field('user_id', 'User Id', 'required|valid_string[numeric]');
 		$val->add_field('title', 'Title', 'required|max_length[100]');
 
 		return $val;
 	}
 
+  public function get_url()
+  {
+    return 'forum/'.$this->forum_id.'/thread/'.$this->id;
+  }
+  
 }

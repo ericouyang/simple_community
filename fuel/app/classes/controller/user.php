@@ -126,8 +126,6 @@ class Controller_User extends Controller_Base
       'pagination_url' => 'http://localhost/directory/',
       'per_page'       => 10,
       'uri_segment'    => 1,
-      // or if you prefer pagination by query string
-      //'uri_segment'    => 'page',
     );
 
     $pagination = Pagination::forge('user_pagination', $pagination_config);
