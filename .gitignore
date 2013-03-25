@@ -18,3 +18,4 @@ db.php
 logs
 
 /fuel/app/config/crypt.php
+/fuel/public/user_data/*

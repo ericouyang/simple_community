@@ -31,7 +31,7 @@
 
 						<?php
 						$section_segment = basename($controller, '.php');
-						$section_title = Inflector::humanize($section_segment);
+						$section_title = Inflector::pluralize(Inflector::humanize($section_segment));
 						?>
 
 	                <li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">

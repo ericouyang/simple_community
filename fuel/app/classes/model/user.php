@@ -3,6 +3,8 @@ class Model_User extends \Orm\Model
 {
   protected static $_has_many = array('forums', 'threads', 'posts');
   
+  protected static $_has_one = array('profile');
+  
 	protected static $_properties = array(
 		'id',
 		'email',
@@ -13,9 +15,6 @@ class Model_User extends \Orm\Model
 		'activation_code',
 		'persist_code',
 		'reset_password_code',
-		'about',
-		'user_data',
-		'profile_image',
 		'created_at',
 		'updated_at',
 	);
@@ -44,25 +43,10 @@ class Model_User extends \Orm\Model
 
 		return $val;
 	}
-
-  public function get_user_data()
-  {
-    if (empty($this->user_data))
-    {
-      return array();
-    }
-    
-    if ( ! $user_data = json_decode($this->user_data, true))
-    {
-      throw new \InvalidArgumentException("Cannot JSON decode user data [$this->user_data].");
-    }
-
-    return $user_data;
-  }
   
   public static function get_url_by_id($id)
   {
-    return 'u/'.$id;
+    return 'user/'.$id;
   }
   
   public function get_url()

@@ -5,7 +5,7 @@ return array(
 	
 	// user routes
 	'dashboard' => 'user/dashboard',
-	'u/(:num)' => 'user/profile/$1',
+	'user/(:num)' => 'user/profile/$1',
 	'directory' => 'user/directory',
 	
   // forum routes

@@ -12,7 +12,7 @@ class Controller_Admin_User extends Controller_Admin
 
 	public function action_view($id = null)
 	{
-		$data['user'] = Model_User::find($id);
+		$data['user'] = Model_User::find($id, array('related' => 'profile'));
 
 		$this->template->title = "User";
 		$this->template->content = View::forge('admin\user/view', $data);
@@ -38,7 +38,11 @@ class Controller_Admin_User extends Controller_Admin
         try {
           $user = Sentry::getUserProvider()->create($user_fields);
           
-          Session::set_flash('success', e('Created new user' . $user->id));
+          // create user profile
+          $profile = new Model_Profile(array('user_id' => $user->id));
+          $profile->save();
+          
+          Session::set_flash('success', e('Created new user #' . $user->id));
 
           Response::redirect('admin/user');
         }
@@ -81,9 +85,8 @@ class Controller_Admin_User extends Controller_Admin
 			$user->activation_code = Input::post('activation_code');
 			$user->persist_code = Input::post('persist_code');
 			$user->reset_password_code = Input::post('reset_password_code');
-      $user->about = Input::post('about');
-      $user->user_data = Input::post('user_data');
-      $user->profile_image = Input::post('profile_image');
+      $user->profile->about = Input::post('about');
+      $user->profile->profile_image = Input::post('profile_image');
 
 			if ($user->save())
 			{
@@ -110,9 +113,8 @@ class Controller_Admin_User extends Controller_Admin
 				$user->activation_code = $val->validated('activation_code');
 				$user->persist_code = $val->validated('persist_code');
 				$user->reset_password_code = $val->validated('reset_password_code');
-        $user->about = $val->validated('about');
-        $user->user_data = $val->validated('user_data');
-        $user->profile_image = $val->validated('profile_image');
+        $user->profile->about = $val->validated('about');
+        $user->profile->profile_image = $val->validated('profile_image');
 
 				Session::set_flash('error', $val->error());
 			}
@@ -130,8 +132,18 @@ class Controller_Admin_User extends Controller_Admin
 		if ($user = Model_User::find($id))
 		{
 			$user->delete();
+      
+      if ($profile = Model_Profile::find('first', array(
+        'where' => array(
+          array('user_id', $id),
+        ))))
+      { 
+        $profile->delete();
+      }
+      
+      DB::delete('users_groups')->where('user_id', $id)->execute();
 
-			Session::set_flash('success', e('Deleted user #'.$id));
+			Session::set_flash('success', e('Deleted user and any associated profile and permissions #'.$id));
 		}
 
 		else

@@ -26,12 +26,9 @@ class Controller_User extends Controller_Base
   
   public function action_profile($id = null)
   {
-    $data['user'] = Model_User::find($id);
-    $data['user_data'] = $data['user']->get_user_data();
-    $first_name = $data['user']->first_name;
-    $last_name = $data['user']->last_name;
+    $data['user'] = Model_User::find($id, array('related' => 'profile'));
     
-    $this->template->title = $first_name.' '.$last_name;
+    $this->template->title = $data['user']->get_full_name();
     $this->template->hide_title = true;
     $this->template->content = View::forge('user/profile', $data);
   }
@@ -46,45 +43,49 @@ class Controller_User extends Controller_Base
       $user->email = Input::post('email');
       $user->first_name = Input::post('first_name');
       $user->last_name = Input::post('last_name');
-      $user->about = Input::post('about');
+      $user->profile->about = Input::post('about');
 
-      // Custom configuration for profile image upload
-      $config = array(
-          'path' => DOCROOT.DS.'profile_images',
-          'randomize' => true,
-          'ext_whitelist' => array('img', 'jpg', 'jpeg', 'gif', 'png'),
-      );
-      
-      // process the uploaded files in $_FILES
-      Upload::process($config);
-      
-      // if there are any valid files
-      if (Upload::is_valid())
+      // if exists files that are trying to be uploaded
+      if (Upload::get_files())
       {
+        // Custom configuration for profile image upload
+        $config = array(
+            'path' => DOCROOT.DS.'user_data'.DS.'profile_images',
+            'randomize' => true,
+            'ext_whitelist' => array('img', 'jpg', 'jpeg', 'gif', 'png'),
+        );
+        
+        // process the uploaded files in $_FILES
+        Upload::process($config);
+        
+        // if there are any valid files
+        if (Upload::is_valid())
+        {
           // save them according to the config
           Upload::save();
       
           $profile_image = Upload::get_files(0);
-          $user->profile_image = $profile_image['saved_to'];
+          $user->profile->profile_image = $profile_image['saved_to'];
           
           Image::load($profile_image['saved_to'])->preset('thumbnail')->save('thumbnails'.DS.$profile_image['name']);
-      }
+        }
       
-      // and process any errors
-      foreach (Upload::get_errors() as $file)
-      {
-          // $file is an array with all file information,
-          // $file['errors'] contains an array of all error occurred
-          // each array element is an an array containing 'error' and 'message'
-          foreach ($file['errors'] as $error)
-          Session::set_flash('error', $error['message']);
-      }
       
+        // process any errors
+        foreach (Upload::get_errors() as $file)
+        {
+            // $file is an array with all file information,
+            // $file['errors'] contains an array of all error occurred
+            // each array element is an an array containing 'error' and 'message'
+            foreach ($file['errors'] as $error)
+            Session::set_flash('error', $error['message']);
+        }
+      }
       if ($user->save())
       {
         Session::set_flash('success', e('Updated profile for user #' . $id));
   
-        Response::redirect(Model_User::get_url($id));
+        Response::redirect($user->get_url());
       }
 
       else
@@ -100,9 +101,8 @@ class Controller_User extends Controller_Base
         $user->email = $val->validated('email');
         $user->first_name = $val->validated('first_name');
         $user->last_name = $val->validated('last_name');
-        $user->about = $val->validated('about');
-        $user->user_data = $val->validated('user_data');
-        $user->profile_image = $val->validated('profile_image');
+        $user->profile->about = $val->validated('about');
+        $user->profile->profile_image = $val->validated('profile_image');
 
         Session::set_flash('error', $val->error());
       }

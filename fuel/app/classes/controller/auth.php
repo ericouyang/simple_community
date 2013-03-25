@@ -75,10 +75,13 @@ class Controller_Auth extends Controller_Base
       
       try
       {
-          // Let's register a user.
+          // register user
           $user = Sentry::register($credentials);
-      
-          // Let's get the activation code
+          
+          // create user profile
+          $profile = new Model_Profile(array('user_id' => $user->id));
+          $profile->save();
+          
           $activationCode = $user->getActivationCode();
       
           // Send activation code to the user so he can activate the account
@@ -108,7 +111,6 @@ class Controller_Auth extends Controller_Base
         // Find the user using the user activation code
         $user = Sentry::getUserProvider()->findByActivationCode($activation_code);
         
-    
         // Attempt to activate the user
         if ($user->attemptActivation($activation_code))
         {

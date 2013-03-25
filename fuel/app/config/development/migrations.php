@@ -9,6 +9,7 @@ return array(
 				0 => '001_create_forums',
 				1 => '002_create_threads',
 				2 => '003_create_posts',
+				3 => '004_create_profiles',
 			),
 		),
 		'module' => 
