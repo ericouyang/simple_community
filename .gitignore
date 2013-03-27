@@ -17,5 +17,5 @@ nbproject/
 db.php
 logs
 
-/fuel/app/config/crypt.php
-/fuel/public/user_data/*
+fuel/app/config/crypt.php
+public/user_data

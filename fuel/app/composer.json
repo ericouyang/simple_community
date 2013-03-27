@@ -4,5 +4,5 @@
         "illuminate/database": "4.0.*",
         "ircmaxell/password-compat": "1.0.*"
     },
-    "minimum-stability": "beta"
+    "minimum-stability": "dev"
 }
