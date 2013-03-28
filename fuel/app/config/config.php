@@ -1,6 +1,6 @@
 <?php
 /**
- * Fuel is a fast, lightweight, community driven PHP5 framework.
+ * Part of the Fuel framework.
  *
  * @package    Fuel
  * @version    1.5
@@ -10,10 +10,6 @@
  * @link       http://fuelphp.com
  */
 
-/**
- * If you want to override the default configuration, add the keys you
- * want to change here, and assign new values to them.
- */
 
 return array(
 
@@ -28,7 +24,7 @@ return array(
 	 *
 	 * Set this to null to have it automatically detected.
 	 */
-	'base_url'  => null,
+	// 'base_url'  => null,
 
 	/**
 	 * url_suffix - Any suffix that needs to be added to
@@ -53,7 +49,7 @@ return array(
 	/**
 	 * Default location for the file cache
 	 */
-	'cache_dir'       => APPPATH.'cache/',
+	// 'cache_dir'       => APPPATH.'cache/',
 
 	/**
 	 * Settings for the file finder cache (the Cache class has it's own config!)
@@ -80,14 +76,14 @@ return array(
 	/**
 	 * Localization & internationalization settings
 	 */
-	'language'           => 'en', // Default language
-	'language_fallback'  => 'en', // Fallback language when file isn't available for default language
-	'locale'             => 'en_US', // PHP set_locale() setting, null to not set
+	// 'language'           => 'en', // Default language
+	// 'language_fallback'  => 'en', // Fallback language when file isn't available for default language
+	// 'locale'             => 'en_US', // PHP set_locale() setting, null to not set
 
 	/**
 	 * Internal string encoding charset
 	 */
-	'encoding'  => 'UTF-8',
+	// 'encoding'  => 'UTF-8',
 
 	/**
 	 * DateTime settings
@@ -96,7 +92,7 @@ return array(
 	 * default_timezone		optional, if you want to change the server's default timezone
 	 */
 	// 'server_gmt_offset'  => 0,
-	'default_timezone'   => 'America/New_York',
+	// 'default_timezone'   => null,
 
 	/**
 	 * Logging Threshold.  Can be set to any of the following:
@@ -108,9 +104,9 @@ return array(
 	 * Fuel::L_INFO
 	 * Fuel::L_ALL
 	 */
-	'log_threshold'    => Fuel::L_WARNING,
-  'log_path'         => APPPATH.'logs/',
-	'log_date_format'  => 'Y-m-d H:i:s',
+	// 'log_threshold'    => Fuel::L_WARNING,
+	// 'log_path'         => APPPATH.'logs/',
+	// 'log_date_format'  => 'Y-m-d H:i:s',
 
 	/**
 	 * Security settings
@@ -147,17 +143,17 @@ return array(
 		/**
 		 * Encoding mechanism to use on htmlentities()
 		 */
-		'htmlentities_flags' => ENT_QUOTES,
+		// 'htmlentities_flags' => ENT_QUOTES,
 
 		/**
-		 * Wbether to encode HTML entities as well
+		 * Wether to encode HTML entities as well
 		 */
-		'htmlentities_double_encode' => false,
+		// 'htmlentities_double_encode' => false,
 
 		/**
 		 * Whether to automatically filter view data
 		 */
-		'auto_filter_output'  => true,
+		// 'auto_filter_output'  => true,
 
 		/**
 		 * With output encoding switched on all objects passed will be converted to strings or
@@ -205,17 +201,17 @@ return array(
 	/**
 	 * Routing settings
 	 */
-	'routing' => array(
+	// 'routing' => array(
 		/**
 		 * Whether URI routing is case sensitive or not
 		 */
-		'case_sensitive' => false,
+		// 'case_sensitive' => true,
 
 		/**
 		 *  Wether to strip the extension
 		 */
-		'strip_extension' => true,
-	),
+		// 'strip_extension' => true,
+	// ),
 
 	/**
 	 * To enable you to split up your application into modules which can be
@@ -246,7 +242,7 @@ return array(
 	/**************************************************************************/
 	/* Always Load                                                            */
 	/**************************************************************************/
-	'always_load'  => array(
+	// 'always_load'  => array(
 
 		/**
 		 * These packages are loaded on Fuel's startup.
@@ -259,9 +255,9 @@ return array(
 		 *     array('auth'	=> PKGPATH.'auth/')
 		 * );
 		 */
-		'packages'  => array(
-		  'orm',
-		),
+		// 'packages'  => array(
+		// 	//'orm',
+		// ),
 
 		/**
 		 * These modules are always loaded on Fuel's startup. You can specify them
@@ -297,6 +293,6 @@ return array(
 		 * If you don't want the lang in a group use null as groupname.
 		 */
 		// 'language'  => array(),
-	),
+	// ),
 
 );
