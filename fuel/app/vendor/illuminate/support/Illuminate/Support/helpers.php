@@ -299,12 +299,12 @@ function csrf_token()
  *
  * @param  string  $value
  * @return string
- */
+ 
 function e($value)
 {
 	return htmlentities($value, ENT_QUOTES, 'UTF-8', false);
 }
-
+*/
 /**
  * Determine if a given string ends with a given needle.
  *

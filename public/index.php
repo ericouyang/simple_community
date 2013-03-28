@@ -27,6 +27,11 @@ define('DOCROOT', __DIR__.DIRECTORY_SEPARATOR);
 define('APPPATH', realpath(__DIR__.'/../fuel/app/').DIRECTORY_SEPARATOR);
 
 /**
+ * Path to the Composer vendor directory.
+ */
+define('VENDORPATH', realpath(__DIR__.'/../fuel/app/vendor').DIRECTORY_SEPARATOR);
+
+/**
  * Path to the default packages directory.
  */
 define('PKGPATH', realpath(__DIR__.'/../fuel/packages/').DIRECTORY_SEPARATOR);
