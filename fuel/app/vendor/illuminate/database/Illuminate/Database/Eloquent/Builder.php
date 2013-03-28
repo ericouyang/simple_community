@@ -2,7 +2,6 @@
 
 use Closure;
 use Illuminate\Database\Query\Builder as QueryBuilder;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Builder {
 
@@ -74,6 +73,19 @@ class Builder {
 	}
 
 	/**
+	 * Execute the query and get the first result or throw an exception.
+	 *
+	 * @param  array   $columns
+	 * @return array
+	 */
+	public function firstOrFail($columns = array('*'))
+	{
+		if ( ! is_null($model = $this->first($columns))) return $model;
+
+		throw new ModelNotFoundException;
+	}
+
+	/**
 	 * Execute the query as a "select" statement.
 	 *
 	 * @param  array  $columns
@@ -92,6 +104,33 @@ class Builder {
 		}
 
 		return $this->model->newCollection($models);
+	}
+
+	/**
+	 * Get an array with the values of a given column.
+	 *
+	 * @param  string  $column
+	 * @param  string  $key
+	 * @return array
+	 */
+	public function lists($column, $key = null)
+	{
+		$results = $this->query->lists($column, $key);
+
+		// If the model has a mutator for the requested column, we will spin through
+		// the results and mutate the values so that the mutated version of these
+		// columns are returned as you would expect from these Eloquent models.
+		if ($this->model->hasGetMutator($column))
+		{
+			foreach ($results as $key => &$value)
+			{
+				$fill = array($column => $value);
+
+				$value = $this->model->newInstance($fill)->$column;
+			}
+		}
+
+		return $results;
 	}
 
 	/**
@@ -176,9 +215,7 @@ class Builder {
 		// also set the proper connection name for the model after we create it.
 		foreach ($results as $result)
 		{
-			$models[] = $model = $this->model->newExisting();
-
-			$model->setRawAttributes((array) $result, true);
+			$models[] = $model = $this->model->newFromBuilder($result);
 
 			$model->setConnection($connection);
 		}
@@ -282,7 +319,7 @@ class Builder {
 		// that start with the given top relations and adds them to our arrays.
 		foreach ($this->eagerLoad as $name => $constraints)
 		{
-			if (strpos($name, $relation) === 0 and $name !== $relation)
+			if (str_contains($name, '.') and starts_with($name, $relation) and $name != $relation)
 			{
 				$nested[substr($name, strlen($relation.'.'))] = $constraints;
 			}
@@ -442,7 +479,16 @@ class Builder {
 	 */
 	public function __call($method, $parameters)
 	{
-		$result = call_user_func_array(array($this->query, $method), $parameters);
+		if (method_exists($this->model, $scope = 'scope'.ucfirst($method)))
+		{
+			array_unshift($parameters, $this);
+
+			call_user_func_array(array($this->model, $scope), $parameters);
+		}
+		else
+		{
+			$result = call_user_func_array(array($this->query, $method), $parameters);
+		}
 
 		return in_array($method, $this->passthru) ? $result : $this;
 	}

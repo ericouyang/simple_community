@@ -1,5 +1,6 @@
 <?php namespace Illuminate\Database\Eloquent\Relations;
 
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -85,6 +86,31 @@ abstract class Relation {
 	abstract public function getResults();
 
 	/**
+	 * Touch all of the related models for the relationship.
+	 *
+	 * @return void
+	 */
+	public function touch()
+	{
+		$table = $this->getRelated()->getTable();
+
+		$column = $this->getRelated()->getUpdatedAtColumn();
+
+		$this->rawUpdate(array($table.'.'.$column => new DateTime));
+	}
+
+	/**
+	 * Run a raw update against the base query.
+	 *
+	 * @param  array  $attributes
+	 * @return int
+	 */
+	public function rawUpdate(array $attributes = array())
+	{
+		return $this->query->update($attributes);
+	}
+
+	/**
 	 * Remove the original where clause set by the relationship.
 	 *
 	 * The remaining constraints on the query will be reset and returned.
@@ -105,12 +131,17 @@ abstract class Relation {
 	 */
 	public function removeFirstWhereClause()
 	{
-		array_shift($this->getBaseQuery()->wheres);
+		$first = array_shift($this->getBaseQuery()->wheres);
+
+		$bindings = $this->getBaseQuery()->getBindings();
 
 		// When resetting the relation where clause, we want to shift the first element
 		// off of the bindings, leaving only the constraints that the developers put
 		// as "extra" on the relationships, and not original relation constraints.
-		$bindings = array_slice($this->getBaseQuery()->getBindings(), 1);
+		if (array_key_exists('value', $first))
+		{
+			$bindings = array_slice($bindings, 1);
+		}
 
 		$this->getBaseQuery()->setBindings(array_values($bindings));
 	}
@@ -168,6 +199,26 @@ abstract class Relation {
 	public function getRelated()
 	{
 		return $this->related;
+	}
+
+	/**
+	 * Get the name of the "created at" column.
+	 *
+	 * @return string
+	 */
+	public function createdAt()
+	{
+		return $this->parent->getCreatedAtColumn();
+	}
+
+	/**
+	 * Get the name of the "updated at" column.
+	 *
+	 * @return string
+	 */
+	public function updatedAt()
+	{
+		return $this->parent->getUpdatedAtColumn();
 	}
 
 	/**

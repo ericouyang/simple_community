@@ -1,6 +1,7 @@
 <?php namespace Illuminate\Database\Query;
 
 use Closure;
+use Illuminate\Support\Collection;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Grammars\Grammar;
 use Illuminate\Database\Query\Processors\Processor;
@@ -119,7 +120,7 @@ class Builder {
 	 */
 	protected $operators = array(
 		'=', '<', '>', '<=', '>=', '<>', '!=',
-		'like', 'not like', 'between',
+		'like', 'not like', 'between', 'ilike',
 	);
 
 	/**
@@ -148,6 +149,21 @@ class Builder {
 	public function select($columns = array('*'))
 	{
 		$this->columns = is_array($columns) ? $columns : func_get_args();
+
+		return $this;
+	}
+
+	/**
+	 * Add a new select column to the query.
+	 *
+	 * @param  mixed  $column
+	 * @return Illuminate\Database\Query\Builder
+	 */
+	public function addSelect($column)
+	{
+		$column = is_array($column) ? $column : func_get_args();
+
+		$this->columns = array_merge((array) $this->columns, $column);
 
 		return $this;
 	}
@@ -261,6 +277,14 @@ class Builder {
 		if ($value instanceof Closure)
 		{
 			return $this->whereSub($column, $operator, $value, $boolean);
+		}
+
+		// If the value is "null", we will just assume the developer wants to add a
+		// where null clause to the query. So, we will allow a short-cut here to
+		// that method for convenience so the developer doesn't have to check.
+		if (is_null($value))
+		{
+			return $this->whereNull($column, $boolean);
 		}
 
 		// Now that we are working with just a simple query we can put the elements
@@ -399,7 +423,7 @@ class Builder {
 		$query = $this->newQuery();
 
 		// Once we have the query instance we can simply execute it so it can add all
-		// of the sub-select's conditions to itself, and then we can cache it off 
+		// of the sub-select's conditions to itself, and then we can cache it off
 		// in the array of where clauses for the "main" parent query instance.
 		call_user_func($callback, $query);
 
@@ -504,7 +528,6 @@ class Builder {
 	 *
 	 * @param  string  $column
 	 * @param  mixed   $values
-	 * @param  mixed   $value
 	 * @return Illuminate\Database\Query\Builder
 	 */
 	public function orWhereIn($column, $values)
@@ -535,7 +558,7 @@ class Builder {
 	public function orWhereNotIn($column, $values)
 	{
 		return $this->whereNotIn($column, $values, 'or');
-	}	
+	}
 
 	/**
 	 * Add a where in with a sub-select to the query.
@@ -614,6 +637,68 @@ class Builder {
 	}
 
 	/**
+	 * Handles dynamic "where" clauses to the query.
+	 *
+	 * @param  string  $method
+	 * @param  string  $parameters
+	 */
+	public function dynamicWhere($method, $parameters)
+	{
+		$finder = substr($method, 5);
+
+		$segments = preg_split('/(And|Or)(?=[A-Z])/', $finder, -1, PREG_SPLIT_DELIM_CAPTURE);
+
+		// The connector variable will determine which connector will be used for the
+		// query condition. We will change it as we come across new boolean values
+		// in the dynamic method strings, which could contain a number of these.
+		$connector = 'and';
+
+		$index = 0;
+
+		foreach ($segments as $segment)
+		{
+			// If the segment is not a boolean connector, we can assume it is a column's name
+			// and we will add it to the query as a new constraint as a where clause, then
+			// we can keep iterating through the dynamic method string's segments again.
+			if ($segment != 'And' and $segment != 'Or')
+			{
+				$this->addDynamic($segment, $connector, $parameters, $index);
+
+				$index++;
+			}
+
+			// Otherwise, we will store the connector so we know how the next where clause we
+			// find in the query should be connected to the previous ones, meaning we will
+			// have the proper boolean connector to connect the next where clause found.
+			else
+			{
+				$connector = $segment;
+			}
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Add a single dynamic where clause statement to the query.
+	 *
+	 * @param  string  $segment
+	 * @param  string  $connector
+	 * @param  array   $parameters
+	 * @param  int     $index
+	 * @return void
+	 */
+	protected function addDynamic($segment, $connector, $parameters, $index)
+	{
+		// Once we have parsed out the columns and formatted the boolean operators we
+		// are ready to add it to this query as a where clause just like any other
+		// clause on the query. Then we'll increment the parameter index values.
+		$bool = strtolower($connector);
+
+		$this->where(snake_case($segment), '=', $parameters[$index], $bool);
+	}
+
+	/**
 	 * Add a "group by" clause to the query.
 	 *
 	 * @param  dynamic  $columns
@@ -636,11 +721,44 @@ class Builder {
 	 */
 	public function having($column, $operator = null, $value = null)
 	{
-		$this->havings[] = compact('column', 'operator', 'value');
+		$type = 'basic';
+
+		$this->havings[] = compact('type', 'column', 'operator', 'value');
 
 		$this->bindings[] = $value;
 
 		return $this;
+	}
+
+	/**
+	 * Add a raw having clause to the query.
+	 *
+	 * @param  string  $sql
+	 * @param  array   $bindings
+	 * @param  string  $boolean
+	 * @return Illuminate\Database\Query\Builder
+	 */
+	public function havingRaw($sql, array $bindings = array(), $boolean = 'and')
+	{
+		$type = 'raw';
+
+		$this->havings[] = compact('type', 'sql', 'boolean');
+
+		$this->bindings = array_merge($this->bindings, $bindings);
+
+		return $this;
+	}
+
+	/**
+	 * Add a raw or having clause to the query.
+	 *
+	 * @param  string  $sql
+	 * @param  array   $bindings
+	 * @return Illuminate\Database\Query\Builder
+	 */
+	public function orHavingRaw($sql, array $bindings = array())
+	{
+		return $this->havingRaw($sql, $bindings, 'or');
 	}
 
 	/**
@@ -780,27 +898,18 @@ class Builder {
 		// First we will just get all of the column values for the record result set
 		// then we can associate those values with the column if it was specified
 		// otherwise we can just give these values back without a specific key.
-		$values = array_map(function($row) use ($column)
-		{
-			$row = (object) $row;
+		$results = new Collection($this->get($columns));
 
-			return $row->$column;
-
-		}, $results = $this->get($columns));
-
+		$values = $results->fetch($column)->all();
 
 		// If a key was specified and we have results, we will go ahead and combine
 		// the values with the keys of all of the records so that the values can
 		// be accessed by the key of the rows instead of simply being numeric.
 		if ( ! is_null($key) and count($results) > 0)
 		{
-			return array_combine(array_map(function($row) use ($key)
-			{
-				$row = (object) $row;
+			$keys = $results->fetch($key)->all();
 
-				return $row->$key;
-
-			}, $results), $values);
+			return array_combine($keys, $values);
 		}
 
 		return $values;
@@ -965,7 +1074,7 @@ class Builder {
 	 */
 	public function avg($column)
 	{
-		return $this->aggregate(__FUNCTION__, array($column));	
+		return $this->aggregate(__FUNCTION__, array($column));
 	}
 
 	/**
@@ -1089,7 +1198,7 @@ class Builder {
 	/**
 	 * Delete a record from the database.
 	 *
-	 * @param  array  $values
+	 * @param  mixed  $id
 	 * @return int
 	 */
 	public function delete($id = null)
@@ -1240,6 +1349,24 @@ class Builder {
 	public function getGrammar()
 	{
 		return $this->grammar;
+	}
+
+	/**
+	 * Handle dynamic method calls into the method.
+	 *
+	 * @param  string  $method
+	 * @param  array   $parameters
+	 * @return mixed
+	 */
+	public function __call($method, $parameters)
+	{
+		if (starts_with($method, 'where'))
+		{
+			return $this->dynamicWhere($method, $parameters);
+		}
+
+		$className = get_class($this);
+		throw new \BadMethodCallException("Call to undefined method {$className}::{$method}()");
 	}
 
 }

@@ -33,11 +33,12 @@ class MigrationCartalystSentryInstallThrottle extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('user_id')->unsigned();
-			$table->integer('attempts');
-			$table->boolean('suspended');
-			$table->boolean('banned');
-			$table->timestamp('last_attempt_at');
-			$table->timestamp('suspended_at');
+			$table->string('ip_address')->nullable();
+			$table->integer('attempts')->default(0);
+			$table->boolean('suspended')->default(0);
+			$table->boolean('banned')->default(0);
+			$table->timestamp('last_attempt_at')->nullable();
+			$table->timestamp('suspended_at')->nullable();
 		});
 	}
 

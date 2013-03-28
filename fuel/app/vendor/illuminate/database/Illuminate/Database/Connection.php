@@ -85,23 +85,33 @@ class Connection implements ConnectionInterface {
 	protected $tablePrefix = '';
 
 	/**
+	 * The database connection configuration options.
+	 *
+	 * @var string
+	 */
+	protected $config = array();
+
+	/**
 	 * Create a new database connection instance.
 	 *
 	 * @param  PDO     $pdo
 	 * @param  string  $database
 	 * @param  string  $tablePrefix
+	 * @param  array   $config
 	 * @return void
 	 */
-	public function __construct(PDO $pdo, $database = '', $tablePrefix = '')
+	public function __construct(PDO $pdo, $database = '', $tablePrefix = '', array $config = array())
 	{
+		$this->pdo = $pdo;
+
 		// First we will setup the default properties. We keep track of the DB
 		// name we are connected to since it is needed when some reflective
 		// type commands are run such as checking whether a table exists.
-		$this->pdo = $pdo;
-
 		$this->database = $database;
 
 		$this->tablePrefix = $tablePrefix;
+
+		$this->config = $config;
 
 		// We need to initialize a query grammar and the query post processors
 		// which are both very important parts of the database abstractions
@@ -478,6 +488,7 @@ class Connection implements ConnectionInterface {
 	 *
 	 * @param  string  $query
 	 * @param  array   $bindings
+	 * @param  $time
 	 * @return void
 	 */
 	public function logQuery($query, $bindings, $time = null)
@@ -491,6 +502,20 @@ class Connection implements ConnectionInterface {
 	}
 
 	/**
+	 * Register a database query listener with the connection.
+	 *
+	 * @param  Closure  $callback
+	 * @return void
+	 */
+	public function listen(Closure $callback)
+	{
+		if (isset($this->events))
+		{
+			$this->events->listen('illuminate.query', $callback);
+		}
+	}
+
+	/**
 	 * Get the currently used PDO connection.
 	 *
 	 * @return PDO
@@ -498,6 +523,27 @@ class Connection implements ConnectionInterface {
 	public function getPdo()
 	{
 		return $this->pdo;
+	}
+
+	/**
+	 * Get the database connection name.
+	 *
+	 * @return string|null
+	 */
+	public function getName()
+	{
+		return $this->getConfig('name');
+	}
+
+	/**
+	 * Get an option from the configuration options.
+	 *
+	 * @param  string  $option
+	 * @return mixed
+	 */
+	public function getConfig($option)
+	{
+		return array_get($this->config, $option);
 	}
 
 	/**
@@ -659,6 +705,16 @@ class Connection implements ConnectionInterface {
 	public function getQueryLog()
 	{
 		return $this->queryLog;
+	}
+
+	/**
+	 * Clear the query log.
+	 *
+	 * @return void
+	 */
+	public function flushQueryLog()
+	{
+		$this->queryLog = array();
 	}
 
 	/**

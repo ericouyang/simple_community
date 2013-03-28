@@ -1,36 +1,34 @@
-### User
-#### Sentry User & User Provider Methods
+## User
 
-User Provider Methods:
+* [Overview](/sentry-2/users)
 
-* [create()](#create "/manuals/sentry/users/create")
-* [findAll()](#findAll "/manuals/sentry/users/findAll")
-* [findByCredentials()](#findByCredentials "/manuals/sentry/users/findByCredentials")
-* [findById()](#findById "/manuals/sentry/users/findById")
-* [findByLogin()](#findByLogin "/manuals/sentry/users/findByLogin")
-* [getAllWithAccess()](#getAllWithAccess "/manuals/sentry/users/getAllWithAccess")
-* [getUser()](#getUser "/manuals/sentry/users/getUser")
-* [getUserProvider()](#getUserProvider "/manuals/sentry/users/getUserProvider")
-* [register()](#register "/manuals/sentry/users/register")
+### Managing Users
 
-User Methods:
+* [Create a User](/sentry-2/users/create)
+* [Register a User](/sentry-2/users/register)
+* [Update a User](/sentry-2/users/update)
+* [Delete a User](/sentry-2/users/delete)
+* [Activate a User](/sentry-2/users/activate)
+* [Reset a User Password](/sentry-2/users/reset-password)
 
-* [addGroup()](#addGroup "/manuals/sentry/users/addGroup")
-* [attemptActivation()](#attemptActivation "/manuals/sentry/users/attemptActivation")
-* [attemptResetPassword()](#attemptResetPassword "/manuals/sentry/users/attemptResetPassword")
-* [checkResetPasswordCode()](#checkResetPasswordCode "/manuals/sentry/users/checkResetPasswordCode")
-* [clearResetPassword()](#clearResetPassword "/manuals/sentry/users/clearResetPassword")
-* [delete()](#delete "/manuals/sentry/users/delete")
-* [getGroups()](#getGroups "/manuals/sentry/users/getGroups")
-* [getResetPasswordCode()](#getResetPasswordCode "/manuals/sentry/users/getResetPasswordCode")
-* [getId()](#getId "/manuals/sentry/users/getId")
-* [getLogin()](#getLogin "/manuals/sentry/users/getLogin")
-* [getLoginName()](#getLoginName "/manuals/sentry/users/getLoginName")
-* [getPassword()](#getPassword "/manuals/sentry/users/getPassword")
-* [getPermissions()](#getPermissions "/manuals/sentry/users/getPermissions")
-* [hasAccess()](#hasAccess "/manuals/sentry/users/hasAccess")
-* [inGroup()](#inGroup "/manuals/sentry/users/inGroup")
-* [isActivated()](#isActivated "/manuals/sentry/users/isActivated")
-* [isSuperUser()](#isSuperUser "/manuals/sentry/users/isSuperUser")
-* [removeGroup()](#removeGroup "/manuals/sentry/users/removeGroup")
-* [save()](#save "/manuals/sentry/users/save")
+### Find User(s)
+
+* [Current Logged in User](/sentry-2/users/find#get-the-current-logged-in-user)
+* [All Users](/sentry-2/users/find#find-all-the-users)
+* [All with Access](/sentry-2/users/find#find-all-the-users-with-access-to-a-permissionss)
+* [All in Group](/sentry-2/users/find#find-all-the-users-in-a-group)
+* [by Credentials](/sentry-2/users/find#find-a-user-by-their-credentials)
+* [by User Id](/sentry-2/users/find#find-a-user-by-their-id)
+* [by Login](/sentry-2/users/find#find-a-user-by-their-login-id)
+* [by Activation Code](/sentry-2/users/find#find-a-user-by-their-activation-code)
+* [by Reset Password Code](/sentry-2/users/find#find-a-user-by-their-reset-password-code)
+
+### Helpers
+
+* [checkPassword()](/sentry-2/users/helpers#checkpassword)
+* [getGroups()](/sentry-2/users/helpers#getgroups)
+* [getPermissions()](/sentry-2/users/helpers#getpermissions)
+* [hasAccess()](/sentry-2/users/helpers#hasaccesspermission)
+* [isActivated()](/sentry-2/users/helpers#isactivated)
+* [isSuperUser()](/sentry-2/users/helpers#issuperuser)
+* [inGroup()](/sentry-2/users/helpers#ingroupgroup)

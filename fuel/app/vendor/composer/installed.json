@@ -1,58 +1,17 @@
 [
     {
-        "name": "ircmaxell/password-compat",
-        "version": "1.0.0",
-        "version_normalized": "1.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ircmaxell/password_compat.git",
-            "reference": "v1.0.0"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://github.com/ircmaxell/password_compat/archive/v1.0.0.zip",
-            "reference": "v1.0.0",
-            "shasum": ""
-        },
-        "time": "2013-01-14 16:49:31",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "files": [
-                "lib/password.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Anthony Ferrara",
-                "email": "ircmaxell@php.net",
-                "homepage": "http://blog.ircmaxell.com"
-            }
-        ],
-        "description": "A compatibility library for the proposed simplified password hashing algorithm: https://wiki.php.net/rfc/password_hash",
-        "homepage": "https://github.com/ircmaxell/password_compat",
-        "keywords": [
-            "hashing",
-            "password"
-        ]
-    },
-    {
         "name": "cartalyst/sentry",
-        "version": "v2.0.0-beta6",
-        "version_normalized": "2.0.0.0-beta6",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/cartalyst/sentry.git",
-            "reference": "v2.0.0-beta6"
+            "reference": "dfde2eafd3bf619beb92ce897e68461fe0207aa9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/cartalyst/sentry/zipball/v2.0.0-beta6",
-            "reference": "v2.0.0-beta6",
+            "url": "https://api.github.com/repos/cartalyst/sentry/zipball/dfde2eafd3bf619beb92ce897e68461fe0207aa9",
+            "reference": "dfde2eafd3bf619beb92ce897e68461fe0207aa9",
             "shasum": ""
         },
         "require": {
@@ -72,15 +31,25 @@
             "illuminate/session": "Sentry provides an Illuminate session driver for storage integration.",
             "ircmaxell/password-compat": "A forward-compatible PHP 5.5 password package for password_* functions can be used as a hasher (NativeHasher) in Sentry."
         },
-        "time": "2013-03-03 23:34:23",
+        "time": "2013-03-28 05:33:02",
         "type": "library",
         "extra": {
             "component": "package",
+            "frameworks": [
+                "Laravel 3",
+                "Laravel 4",
+                "CodeIgniter 3",
+                "FuelPHP 1"
+            ],
+            "versions": {
+                "1": "1.1/master",
+                "2": "master"
+            },
             "branch-alias": {
                 "dev-master": "2.0-dev"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "classmap": [
                 "src/Cartalyst/Sentry/Groups/Exceptions.php",
@@ -92,52 +61,157 @@
                 "Cartalyst\\Sentry": "src/"
             }
         },
-        "notification-url": "https://packagist.org/downloads/",
+        "notification-url": "http://packagist.org/downloads/",
         "license": [
             "BSD License (3-clause)"
         ],
         "authors": [
             {
+                "name": "Ben Corlett",
+                "email": "ben.corlett@cartalyst.com",
+                "role": "Developer"
+            },
+            {
                 "name": "Cartalyst LLC",
                 "email": "help@cartalyst.com"
+            },
+            {
+                "name": "Bruno Gaspar",
+                "email": "bruno.gaspar@cartalyst.com",
+                "role": "Developer"
+            },
+            {
+                "name": "Dan Syme",
+                "email": "dan.syme@cartalyst.com",
+                "role": "Creator & Designer"
+            },
+            {
+                "name": "Daniel Petrie",
+                "email": "dan.petrie@cartalyst.com",
+                "role": "Developer"
             }
         ],
-        "description": "PHP 5.3+ fully-featured authentication & authorization system",
+        "description": "PHP 5.3+ Fully-featured Authentication & Authorization System",
         "keywords": [
-            "Authentication",
             "auth",
-            "laravel3",
-            "laravel4",
+            "codeigniter",
+            "fuelphp",
+            "laravel",
             "security"
         ]
     },
     {
-        "name": "illuminate/support",
-        "version": "v4.0.0-BETA3",
-        "version_normalized": "4.0.0.0-beta3",
-        "target-dir": "Illuminate/Support",
+        "name": "ircmaxell/password-compat",
+        "version": "1.0.x-dev",
+        "version_normalized": "1.0.9999999.9999999-dev",
         "source": {
             "type": "git",
-            "url": "https://github.com/illuminate/support.git",
-            "reference": "v4.0.0-BETA3"
+            "url": "https://github.com/ircmaxell/password_compat.git",
+            "reference": "v1.0.0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/illuminate/support/zipball/v4.0.0-BETA3",
-            "reference": "v4.0.0-BETA3",
+            "url": "https://api.github.com/repos/ircmaxell/password_compat/zipball/v1.0.0",
+            "reference": "v1.0.0",
+            "shasum": ""
+        },
+        "time": "2013-01-14 16:49:31",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "files": [
+                "lib/password.php"
+            ]
+        },
+        "notification-url": "http://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Anthony Ferrara",
+                "email": "ircmaxell@php.net",
+                "homepage": "http://blog.ircmaxell.com"
+            }
+        ],
+        "description": "A compatibility library for the proposed simplified password hashing algorithm: https://wiki.php.net/rfc/password_hash",
+        "homepage": "https://github.com/ircmaxell/password_compat",
+        "keywords": [
+            "hashing",
+            "password"
+        ]
+    },
+    {
+        "name": "illuminate/container",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "target-dir": "Illuminate/Container",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/illuminate/container.git",
+            "reference": "73697d956ee9bac52de89fa2235969da45da9a1e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/illuminate/container/zipball/73697d956ee9bac52de89fa2235969da45da9a1e",
+            "reference": "73697d956ee9bac52de89fa2235969da45da9a1e",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2013-02-08 15:52:23",
+        "time": "2013-03-03 01:00:36",
         "type": "library",
         "extra": {
             "branch-alias": {
                 "dev-master": "4.0-dev"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Illuminate\\Container": ""
+            }
+        },
+        "notification-url": "http://packagist.org/downloads/",
+        "authors": [
+            {
+                "name": "Taylor Otwell",
+                "email": "taylorotwell@gmail.com"
+            }
+        ]
+    },
+    {
+        "name": "illuminate/support",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "target-dir": "Illuminate/Support",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/illuminate/support.git",
+            "reference": "b6b28eacc1e2197641fb3e6e7aae60cf19244aef"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/illuminate/support/zipball/b6b28eacc1e2197641fb3e6e7aae60cf19244aef",
+            "reference": "b6b28eacc1e2197641fb3e6e7aae60cf19244aef",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "mockery/mockery": "0.7.2",
+            "patchwork/utf8": "1.0.*"
+        },
+        "time": "2013-03-27 13:00:20",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "4.0-dev"
+            }
+        },
+        "installation-source": "source",
         "autoload": {
             "psr-0": {
                 "Illuminate\\Support": ""
@@ -146,7 +220,7 @@
                 "Illuminate/Support/helpers.php"
             ]
         },
-        "notification-url": "https://packagist.org/downloads/",
+        "notification-url": "http://packagist.org/downloads/",
         "authors": [
             {
                 "name": "Taylor Otwell",
@@ -156,59 +230,19 @@
         "description": "Various utilities and support functions."
     },
     {
-        "name": "illuminate/container",
-        "version": "v4.0.0-BETA3",
-        "version_normalized": "4.0.0.0-beta3",
-        "target-dir": "Illuminate/Container",
-        "source": {
-            "type": "git",
-            "url": "http://github.com/illuminate/container",
-            "reference": "v4.0.0-BETA3"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/illuminate/container/zipball/v4.0.0-BETA3",
-            "reference": "v4.0.0-BETA3",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "time": "2013-01-24 04:39:29",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "4.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Illuminate\\Container": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "authors": [
-            {
-                "name": "Taylor Otwell",
-                "email": "taylorotwell@gmail.com"
-            }
-        ]
-    },
-    {
         "name": "illuminate/events",
-        "version": "v4.0.0-BETA3",
-        "version_normalized": "4.0.0.0-beta3",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
         "target-dir": "Illuminate/Events",
         "source": {
             "type": "git",
-            "url": "http://github.com/illuminate/events",
-            "reference": "v4.0.0-BETA3"
+            "url": "https://github.com/illuminate/events.git",
+            "reference": "8cd1eee655b3d038c18012e48981247e52b31852"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/illuminate/events/zipball/v4.0.0-BETA3",
-            "reference": "v4.0.0-BETA3",
+            "url": "https://api.github.com/repos/illuminate/events/zipball/8cd1eee655b3d038c18012e48981247e52b31852",
+            "reference": "8cd1eee655b3d038c18012e48981247e52b31852",
             "shasum": ""
         },
         "require": {
@@ -219,20 +253,20 @@
         "require-dev": {
             "mockery/mockery": "0.7.2"
         },
-        "time": "2013-02-08 03:33:15",
+        "time": "2013-03-22 09:29:52",
         "type": "library",
         "extra": {
             "branch-alias": {
                 "dev-master": "4.0-dev"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "psr-0": {
                 "Illuminate\\Events": ""
             }
         },
-        "notification-url": "https://packagist.org/downloads/",
+        "notification-url": "http://packagist.org/downloads/",
         "authors": [
             {
                 "name": "Taylor Otwell",
@@ -243,18 +277,18 @@
     },
     {
         "name": "illuminate/database",
-        "version": "v4.0.0-BETA3",
-        "version_normalized": "4.0.0.0-beta3",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
         "target-dir": "Illuminate/Database",
         "source": {
             "type": "git",
-            "url": "http://github.com/illuminate/database",
-            "reference": "v4.0.0-BETA2"
+            "url": "https://github.com/illuminate/database.git",
+            "reference": "de7110724e12a265301dda4eed173043cd930e7b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/illuminate/database/zipball/v4.0.0-BETA2",
-            "reference": "v4.0.0-BETA2",
+            "url": "https://api.github.com/repos/illuminate/database/zipball/de7110724e12a265301dda4eed173043cd930e7b",
+            "reference": "de7110724e12a265301dda4eed173043cd930e7b",
             "shasum": ""
         },
         "require": {
@@ -270,20 +304,20 @@
             "illuminate/support": "4.0.x",
             "mockery/mockery": "0.7.2"
         },
-        "time": "2013-02-07 23:05:58",
+        "time": "2013-03-28 01:10:02",
         "type": "library",
         "extra": {
             "branch-alias": {
                 "dev-master": "4.0-dev"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "psr-0": {
                 "Illuminate\\Database": ""
             }
         },
-        "notification-url": "https://packagist.org/downloads/",
+        "notification-url": "http://packagist.org/downloads/",
         "authors": [
             {
                 "name": "Taylor Otwell",

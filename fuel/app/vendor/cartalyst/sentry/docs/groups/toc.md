@@ -1,15 +1,19 @@
-### Group
-#### Sentry Group & Group Provider Methods
+## Group
 
-Group Provider Methods:
+* [Overview](/sentry-2/groups)
 
-* [getGroupProvider()](#getGroupProvider "/manuals/sentry/groups/getGroupProvider")
-* [create()](#create "/manuals/sentry/groups/create")
-* [findById()](#findById "/manuals/sentry/groups/findById")
-* [findByName()](#findByName "/manuals/sentry/groups/findByName")
+### Managing Groups
 
-Group Methods:
+* [Create a Group](/sentry-2/groups/create)
+* [Update a Group](/sentry-2/groups/update)
+* [Delete a Group](/sentry-2/groups/delete)
 
-* [delete()](#delete "/manuals/sentry/groups/delete")
-* [getPermissions()](#getPermissions "/manuals/sentry/groups/getPermissions")
-* [save()](#save "/manuals/sentry/groups/save")
+### Find Groups
+
+* [Find All Groups](/sentry-2/groups/find#find-all-the-groups)
+* [Find a Group by Id](/sentry-2/groups/find#find-a-group-by-its-id)
+* [Find a Group by Name](/sentry-2/groups/find#find-a-groups-by-its-name)
+
+### Helpers
+
+* [getPermissions()](/sentry-2/groups/helpers#getpermissions)

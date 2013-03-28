@@ -33,11 +33,18 @@ class Group extends Model implements GroupInterface {
 	protected $table = 'groups';
 
 	/**
+	 * The attributes that aren't mass assignable.
+	 *
+	 * @var array
+	 */
+	protected $guarded = array();
+
+	/**
 	 * Allowed permissions values.
 	 *
 	 * Possible options:
-	 *    0 => Delete permissions
-	 *    1 => Add permissions
+	 *    0 => Remove.
+	 *    1 => Add.
 	 *
 	 * @var array
 	 */
@@ -48,14 +55,9 @@ class Group extends Model implements GroupInterface {
 	 *
 	 * @return mixed
 	 */
-	public function getId($id = false)
+	public function getId()
 	{
-		if ($id === false and isset($this->attributes[$keyName = $this->getKeyName()]))
-		{
-			$id = $this->attributes[$keyName];
-		}
-
-		return $id;
+		return $this->getKey();
 	}
 
 	/**
@@ -63,14 +65,9 @@ class Group extends Model implements GroupInterface {
 	 *
 	 * @return string
 	 */
-	public function getName($name = false)
+	public function getName()
 	{
-		if ($name === false and isset($this->attributes['name']))
-		{
-			$name = $this->attributes['name'];
-		}
-
-		return $name;
+		return $this->name;
 	}
 
 	/**
@@ -96,9 +93,10 @@ class Group extends Model implements GroupInterface {
 	/**
 	 * Saves the group.
 	 *
+	 * @param  array  $options
 	 * @return bool
 	 */
-	public function save()
+	public function save(array $options = array())
 	{
 		$this->validate();
 		return parent::save();
