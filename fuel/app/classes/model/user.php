@@ -12,9 +12,9 @@ class Model_User extends \Orm\Model
 		'last_name',
 		'permissions',
 		'activated',
-		'activation_code',
-		'persist_code',
-		'reset_password_code',
+		'activation_hash',
+		'persist_hash',
+		'reset_password_hash',
 		'created_at',
 		'updated_at',
 	);
@@ -37,9 +37,9 @@ class Model_User extends \Orm\Model
 		$val->add_field('first_name', 'First Name', 'required|max_length[255]');
 		$val->add_field('last_name', 'Last Name', 'required|max_length[255]');
 		$val->add_field('activated', 'Activated', 'valid_string[numeric]');
-		$val->add_field('activation_code', 'Activation Code', 'max_length[255]');
-		$val->add_field('persist_code', 'Persist Code', 'max_length[255]');
-		$val->add_field('reset_password_code', 'Reset Password Code', 'max_length[255]');
+		$val->add_field('activation_hash', 'Activation Code', 'max_length[255]');
+		$val->add_field('persist_hash', 'Persist Code', 'max_length[255]');
+		$val->add_field('reset_password_hash', 'Reset Password Code', 'max_length[255]');
 
 		return $val;
 	}

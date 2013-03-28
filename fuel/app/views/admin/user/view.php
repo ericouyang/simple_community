@@ -19,14 +19,14 @@
 	<strong>Activated:</strong>
 	<?php echo $user->activated; ?></p>
 <p>
-	<strong>Activation code:</strong>
-	<?php echo $user->activation_code; ?></p>
+	<strong>Activation hash:</strong>
+	<?php echo $user->activation_hash; ?></p>
 <p>
-	<strong>Persist code:</strong>
-	<?php echo $user->persist_code; ?></p>
+	<strong>Persist hash:</strong>
+	<?php echo $user->persist_hash; ?></p>
 <p>
-	<strong>Reset password code:</strong>
-	<?php echo $user->reset_password_code; ?></p>
+	<strong>Reset password hash:</strong>
+	<?php echo $user->reset_password_hash; ?></p>
 <p>
   <strong>About:</strong>
   <?php echo $user->profile->about; ?></p>

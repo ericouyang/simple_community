@@ -10,9 +10,9 @@
 			<th>Last name</th>
 			<th>Permissions</th>
 			<th>Activated</th>
-			<th>Activation code</th>
-			<th>Persist code</th>
-			<th>Reset password code</th>
+			<th>Activation hash</th>
+			<th>Persist hash</th>
+			<th>Reset password hash</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -25,9 +25,9 @@
 			<td><?php echo $user->last_name; ?></td>
 			<td><?php echo $user->permissions; ?></td>
 			<td><?php echo $user->activated; ?></td>
-			<td><?php echo $user->activation_code; ?></td>
-			<td><?php echo $user->persist_code; ?></td>
-			<td><?php echo $user->reset_password_code; ?></td>
+			<td><?php echo $user->activation_hash; ?></td>
+			<td><?php echo $user->persist_hash; ?></td>
+			<td><?php echo $user->reset_password_hash; ?></td>
 			<td>
 				<?php echo Html::anchor('admin/user/view/'.$user->id, 'View'); ?> |
 				<?php echo Html::anchor('admin/user/edit/'.$user->id, 'Edit'); ?> |

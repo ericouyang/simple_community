@@ -42,26 +42,26 @@
 			</div>
 		</div>
 		<div class="clearfix">
-			<?php echo Form::label('Activation code', 'activation_code'); ?>
+			<?php echo Form::label('Activation hash', 'activation_hash'); ?>
 
 			<div class="input">
-				<?php echo Form::input('activation_code', Input::post('activation_code', isset($user) ? $user->activation_code : ''), array('class' => 'span4')); ?>
+				<?php echo Form::input('activation_hash', Input::post('activation_hash', isset($user) ? $user->activation_hash : ''), array('class' => 'span4')); ?>
 
 			</div>
 		</div>
 		<div class="clearfix">
-			<?php echo Form::label('Persist code', 'persist_code'); ?>
+			<?php echo Form::label('Persist hash', 'persist_hash'); ?>
 
 			<div class="input">
-				<?php echo Form::input('persist_code', Input::post('persist_code', isset($user) ? $user->persist_code : ''), array('class' => 'span4')); ?>
+				<?php echo Form::input('persist_hash', Input::post('persist_hash', isset($user) ? $user->persist_hash : ''), array('class' => 'span4')); ?>
 
 			</div>
 		</div>
 		<div class="clearfix">
-			<?php echo Form::label('Reset password code', 'reset_password_code'); ?>
+			<?php echo Form::label('Reset password hash', 'reset_password_hash'); ?>
 
 			<div class="input">
-				<?php echo Form::input('reset_password_code', Input::post('reset_password_code', isset($user) ? $user->reset_password_code : ''), array('class' => 'span4')); ?>
+				<?php echo Form::input('reset_password_hash', Input::post('reset_password_hash', isset($user) ? $user->reset_password_hash : ''), array('class' => 'span4')); ?>
 
 			</div>
 		</div>
