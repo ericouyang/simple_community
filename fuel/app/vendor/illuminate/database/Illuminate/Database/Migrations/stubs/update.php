@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class {{class}} extends Migration {
@@ -12,7 +11,7 @@ class {{class}} extends Migration {
 	 */
 	public function up()
 	{
-		Schema::table('{{table}}', function(Blueprint $table)
+		Schema::table('{{table}}', function($table)
 		{
 			//
 		});

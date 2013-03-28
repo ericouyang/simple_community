@@ -40,7 +40,7 @@ class MessageBag implements ArrayableInterface, Countable, JsonableInterface, Me
 	 *
 	 * @param  string  $key
 	 * @param  string  $message
-	 * @return Illuminate\Support\MessageBag
+	 * @return void
 	 */
 	public function add($key, $message)
 	{
@@ -48,21 +48,17 @@ class MessageBag implements ArrayableInterface, Countable, JsonableInterface, Me
 		{
 			$this->messages[$key][] = $message;
 		}
-
-		return $this;
 	}
 
 	/**
 	 * Merge a new array of messages into the bag.
 	 *
 	 * @param  array  $messages
-	 * @return Illuminate\Support\MessageBag
+	 * @return void
 	 */
 	public function merge(array $messages)
 	{
 		$this->messages = array_merge_recursive($this->messages, $messages);
-
-		return $this;
 	}
 
 	/**

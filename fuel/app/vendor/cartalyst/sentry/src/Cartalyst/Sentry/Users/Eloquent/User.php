@@ -43,20 +43,8 @@ class User extends Model implements UserInterface {
 	 */
 	protected $hidden = array(
 		'password',
-		'reset_password_code',
-		'activation_code',
-		'persist_code',
-	);
-
-	/**
-	 * The attributes that aren't mass assignable.
-	 *
-	 * @var array
-	 */
-	protected $guarded = array(
-		'reset_password_code',
-		'activation_code',
-		'persist_code',
+		'reset_password_hash',
+		'activation_hash',
 	);
 
 	/**
@@ -66,16 +54,18 @@ class User extends Model implements UserInterface {
 	 */
 	protected $hashableAttributes = array(
 		'password',
-		'persist_code',
+		'reset_password_hash',
+		'activation_hash',
+		'persist_hash',
 	);
 
 	/**
 	 * Allowed permissions values.
 	 *
 	 * Possible options:
-	 *   -1 => Deny (adds to array, but denies regardless of user's group).
-	 *    0 => Remove.
-	 *    1 => Add.
+	 *   -1 => deny
+	 *    0 => delete
+	 *    1 => add
 	 *
 	 * @var array
 	 */
@@ -100,9 +90,14 @@ class User extends Model implements UserInterface {
 	 *
 	 * @return  mixed
 	 */
-	public function getId()
+	public function getId($id = false)
 	{
-		return $this->getKey();
+		if ($id === false and isset($this->attributes[$keyName = $this->getKeyName()]))
+		{
+			$id = $this->attributes[$keyName];
+		}
+
+		return $id;
 	}
 
 	/**
@@ -120,9 +115,14 @@ class User extends Model implements UserInterface {
 	 *
 	 * @return mixed
 	 */
-	public function getLogin()
+	public function getLogin($login = false)
 	{
-		return $this->{$this->getLoginName()};
+		if ($login === false and isset($this->attributes[$loginName = $this->getLoginName()]))
+		{
+			$login = $this->attributes[$loginName];
+		}
+
+		return $login;
 	}
 
 	/**
@@ -130,9 +130,14 @@ class User extends Model implements UserInterface {
 	 *
 	 * @return string
 	 */
-	public function getPassword()
+	public function getPassword($password = false)
 	{
-		return $this->password;
+		if ($password === false and isset($this->attributes['password']))
+		{
+			$password = $this->attributes['password'];
+		}
+
+		return $password;
 	}
 
 	/**
@@ -256,7 +261,7 @@ class User extends Model implements UserInterface {
 			throw new LoginRequiredException("A login is required for a user, none given.");
 		}
 
-		if ( ! $password = $this->getPassword())
+		if ( ! $password = $this->password)
 		{
 			throw new PasswordRequiredException("A password is required for user [$login], none given.");
 		}
@@ -276,14 +281,12 @@ class User extends Model implements UserInterface {
 	/**
 	 * Saves the user.
 	 *
-	 * @param  array  $options
 	 * @return bool
 	 */
-	public function save(array $options = array())
+	public function save()
 	{
 		$this->validate();
-
-		return parent::save($options);
+		return parent::save();
 	}
 
 	/**
@@ -306,10 +309,10 @@ class User extends Model implements UserInterface {
 	 */
 	public function getPersistCode()
 	{
-		$this->persist_code = $this->getRandomString();
+		$this->persist_hash = $this->getRandomString();
 
 		// Our code got hashed
-		$persistCode = $this->persist_code;
+		$persistCode = $this->persist_hash;
 
 		$this->save();
 
@@ -329,7 +332,7 @@ class User extends Model implements UserInterface {
 			return false;
 		}
 
-		return $persistCode == $this->persist_code;
+		return $persistCode == $this->persist_hash;
 	}
 
 	/**
@@ -339,7 +342,10 @@ class User extends Model implements UserInterface {
 	 */
 	public function getActivationCode()
 	{
-		$this->activation_code = $activationCode = $this->getRandomString();
+		$this->activation_hash = $this->getRandomString();
+
+		// Our code got hashed
+		$activationCode = $this->activation_hash;
 
 		$this->save();
 
@@ -362,25 +368,14 @@ class User extends Model implements UserInterface {
 			throw new UserAlreadyActivatedException('Cannot attempt activation on an already activated user.');
 		}
 
-		if ($activationCode == $this->activation_code)
+		if ($activationCode == $this->activation_hash)
 		{
-			$this->activation_code = null;
+			$this->activation_hash = null;
 			$this->activated = true;
 			return $this->save();
 		}
 
 		return false;
-	}
-
-	/**
-	 * Checks the password passed matches the user's password.
-	 *
-	 * @param  string  $password
-	 * @return bool
-	 */
-	public function checkPassword($password)
-	{
-		return $this->checkHash($password, $this->getPassword());
 	}
 
 	/**
@@ -390,7 +385,10 @@ class User extends Model implements UserInterface {
 	 */
 	public function getResetPasswordCode()
 	{
-		$this->reset_password_code = $resetCode = $this->getRandomString();
+		$this->reset_password_hash = $this->getRandomString();
+
+		// Our code got hashed
+		$resetCode = $this->reset_password_hash;
 
 		$this->save();
 
@@ -406,7 +404,7 @@ class User extends Model implements UserInterface {
 	 */
 	public function checkResetPasswordCode($resetCode)
 	{
-		return ($this->reset_password_code == $resetCode);
+		return ($this->reset_password_hash == $resetCode);
 	}
 
 	/**
@@ -422,7 +420,7 @@ class User extends Model implements UserInterface {
 		if ($this->checkResetPasswordCode($resetCode))
 		{
 			$this->password = $newPassword;
-			$this->reset_password_code = null;
+			$this->reset_password_hash = null;
 			return $this->save();
 		}
 
@@ -437,9 +435,9 @@ class User extends Model implements UserInterface {
 	 */
 	public function clearResetPassword()
 	{
-		if ($this->reset_password_code)
+		if ($this->reset_password_hash)
 		{
-			$this->reset_password_code = null;
+			$this->reset_password_hash = null;
 			$this->save();
 		}
 	}
@@ -583,36 +581,13 @@ class User extends Model implements UserInterface {
 				}
 			}
 
+			// Otherwise, we'll fallback to standard permissions checking where
+			// we match that permissions explicitly exist.
 			else
 			{
-				$matched = false;
-
-				foreach ($mergedPermissions as $mergedPermission => $value)
+				if ( ! array_key_exists($permission, $mergedPermissions) or $mergedPermissions[$permission] != 1)
 				{
-					// This time check if the mergedPermission ends in wildcard "*" symbol.
-					if ((strlen($mergedPermission) > 1) and ends_with($mergedPermission, '*'))
-					{
-						$matched = false;
-
-						// Strip the '*' off the end of the permission.
-						$checkMergedPermission = substr($mergedPermission, 0, -1);
-
-						// We will make sure that the merged permission does not
-						// exactly match our permission, but starts wtih it.
-						if ($checkMergedPermission != $permission and starts_with($permission, $checkMergedPermission) and $value == 1)
-						{
-							$matched = true;
-							break;
-						}
-					}
-
-					// Otherwise, we'll fallback to standard permissions checking where
-					// we match that permissions explicitly exist.
-					elseif ($permission == $mergedPermission and $mergedPermissions[$permission] == 1)
-					{
-						$matched = true;
-						break;
-					}
+					$matched = false;
 				}
 			}
 
@@ -703,12 +678,12 @@ class User extends Model implements UserInterface {
 			// We generate twice as many bytes here because we want to ensure we have
 			// enough after we base64 encode it to get the length we need because we
 			// take out the "/", "+", and "=" characters.
-			$bytes = openssl_random_pseudo_bytes($length * 2);
+			$bytes = openssl_random_pseudo_bytes($length * 2, $strong);
 
 			// We want to stop execution if the key fails because, well, that is bad.
 			if ($bytes === false)
 			{
-				throw new \RuntimeException('Unable to generate random string.');
+				throw new \RuntimeException('Error generating random string.');
 			}
 
 			return substr(str_replace(array('/', '+', '='), '', base64_encode($bytes)), 0, $length);

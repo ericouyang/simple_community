@@ -24,17 +24,17 @@ use Cartalyst\Sentry\Users\UserNotFoundException;
 
 class SentryTest extends PHPUnit_Framework_TestCase {
 
-	protected $userProvider;
-
-	protected $groupProvider;
-
-	protected $throttleProvider;
-
 	protected $hasher;
 
 	protected $session;
 
 	protected $cookie;
+
+	protected $groupProvider;
+
+	protected $userProvider;
+
+	protected $throttleProvider;
 
 	protected $sentry;
 
@@ -45,12 +45,20 @@ class SentryTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function setUp()
 	{
+		$this->hasher           = m::mock('Cartalyst\Sentry\Hashing\HasherInterface');
+		$this->session          = m::mock('Cartalyst\Sentry\Sessions\SessionInterface');
+		$this->cookie           = m::mock('Cartalyst\Sentry\Cookies\CookieInterface');
+		$this->groupProvider    = m::mock('Cartalyst\Sentry\Groups\ProviderInterface');
+		$this->userProvider     = m::mock('Cartalyst\Sentry\Users\ProviderInterface');
+		$this->throttleProvider = m::mock('Cartalyst\Sentry\Throttling\ProviderInterface');
+
 		$this->sentry = new Sentry(
-			$this->userProvider     = m::mock('Cartalyst\Sentry\Users\ProviderInterface'),
-			$this->groupProvider    = m::mock('Cartalyst\Sentry\Groups\ProviderInterface'),
-			$this->throttleProvider = m::mock('Cartalyst\Sentry\Throttling\ProviderInterface'),
-			$this->session          = m::mock('Cartalyst\Sentry\Sessions\SessionInterface'),
-			$this->cookie           = m::mock('Cartalyst\Sentry\Cookies\CookieInterface')
+			$this->hasher,
+			$this->session,
+			$this->cookie,
+			$this->groupProvider,
+			$this->userProvider,
+			$this->throttleProvider
 		);
 	}
 
@@ -86,13 +94,6 @@ class SentryTest extends PHPUnit_Framework_TestCase {
 		$this->session->shouldReceive('put')->with(array('foo', 'persist_code'))->once();
 
 		$this->sentry->login($user);
-	}
-
-	public function testLoggingInAndRemembering()
-	{
-		$sentry = m::mock('Cartalyst\Sentry\Sentry[login]');
-		$sentry->shouldReceive('login')->with($user = m::mock('Cartalyst\Sentry\Users\UserInterface'), true)->once();
-		$sentry->loginAndRemember($user);
 	}
 
 	/**
@@ -157,7 +158,7 @@ class SentryTest extends PHPUnit_Framework_TestCase {
 		$emptyUser->shouldReceive('getLoginName')->once()->andReturn('email');
 
 		$this->throttleProvider->shouldReceive('isEnabled')->once()->andReturn(true);
-		$this->throttleProvider->shouldReceive('findByUserLogin')->with('foo@bar.com', '0.0.0.0')->once()->andReturn($throttle = m::mock('Cartalyst\Sentry\Throttling\ThrottleInterface'));
+		$this->throttleProvider->shouldReceive('findByUserLogin')->with('foo@bar.com')->once()->andReturn($throttle = m::mock('Cartalyst\Sentry\Throttling\ThrottleInterface'));
 
 		$throttle->shouldReceive('check')->once()->andThrow(new Cartalyst\Sentry\Throttling\UserBannedException);
 
@@ -178,7 +179,7 @@ class SentryTest extends PHPUnit_Framework_TestCase {
 		$emptyUser->shouldReceive('getLoginName')->once()->andReturn('email');
 
 		$this->throttleProvider->shouldReceive('isEnabled')->once()->andReturn(true);
-		$this->throttleProvider->shouldReceive('findByUserLogin')->with('foo@bar.com', '0.0.0.0')->once()->andReturn($throttle = m::mock('Cartalyst\Sentry\Throttling\ThrottleInterface'));
+		$this->throttleProvider->shouldReceive('findByUserLogin')->with('foo@bar.com')->once()->andReturn($throttle = m::mock('Cartalyst\Sentry\Throttling\ThrottleInterface'));
 
 		$throttle->shouldReceive('check')->once()->andThrow(new Cartalyst\Sentry\Throttling\UserSuspendedException);
 
@@ -199,7 +200,7 @@ class SentryTest extends PHPUnit_Framework_TestCase {
 		$emptyUser->shouldReceive('getLoginName')->once()->andReturn('email');
 
 		$this->throttleProvider->shouldReceive('isEnabled')->once()->andReturn(true);
-		$this->throttleProvider->shouldReceive('findByUserLogin')->with('foo@bar.com', '0.0.0.0')->once()->andReturn($throttle = m::mock('Cartalyst\Sentry\Throttling\ThrottleInterface'));
+		$this->throttleProvider->shouldReceive('findByUserLogin')->with('foo@bar.com')->once()->andReturn($throttle = m::mock('Cartalyst\Sentry\Throttling\ThrottleInterface'));
 
 		$throttle->shouldReceive('check')->once();
 
@@ -216,11 +217,12 @@ class SentryTest extends PHPUnit_Framework_TestCase {
 	{
 		$this->sentry = m::mock('Cartalyst\Sentry\Sentry[login]');
 		$this->sentry->__construct(
-			$this->userProvider,
-			$this->groupProvider,
-			$this->throttleProvider,
+			$this->hasher,
 			$this->session,
-			$this->cookie
+			$this->cookie,
+			$this->groupProvider,
+			$this->userProvider,
+			$this->throttleProvider
 		);
 
 		$credentials = array(
@@ -245,11 +247,12 @@ class SentryTest extends PHPUnit_Framework_TestCase {
 	{
 		$this->sentry = m::mock('Cartalyst\Sentry\Sentry[login]');
 		$this->sentry->__construct(
-			$this->userProvider,
-			$this->groupProvider,
-			$this->throttleProvider,
+			$this->hasher,
 			$this->session,
-			$this->cookie
+			$this->cookie,
+			$this->groupProvider,
+			$this->userProvider,
+			$this->throttleProvider
 		);
 
 		$credentials = array(
@@ -266,7 +269,7 @@ class SentryTest extends PHPUnit_Framework_TestCase {
 		$emptyUser->shouldReceive('getLoginName')->once()->andReturn('email');
 
 		$this->throttleProvider->shouldReceive('isEnabled')->once()->andReturn(true);
-		$this->throttleProvider->shouldReceive('findByUserLogin')->with('foo@bar.com', '0.0.0.0')->once()->andReturn($throttle = m::mock('Cartalyst\Sentry\Throttling\ThrottleInterface'));
+		$this->throttleProvider->shouldReceive('findByUserLogin')->with('foo@bar.com')->once()->andReturn($throttle = m::mock('Cartalyst\Sentry\Throttling\ThrottleInterface'));
 
 		$throttle->shouldReceive('check')->once();
 
@@ -302,11 +305,8 @@ class SentryTest extends PHPUnit_Framework_TestCase {
 	public function testCheckLoggingOut()
 	{
 		$this->sentry->setUser(m::mock('Cartalyst\Sentry\Users\UserInterface'));
-		$this->session->shouldReceive('get')->once();
 		$this->session->shouldReceive('forget')->once();
-		$this->cookie->shouldReceive('get')->once();
 		$this->cookie->shouldReceive('forget')->once();
-
 		$this->sentry->logout();
 		$this->assertNull($this->sentry->getUser());
 	}
@@ -317,7 +317,7 @@ class SentryTest extends PHPUnit_Framework_TestCase {
 		$user->shouldReceive('isActivated')->once()->andReturn(true);
 
 		$this->sentry->setUser($user);
-		$this->assertTrue($this->sentry->check());
+		$this->assertInstanceOf('Cartalyst\Sentry\Users\UserInterface', $this->sentry->check());
 	}
 
 	public function testCheckingUserWhenUserIsSetAndNotActivated()
@@ -339,7 +339,7 @@ class SentryTest extends PHPUnit_Framework_TestCase {
 		$user->shouldReceive('checkPersistCode')->with('persist_code')->once()->andReturn(true);
 		$user->shouldReceive('isActivated')->once()->andReturn(true);
 
-		$this->assertTrue($this->sentry->check());
+		$this->assertInstanceOf('Cartalyst\Sentry\Users\UserInterface', $this->sentry->check());
 	}
 
 	public function testCheckingUserChecksSessionFirstAndThenCookie()
@@ -352,7 +352,7 @@ class SentryTest extends PHPUnit_Framework_TestCase {
 		$user->shouldReceive('checkPersistCode')->with('persist_code')->once()->andReturn(true);
 		$user->shouldReceive('isActivated')->once()->andReturn(true);
 
-		$this->assertTrue($this->sentry->check());
+		$this->assertInstanceOf('Cartalyst\Sentry\Users\UserInterface', $this->sentry->check());
 	}
 
 	public function testCheckingUserReturnsFalseIfNoArrayIsReturned()
@@ -412,13 +412,6 @@ class SentryTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($user, $registeredUser = $this->sentry->register($credentials, true));
 		$this->assertTrue($registeredUser->isActivated());
-	}
-
-	public function testGetUserWithCheck()
-	{
-		$sentry = m::mock('Cartalyst\Sentry\Sentry[check]');
-		$sentry->shouldReceive('check')->once();
-		$sentry->getUser();
 	}
 
 }

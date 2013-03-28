@@ -19,9 +19,7 @@ class PostgresProcessor extends Processor {
 
 		$sequence = $sequence ?: 'id';
 
-		$result = (array) $results[0];
-
-		return (int) $result[$sequence];
+		return $results[0]->$sequence;
 	}
 
 }

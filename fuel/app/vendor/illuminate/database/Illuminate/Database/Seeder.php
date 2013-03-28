@@ -1,6 +1,5 @@
 <?php namespace Illuminate\Database;
 
-use Illuminate\Console\Command;
 use Illuminate\Container\Container;
 use Illuminate\Filesystem\Filesystem;
 
@@ -12,13 +11,6 @@ class Seeder {
 	 * @var Illuminate\Container\Container
 	 */
 	protected $container;
-
-	/**
-	 * The console command instance.
-	 *
-	 * @var Illuminate\Console\Command
-	 */
-	protected $command;
 
 	/**
 	 * Run the database seeds.
@@ -50,7 +42,7 @@ class Seeder {
 		{
 			$instance = $this->container->make($class);
 
-			return $instance->setContainer($this->container)->setCommand($this->command);
+			return $instance->setContainer($this->container);
 		}
 		else
 		{
@@ -67,19 +59,6 @@ class Seeder {
 	public function setContainer(Container $container)
 	{
 		$this->container = $container;
-
-		return $this;
-	}
-
-	/**
-	 * Set the console command instance.
-	 *
-	 * @param  Illuminate\Console\Command  $command
-	 * @return void
-	 */
-	public function setCommand(Command $command)
-	{
-		$this->command = $command;
 
 		return $this;
 	}

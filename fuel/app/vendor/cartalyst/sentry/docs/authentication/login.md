@@ -1,45 +1,27 @@
-### Logs a User In
-
-Logs in the provided user and sets properties in the session.
-
-If the login is successful, password reset fields and any invalid
-authentication attempts will be cleared.
+<a id="login"></a>
+###login($user, $remember = false)
 
 ----------
 
-#### Exceptions
+Logs a user in.
 
-##### Cartalyst\Sentry\Users\LoginRequiredException
+Parameters          | Type                | Default             | Required            | Description
+:------------------ | :------------------ | :------------------ | :------------------ | :------------------
+`$user`             | UserInterface       | none                | true                | UserInterface Object to log in with.
+`$remember`         | bool                | false               | false               | Remembers if the user is authenticated or not for auto logging in.
 
-When you don't provide the required `login` field, this exception will be thrown.
+`returns` bool
+`throws`  LoginRequiredException, UserNotFoundException, UserNotActivatedException, UserSuspendedExceptions, UserBannedException
 
-##### Cartalyst\Sentry\Users\UserNotFoundException
-
-If the provided user was not found, this exception will be thrown.
-
-##### Cartalyst\Sentry\Users\UserNotActivatedException
-
-When the provided user is not activated, this exception will be thrown.
-
-##### Cartalyst\Sentry\Throttling\UserSuspendedException
-
-When the provided user is suspended, this exception will be thrown.
-
-##### Cartalyst\Sentry\Throttling\UserBannedException
-
-When the provided user is banned, this exception will be thrown.
-
-----------
-
-#### Example
+####Example
 
 	try
 	{
-		// Find the user using the user id
+		// Select a user
 		$user = Sentry::getUserProvider()->findById(1);
 
 		// Log the user in
-		Sentry::login($user, false);
+		Sentry::login($user);
 	}
 	catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
 	{
@@ -57,24 +39,9 @@ When the provided user is banned, this exception will be thrown.
 	// Following is only needed if throttle is enabled
 	catch (Cartalyst\Sentry\Throttling\UserSuspendedException $e)
 	{
-		$time = $throttle->getSuspensionTime();
-
-		echo "User is suspended for [$time] minutes.";
+		echo 'User suspended.';
 	}
 	catch (Cartalyst\Sentry\Throttling\UserBannedException $e)
 	{
-		echo 'User is banned.';
+		echo 'User banned.';
 	}
-
-----------
-
-#### Login and Remember
-
-Logs in and Remembers a user based on credentials. This is an helper
-function for the `login()` which sets the `$remember` flag to true so
-the user is remembered (using a cookie). This is the "remember me" you are
-used to see on web sites.
-
-##### Example
-
-	Sentry::loginAndRemember($user);

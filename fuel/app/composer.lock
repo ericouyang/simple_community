@@ -1,18 +1,18 @@
 {
-    "hash": "1b0b2a40f7eed051ba2a76a4fecd1dbc",
+    "hash": "afc576a73ddc5fe79e9631a33d3078e8",
     "packages": [
         {
             "name": "cartalyst/sentry",
-            "version": "dev-master",
+            "version": "v2.0.0-beta6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cartalyst/sentry.git",
-                "reference": "dfde2eafd3bf619beb92ce897e68461fe0207aa9"
+                "reference": "v2.0.0-beta6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cartalyst/sentry/zipball/dfde2eafd3bf619beb92ce897e68461fe0207aa9",
-                "reference": "dfde2eafd3bf619beb92ce897e68461fe0207aa9",
+                "url": "https://api.github.com/repos/cartalyst/sentry/zipball/v2.0.0-beta6",
+                "reference": "v2.0.0-beta6",
                 "shasum": ""
             },
             "require": {
@@ -35,16 +35,6 @@
             "type": "library",
             "extra": {
                 "component": "package",
-                "frameworks": [
-                    "Laravel 3",
-                    "Laravel 4",
-                    "CodeIgniter 3",
-                    "FuelPHP 1"
-                ],
-                "versions": {
-                    "1": "1.1/master",
-                    "2": "master"
-                },
                 "branch-alias": {
                     "dev-master": "2.0-dev"
                 }
@@ -66,53 +56,33 @@
             ],
             "authors": [
                 {
-                    "name": "Ben Corlett",
-                    "email": "ben.corlett@cartalyst.com",
-                    "role": "Developer"
-                },
-                {
                     "name": "Cartalyst LLC",
                     "email": "help@cartalyst.com"
-                },
-                {
-                    "name": "Bruno Gaspar",
-                    "email": "bruno.gaspar@cartalyst.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Dan Syme",
-                    "email": "dan.syme@cartalyst.com",
-                    "role": "Creator & Designer"
-                },
-                {
-                    "name": "Daniel Petrie",
-                    "email": "dan.petrie@cartalyst.com",
-                    "role": "Developer"
                 }
             ],
-            "description": "PHP 5.3+ Fully-featured Authentication & Authorization System",
+            "description": "PHP 5.3+ fully-featured authentication & authorization system",
             "keywords": [
+                "Authentication",
                 "auth",
-                "codeigniter",
-                "fuelphp",
-                "laravel",
+                "laravel3",
+                "laravel4",
                 "security"
             ],
-            "time": "2013-03-28 05:33:02"
+            "time": "2013-03-03 23:34:23"
         },
         {
             "name": "illuminate/container",
-            "version": "dev-master",
+            "version": "v4.0.0-BETA3",
             "target-dir": "Illuminate/Container",
             "source": {
                 "type": "git",
-                "url": "https://github.com/illuminate/container.git",
-                "reference": "73697d956ee9bac52de89fa2235969da45da9a1e"
+                "url": "http://github.com/illuminate/container",
+                "reference": "v4.0.0-BETA3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/container/zipball/73697d956ee9bac52de89fa2235969da45da9a1e",
-                "reference": "73697d956ee9bac52de89fa2235969da45da9a1e",
+                "url": "https://api.github.com/repos/illuminate/container/zipball/v4.0.0-BETA3",
+                "reference": "v4.0.0-BETA3",
                 "shasum": ""
             },
             "require": {
@@ -136,21 +106,21 @@
                     "email": "taylorotwell@gmail.com"
                 }
             ],
-            "time": "2013-03-03 01:00:36"
+            "time": "2013-01-24 04:39:29"
         },
         {
             "name": "illuminate/database",
-            "version": "dev-master",
+            "version": "v4.0.0-BETA3",
             "target-dir": "Illuminate/Database",
             "source": {
                 "type": "git",
-                "url": "https://github.com/illuminate/database.git",
-                "reference": "de7110724e12a265301dda4eed173043cd930e7b"
+                "url": "http://github.com/illuminate/database",
+                "reference": "v4.0.0-BETA2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/de7110724e12a265301dda4eed173043cd930e7b",
-                "reference": "de7110724e12a265301dda4eed173043cd930e7b",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/v4.0.0-BETA2",
+                "reference": "v4.0.0-BETA2",
                 "shasum": ""
             },
             "require": {
@@ -191,21 +161,21 @@
                 "orm",
                 "sql"
             ],
-            "time": "2013-03-28 01:10:02"
+            "time": "2013-02-07 23:05:58"
         },
         {
             "name": "illuminate/events",
-            "version": "dev-master",
+            "version": "v4.0.0-BETA3",
             "target-dir": "Illuminate/Events",
             "source": {
                 "type": "git",
-                "url": "https://github.com/illuminate/events.git",
-                "reference": "8cd1eee655b3d038c18012e48981247e52b31852"
+                "url": "http://github.com/illuminate/events",
+                "reference": "v4.0.0-BETA3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/events/zipball/8cd1eee655b3d038c18012e48981247e52b31852",
-                "reference": "8cd1eee655b3d038c18012e48981247e52b31852",
+                "url": "https://api.github.com/repos/illuminate/events/zipball/v4.0.0-BETA3",
+                "reference": "v4.0.0-BETA3",
                 "shasum": ""
             },
             "require": {
@@ -235,29 +205,25 @@
                 }
             ],
             "description": "A simple, powerful events system.",
-            "time": "2013-03-22 09:29:52"
+            "time": "2013-02-08 03:33:15"
         },
         {
             "name": "illuminate/support",
-            "version": "dev-master",
+            "version": "v4.0.0-BETA3",
             "target-dir": "Illuminate/Support",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "b6b28eacc1e2197641fb3e6e7aae60cf19244aef"
+                "reference": "v4.0.0-BETA3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/b6b28eacc1e2197641fb3e6e7aae60cf19244aef",
-                "reference": "b6b28eacc1e2197641fb3e6e7aae60cf19244aef",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/v4.0.0-BETA3",
+                "reference": "v4.0.0-BETA3",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "0.7.2",
-                "patchwork/utf8": "1.0.*"
             },
             "type": "library",
             "extra": {
@@ -281,11 +247,11 @@
                 }
             ],
             "description": "Various utilities and support functions.",
-            "time": "2013-03-27 13:00:20"
+            "time": "2013-02-08 15:52:23"
         },
         {
             "name": "ircmaxell/password-compat",
-            "version": "1.0.x-dev",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ircmaxell/password_compat.git",
@@ -293,7 +259,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ircmaxell/password_compat/zipball/v1.0.0",
+                "url": "https://github.com/ircmaxell/password_compat/archive/v1.0.0.zip",
                 "reference": "v1.0.0",
                 "shasum": ""
             },
@@ -329,7 +295,7 @@
     "aliases": [
 
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "beta",
     "stability-flags": [
 
     ],

@@ -1,35 +1,31 @@
-### Delete a Group
-
-Deleting groups is very simple and easy.
-
-----------
-
-#### Exceptions
-
-##### Cartalyst\Sentry\Groups\GroupNotFoundException
-
-If the provided group was not found, this exception will be thrown.
+<a id="delete"></a>
+###delete()
 
 ----------
 
-#### Example
+Deletes a group object.
+
+`returns` bool
+`throws`  GroupNotFoundException
+
+####Example
 
 	try
 	{
-		// Find the group using the group id
+		// Find the group
 		$group = Sentry::getGroupProvider()->findById(1);
 
-		// Delete the group
+		// Try to delete the group
 		if ($group->delete())
 		{
-			// Group was successfully deleted
+			// Group deleted
 		}
 		else
 		{
-			// There was a problem deleting the group
+			// Group not deleted
 		}
 	}
-	catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e)
+	catch (Cartalyst\Sentry\Grousp\GroupNotFoundException $e)
 	{
-		echo 'Group was not found.';
+		echo 'Group not found.';
 	}

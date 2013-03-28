@@ -100,11 +100,11 @@ class SQLiteGrammar extends Grammar {
 	}
 
 	/**
-	 * Compile alter table commands for adding columns
+	 * Compile a create table command.
 	 *
 	 * @param  Illuminate\Database\Schema\Blueprint  $blueprint
 	 * @param  Illuminate\Support\Fluent  $command
-	 * @return array
+	 * @return string
 	 */
 	public function compileAdd(Blueprint $blueprint, Fluent $command)
 	{
@@ -112,12 +112,7 @@ class SQLiteGrammar extends Grammar {
 
 		$columns = $this->prefixArray('add column', $this->getColumns($blueprint));
 
-		foreach ($columns as $column) 
-		{
-			$statements[] = 'alter table '.$table.' '.$column;
-		}
-
-		return $statements;
+		return 'alter table '.$table.' '.implode(', ', $columns);
 	}
 
 	/**
@@ -197,7 +192,7 @@ class SQLiteGrammar extends Grammar {
 	 */
 	public function compileDropColumn(Blueprint $blueprint, Fluent $command)
 	{
-		throw new \BadMethodCallException("Drop column not supported for SQLite.");
+		throw new \BadMethodCallException("Drop table not supported for SQLite.");
 	}
 
 	/**
@@ -267,17 +262,6 @@ class SQLiteGrammar extends Grammar {
 	 * @return string
 	 */
 	protected function typeInteger(Fluent $column)
-	{
-		return 'integer';
-	}
-
-	/**
-	 * Create the column definition for a tiny integer type.
-	 *
-	 * @param  Illuminate\Support\Fluent  $column
-	 * @return string
-	 */
-	protected function typeTinyInteger(Fluent $column)
 	{
 		return 'integer';
 	}
@@ -390,7 +374,7 @@ class SQLiteGrammar extends Grammar {
 	 */
 	protected function modifyNullable(Blueprint $blueprint, Fluent $column)
 	{
-		return ' null';
+		return $column->nullable ? ' null' : ' not null';
 	}
 
 	/**
@@ -404,7 +388,7 @@ class SQLiteGrammar extends Grammar {
 	{
 		if ( ! is_null($column->default))
 		{
-			return " default ".$this->getDefaultValue($column->default);
+			return " default '".$this->getDefaultValue($column->default)."'";
 		}
 	}
 

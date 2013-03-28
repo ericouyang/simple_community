@@ -1,32 +1,12 @@
 {
 	"name": "cartalyst/sentry",
-	"description": "PHP 5.3+ Fully-featured Authentication & Authorization System",
-	"keywords": ["auth", "security", "laravel", "codeigniter", "fuelphp"],
+	"description": "PHP 5.3+ fully-featured authentication & authorization system",
+	"keywords": ["auth", "authentication", "security", "laravel3", "laravel4"],
 	"license": "BSD License (3-clause)",
 	"authors": [
 		{
-			"name": "Cartalyst LLC",
+			"name": "Cartalyst",
 			"email": "help@cartalyst.com"
-		},
-		{
-			"name": "Dan Syme",
-			"email": "dan.syme@cartalyst.com",
-			"role": "Creator & Designer"
-		},
-		{
-			"name": "Ben Corlett",
-			"email": "ben.corlett@cartalyst.com",
-			"role": "Developer"
-		},
-		{
-			"name": "Daniel Petrie",
-			"email": "dan.petrie@cartalyst.com",
-			"role": "Developer"
-		},
-		{
-			"name": "Bruno Gaspar",
-			"email": "bruno.gaspar@cartalyst.com",
-			"role": "Developer"
 		}
 	],
 	"require": {
@@ -60,11 +40,6 @@
 	},
 	"extra": {
 		"component": "package",
-		"frameworks": ["Laravel 3", "Laravel 4", "CodeIgniter 3", "FuelPHP 1"],
-		"versions": {
-			"1": "1.1/master",
-			"2": "master"
-		},
 		"branch-alias": {
 			"dev-master": "2.0-dev"
 		}

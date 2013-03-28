@@ -50,9 +50,7 @@ class BelongsTo extends Relation {
 		// of the related models matching on the foreign key that's on a parent.
 		$key = $this->related->getKeyName();
 
-		$table = $this->related->getTable();
-
-		$this->query->where($table.'.'.$key, '=', $this->parent->{$this->foreignKey});
+		$this->query->where($key, '=', $this->parent->{$this->foreignKey});
 	}
 
 	/**
@@ -137,6 +135,8 @@ class BelongsTo extends Relation {
 		// First we will get to build a dictionary of the child models by their primary
 		// key of the relationship, then we can easily match the children back onto
 		// the parents using that dictionary and the primary key of the children.
+		$key = $this->related->getKeyName();
+
 		$dictionary = array();
 
 		foreach ($results as $result)

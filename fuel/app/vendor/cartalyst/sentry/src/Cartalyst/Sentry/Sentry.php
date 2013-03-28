@@ -19,17 +19,12 @@
  */
 
 use Cartalyst\Sentry\Cookies\CookieInterface;
-use Cartalyst\Sentry\Cookies\NativeCookie;
-use Cartalyst\Sentry\Groups\Eloquent\Provider as GroupProvider;
 use Cartalyst\Sentry\Groups\ProviderInterface as GroupProviderInterface;
-use Cartalyst\Sentry\Hashing\NativeHasher;
-use Cartalyst\Sentry\Sessions\NativeSession;
+use Cartalyst\Sentry\Hashing\HasherInterface;
 use Cartalyst\Sentry\Sessions\SessionInterface;
-use Cartalyst\Sentry\Throttling\Eloquent\Provider as ThrottleProvider;
 use Cartalyst\Sentry\Throttling\ProviderInterface as ThrottleProviderInterface;
 use Cartalyst\Sentry\Users\LoginRequiredException;
 use Cartalyst\Sentry\Users\PasswordRequiredException;
-use Cartalyst\Sentry\Users\Eloquent\Provider as UserProvider;
 use Cartalyst\Sentry\Users\ProviderInterface as UserProviderInterface;
 use Cartalyst\Sentry\Users\UserInterface;
 use Cartalyst\Sentry\Users\UserNotFoundException;
@@ -48,6 +43,14 @@ class Sentry {
 	protected $user;
 
 	/**
+	 * The hasher used in Sentry. It's used for
+	 * protected attributes of users.
+	 *
+	 * @var Cartalyst\Sentry\Hashing\HasherInterface
+	 */
+	protected $hasher;
+
+	/**
 	 * The session driver used by Sentry.
 	 *
 	 * @var Cartalyst\Sentry\Sessions\SessionInterface
@@ -62,15 +65,6 @@ class Sentry {
 	protected $cookie;
 
 	/**
-	 * The user provider, used for retrieving
-	 * objects which implement the Sentry user
-	 * interface.
-	 *
-	 * @var Cartalyst\Sentry\Users\ProviderInterface
-	 */
-	protected $userProvider;
-
-	/**
 	 * The group provider, used for retrieving
 	 * objects which implement the Sentry group
 	 * interface.
@@ -78,6 +72,15 @@ class Sentry {
 	 * @var Cartalyst\Sentry\Groups\ProviderInterface
 	 */
 	protected $groupProvider;
+
+	/**
+	 * The user provider, used for retrieving
+	 * objects which implement the Sentry user
+	 * interface.
+	 *
+	 * @var Cartalyst\Sentry\Users\ProviderInterface
+	 */
+	protected $userProvider;
 
 	/**
 	 * The throttle provider, used for retrieving
@@ -89,43 +92,30 @@ class Sentry {
 	protected $throttleProvider;
 
 	/**
-	 * The client's IP address associated with Sentry.
-	 *
-	 * @var string
-	 */
-	protected $ipAddress = '0.0.0.0';
-
-	/**
 	 * Create a new Sentry object.
 	 *
+	 * @param  Cartalyst\Sentry\Hashing\HasherInterface  $hasher
 	 * @param  Cartalyst\Sentry\Sessions\SessionInterface  $session
 	 * @param  Cartalyst\Sentry\Cookies\CookieInterface  $cookie
-	 * @param  Cartalyst\Sentry\Users\UserProviderInterface  $userProvider
-	 * @param  Cartalyst\Sentry\Groups\GroupProviderInterface  $groupProvider
-	 * @param  Cartalyst\Sentry\Throttling\ThrottleProviderInterface  $throttleProvider
-	 * @param  string  $ipAddress
-	 * @return void
+	 * @param  Cartalyst\Sentry\Groups\GroupInterface  $groupProvider
+	 * @param  Cartalyst\Sentry\Users\UserInterface  $userProvider
+	 * @param  Cartalyst\Sentry\Throttling\ThrottleInterface  $throttleProvider
 	 */
 	public function __construct(
-		UserProviderInterface $userProvider = null,
-		GroupProviderInterface $groupProvider = null,
-		ThrottleProviderInterface $throttleProvider = null,
-		SessionInterface $session = null,
-		CookieInterface $cookie = null,
-		$ipAddress = null
+		HasherInterface $hasher,
+		SessionInterface $session,
+		CookieInterface $cookie,
+		GroupProviderInterface $groupProvider,
+		UserProviderInterface $userProvider,
+		ThrottleProviderInterface $throttleProvider
 	)
 	{
-		$this->userProvider     = $userProvider ?: new UserProvider(new NativeHasher);
-		$this->groupProvider    = $groupProvider ?: new GroupProvider;
-		$this->throttleProvider = $throttleProvider ?: new ThrottleProvider($userProvider);
-
-		$this->session          = $session ?: new NativeSession;
-		$this->cookie           = $cookie ?: new NativeCookie;
-
-		if (isset($ipAddress))
-		{
-			$this->ipAddress = $ipAddress;
-		}
+		$this->hasher           = $hasher;
+		$this->session          = $session;
+		$this->cookie           = $cookie;
+		$this->groupProvider    = $groupProvider;
+		$this->userProvider     = $userProvider;
+		$this->throttleProvider = $throttleProvider;
 	}
 
 	/**
@@ -171,7 +161,7 @@ class Sentry {
 
 		if (empty($credentials[$loginCredentialKey]))
 		{
-			throw new LoginRequiredException("The [$loginCredentialKey] attribute is required.");
+			throw new LoginRequiredException("The $loginCredentialKey attribute is required.");
 		}
 
 		if (empty($credentials['password']))
@@ -193,7 +183,7 @@ class Sentry {
 		// to authenticate them
 		if ($throttlingEnabled = $this->throttleProvider->isEnabled())
 		{
-			if ($throttle = $this->throttleProvider->findByUserLogin($credentials[$loginName], $this->ipAddress))
+			if ($throttle = $this->throttleProvider->findByUserLogin($credentials[$loginName]))
 			{
 				$throttle->check();
 			}
@@ -239,11 +229,14 @@ class Sentry {
 	/**
 	 * Check to see if the user is logged in and activated.
 	 *
-	 * @return bool
+	 * Upon success, the logged in user is returned. Upon
+	 * failure, "false" is returned.
+	 *
+	 * @return mixed
 	 */
 	public function check()
 	{
-		if (is_null($this->user))
+		if ( ! $this->user)
 		{
 			// Check session first, follow by cookie
 			if ( ! $userArray = $this->session->get() and ! $userArray = $this->cookie->get())
@@ -289,7 +282,7 @@ class Sentry {
 			return false;
 		}
 
-		return true;
+		return $user;
 	}
 
 	/**
@@ -324,16 +317,6 @@ class Sentry {
 	}
 
 	/**
-	 * Alias for logging in and remembering.
-	 *
-	 * @param  Cartalyst\Sentry\Users\UserInterface  $user
-	 */
-	public function loginAndRemember(UserInterface $user)
-	{
-		$this->login($user, true);
-	}
-
-	/**
 	 * Logs the current user out.
 	 *
 	 * @return void
@@ -358,145 +341,44 @@ class Sentry {
 	}
 
 	/**
-	 * Returns the current user being used by Sentry, if any.
+	 * Returns the current user being
+	 * used by Sentry, if any.
 	 *
 	 * @return Cartalyst\Sentry\Users\UserInterface
 	 */
 	public function getUser()
 	{
-		// We will lazily attempt to load our user
-		if (is_null($this->user))
-		{
-			$this->check();
-		}
-
 		return $this->user;
 	}
 
-	/**
-	 * Sets the session driver for Sentry.
-	 *
-	 * @param  Cartalyst\Sentry\Sessions\SessionInterface  $session
-	 * @return void
-	 */
-	public function setSession(SessionInterface $session)
-	{
-		$this->session = $session;
-	}
-
-	/**
-	 * Gets the session driver for Sentry.
-	 *
-	 * @return Cartalyst\Sentry\Sessions\SessionInterface
-	 */
-	public function getSession()
-	{
-		return $this->session;
-	}
-
-	/**
-	 * Sets the cookie driver for Sentry.
-	 *
-	 * @param  Cartalyst\Sentry\Cookies\CookieInterface  $cookie
-	 * @return void
-	 */
-	public function setCookie(CookieInterface $cookie)
-	{
-		$this->cookie = $cookie;
-	}
-
-	/**
-	 * Gets the cookie driver for Sentry.
-	 *
-	 * @return Cartalyst\Sentry\Cookies\CookieInterface
-	 */
-	public function getCookie()
-	{
-		return $this->cookie;
-	}
-
-	/**
-	 * Sets the group provider for Sentry.
-	 *
-	 * @param  Cartalyst\Sentry\Groups\ProviderInterface
-	 * @return void
-	 */
 	public function setGroupProvider(GroupProviderInterface $groupProvider)
 	{
 		$this->groupProvider = $groupProvider;
 	}
 
-	/**
-	 * Gets the group provider for Sentry.
-	 *
-	 * @return Cartalyst\Sentry\Groups\ProviderInterface
-	 */
 	public function getGroupProvider()
 	{
 		return $this->groupProvider;
 	}
 
-	/**
-	 * Sets the user provider for Sentry.
-	 *
-	 * @param  Cartalyst\Sentry\Users\ProviderInterface
-	 * @return void
-	 */
 	public function setUserProvider(UserProviderInterface $userProvider)
 	{
 		$this->userProvider = $userProvider;
 	}
 
-	/**
-	 * Gets the user provider for Sentry.
-	 *
-	 * @return Cartalyst\Sentry\Users\ProviderInterface
-	 */
 	public function getUserProvider()
 	{
 		return $this->userProvider;
 	}
 
-	/**
-	 * Sets the throttle provider for Sentry.
-	 *
-	 * @param  Cartalyst\Sentry\Throttling\ProviderInterface
-	 * @return void
-	 */
 	public function setThrottleProvider(ThrottleProviderInterface $throttleProvider)
 	{
 		$this->throttleProvider = $throttleProvider;
 	}
 
-	/**
-	 * Gets the throttle provider for Sentry.
-	 *
-	 * @return Cartalyst\Sentry\Throttling\ProviderInterface
-	 */
 	public function getThrottleProvider()
 	{
 		return $this->throttleProvider;
-	}
-
-	/**
-	 * Sets the IP address Sentry is bound to.
-	 *
-	 * @param  string  $ipAddress
-	 * @return void
-	 */
-	public function setIpAddress($ipAddress)
-	{
-		$this->ipAddress = $ipAddress;
-	}
-
-	/**
-	 * Gets the IP address Sentry is bound to.
-	 *
-	 * @return string
-	 */
-	public function getIpAddress()
-	{
-		return $this->ipAddress;
 	}
 
 	/**

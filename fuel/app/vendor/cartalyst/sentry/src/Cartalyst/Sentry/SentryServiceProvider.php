@@ -52,15 +52,15 @@ class SentryServiceProvider extends ServiceProvider {
 	{
 		$this->registerHasher();
 
-		$this->registerUserProvider();
-
-		$this->registerGroupProvider();
-
-		$this->registerThrottleProvider();
-
 		$this->registerSession();
 
 		$this->registerCookie();
+
+		$this->registerGroupProvider();
+
+		$this->registerUserProvider();
+
+		$this->registerThrottleProvider();
 
 		$this->registerSentry();
 	}
@@ -96,6 +96,47 @@ class SentryServiceProvider extends ServiceProvider {
 	}
 
 	/**
+	 * Register the session driver used by Sentry.
+	 *
+	 * @return void
+	 */
+	protected function registerSession()
+	{
+		$this->app['sentry.session'] = $this->app->share(function($app)
+		{
+			return new IlluminateSession($app['session']);
+		});
+	}
+
+	/**
+	 * Register the cookie driver used by Sentry.
+	 *
+	 * @return void
+	 */
+	protected function registerCookie()
+	{
+		$this->app['sentry.cookie'] = $this->app->share(function($app)
+		{
+			return new IlluminateCookie($app['cookie']);
+		});
+	}
+
+	/**
+	 * Register the group provider used by Sentry.
+	 *
+	 * @return void
+	 */
+	protected function registerGroupProvider()
+	{
+		$this->app['sentry.group'] = $this->app->share(function($app)
+		{
+			$model = $app['config']['cartalyst/sentry::sentry.groups.model'];
+
+			return new GroupProvider($model);
+		});
+	}
+
+	/**
 	 * Register the user provider used by Sentry.
 	 *
 	 * @return void
@@ -126,21 +167,6 @@ class SentryServiceProvider extends ServiceProvider {
 	}
 
 	/**
-	 * Register the group provider used by Sentry.
-	 *
-	 * @return void
-	 */
-	protected function registerGroupProvider()
-	{
-		$this->app['sentry.group'] = $this->app->share(function($app)
-		{
-			$model = $app['config']['cartalyst/sentry::sentry.groups.model'];
-
-			return new GroupProvider($model);
-		});
-	}
-
-	/**
 	 * Register the throttle provider used by Sentry.
 	 *
 	 * @return void
@@ -158,52 +184,7 @@ class SentryServiceProvider extends ServiceProvider {
 				$throttleProvider->disable();
 			}
 
-			if (method_exists($model, 'setAttemptLimit'))
-			{
-				$attemptLimit = $app['config']['cartalyst/sentry::sentry.throttling.attempt_limit'];
-
-				forward_static_call_array(
-					array($model, 'setAttemptLimit'),
-					array($attemptLimit)
-				);
-			}
-			if (method_exists($model, 'setSuspensionTime'))
-			{
-				$suspensionTime = $app['config']['cartalyst/sentry::sentry.throttling.suspension_time'];
-
-				forward_static_call_array(
-					array($model, 'setSuspensionTime'),
-					array($suspensionTime)
-				);
-			}
-
 			return $throttleProvider;
-		});
-	}
-
-	/**
-	 * Register the session driver used by Sentry.
-	 *
-	 * @return void
-	 */
-	protected function registerSession()
-	{
-		$this->app['sentry.session'] = $this->app->share(function($app)
-		{
-			return new IlluminateSession($app['session']);
-		});
-	}
-
-	/**
-	 * Register the cookie driver used by Sentry.
-	 *
-	 * @return void
-	 */
-	protected function registerCookie()
-	{
-		$this->app['sentry.cookie'] = $this->app->share(function($app)
-		{
-			return new IlluminateCookie($app['cookie']);
 		});
 	}
 
@@ -223,12 +204,12 @@ class SentryServiceProvider extends ServiceProvider {
 			$app['sentry.loaded'] = true;
 
 			return new Sentry(
-				$app['sentry.user'],
-				$app['sentry.group'],
-				$app['sentry.throttle'],
+				$app['sentry.hasher'],
 				$app['sentry.session'],
 				$app['sentry.cookie'],
-				$app['request']->getClientIp()
+				$app['sentry.group'],
+				$app['sentry.user'],
+				$app['sentry.throttle']
 			);
 		});
 	}

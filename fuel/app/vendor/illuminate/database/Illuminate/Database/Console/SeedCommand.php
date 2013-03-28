@@ -62,9 +62,7 @@ class SeedCommand extends Command {
 	 */
 	protected function getSeeder()
 	{
-		$class = $this->laravel->make($this->input->getOption('class'));
-
-		return $class->setContainer($this->laravel)->setCommand($this);
+		return $this->laravel->make($this->input->getOption('class'));
 	}
 
 	/**

@@ -1,9 +1,8 @@
-## Authentication
+### Authentication
+#### Sentry Authentication Methods
 
-* [Authenticate a User](/sentry-2/authentication)
-* [Logs a User In](/sentry-2/authentication/login)
-* [Logs a User Out](/sentry-2/authentication/logout)
-
-### Helpers
-
-* [check()](/sentry-2/authentication/helpers#check-if-the-user-is-logged-in)
+* [authenticate()](#authenticate "/manuals/sentry/authentication/authenticate")
+* [authenticateAndRemember()](#authenticateAndRemember "/manuals/sentry/authentication/authenticateAndRemember")
+* [check()](#check "/manuals/sentry/authentication/check")
+* [login()](#login "/manuals/sentry/authentication/login")
+* [logout()](#logout "/manuals/sentry/authentication/logout")

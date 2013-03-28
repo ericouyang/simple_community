@@ -7,28 +7,14 @@ class Dispatcher {
 	/**
 	 * The IoC container instance.
 	 *
-	 * @var Illuminate\Container\Container
+	 * @var Illuminate\Container
 	 */
 	protected $container;
 
 	/**
-	 * The registered event listeners.
-	 *
-	 * @var array
-	 */
-	protected $listeners = array();
-
-	/**
-	 * The sorted event listeners.
-	 *
-	 * @var array
-	 */
-	protected $sorted = array();
-
-	/**
 	 * Create a new event dispatcher instance.
 	 *
-	 * @param  Illuminate\Container\Container  $container
+	 * @param  Illuminate\Container  $container
 	 * @return void
 	 */
 	public function __construct(Container $container = null)
@@ -63,23 +49,6 @@ class Dispatcher {
 	}
 
 	/**
-	 * Register a queued event and payload.
-	 *
-	 * @param  string  $event
-	 * @param  array   $payload
-	 * @return void
-	 */
-	public function queue($event, $payload = array())
-	{
-		$me = $this;
-
-		$this->listen($event.'_queue', function() use ($me, $event, $payload)
-		{
-			$me->fire($event, $payload);
-		});
-	}
-
-	/**
 	 * Register an event subscriber with the dispatcher.
 	 *
 	 * @param  string  $subscriber
@@ -111,35 +80,23 @@ class Dispatcher {
 	/**
 	 * Fire an event until the first non-null response is returned.
 	 *
-	 * @param  string  $event
+	 * @param  string  $eventName
 	 * @param  array   $payload
 	 * @return mixed
 	 */
-	public function until($event, $payload = array())
+	public function until($eventName, $payload = array())
 	{
-		return $this->fire($event, $payload, true);
-	}
-
-	/**
-	 * Flush a set of queued events.
-	 *
-	 * @param  string  $event
-	 * @return void
-	 */
-	public function flush($event)
-	{
-		$this->fire($event.'_queue');
+		return $this->fire($eventName, $payload, true);
 	}
 
 	/**
 	 * Fire an event and call the listeners.
 	 *
-	 * @param  string  $event
+	 * @param  string  $eventName
 	 * @param  mixed   $payload
-	 * @param  boolean $halt
 	 * @return void
 	 */
-	public function fire($event, $payload = array(), $halt = false)
+	public function fire($eventName, $payload = array(), $halt = false)
 	{
 		$responses = array();
 
@@ -148,7 +105,7 @@ class Dispatcher {
 		// payload to each of them so that they receive each of these arguments.
 		if ( ! is_array($payload)) $payload = array($payload);
 
-		foreach ($this->getListeners($event) as $listener)
+		foreach ($this->getListeners($eventName) as $listener)
 		{
 			$response = call_user_func_array($listener, $payload);
 
@@ -163,7 +120,10 @@ class Dispatcher {
 			// If a boolean false is returned from a listener, we will stop propogating
 			// the event to any further listeners down in the chain, else we keep on
 			// looping through the listeners and firing every one in our sequence.
-			if ($response === false) break;
+			if ($response === false)
+			{
+				break;
+			}
 
 			$responses[] = $response;
 		}

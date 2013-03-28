@@ -21,7 +21,7 @@ class Fluent {
 	{
 		foreach ($attributes as $key => $value)
 		{
-			$this->attributes[$key] = $value;
+			$this->$key = $value;
 		}
 	}
 
@@ -61,7 +61,7 @@ class Fluent {
 	 */
 	public function __call($method, $parameters)
 	{
-		$this->attributes[$method] = count($parameters) > 0 ? $parameters[0] : true;
+		$this->$method = count($parameters) > 0 ? $parameters[0] : true;
 
 		return $this;
 	}

@@ -48,7 +48,9 @@ abstract class HasOneOrMany extends Relation {
 	 */
 	public function addEagerConstraints(array $models)
 	{
-		$this->query->whereIn($this->foreignKey, $this->getKeys($models));
+		$key = $this->related->getTable().'.'.$this->foreignKey;
+
+		$this->query->whereIn($key, $this->getKeys($models));
 	}
 
 	/**
@@ -132,14 +134,12 @@ abstract class HasOneOrMany extends Relation {
 	{
 		$dictionary = array();
 
-		$foreign = $this->getPlainForeignKey();
-
 		// First we will create a dictionary of models keyed by the foreign key of the
 		// relationship as this will allow us to quickly access all of the related
 		// models without having to do nested looping which will be quite slow.
 		foreach ($results as $result)
 		{
-			$dictionary[$result->{$foreign}][] = $result;
+			$dictionary[$result->{$this->foreignKey}][] = $result;
 		}
 
 		return $dictionary;
@@ -153,24 +153,11 @@ abstract class HasOneOrMany extends Relation {
 	 */
 	public function save(Model $model)
 	{
-		$model->setAttribute($this->getPlainForeignKey(), $this->parent->getKey());
+		$model->setAttribute($this->foreignKey, $this->parent->getKey());
 
 		$model->save();
 
 		return $model;
-	}
-
-	/**
-	 * Attach an array of models to the parent instance.
-	 *
-	 * @param  array  $models
-	 * @return array
-	 */
-	public function saveMany(array $models)
-	{
-		array_walk($models, array($this, 'save'));
-
-		return $models;
 	}
 
 	/**
@@ -181,9 +168,7 @@ abstract class HasOneOrMany extends Relation {
 	 */
 	public function create(array $attributes)
 	{
-		$foreign = array(
-			$this->getPlainForeignKey() => $this->parent->getKey()
-		);
+		$foreign = array($this->foreignKey => $this->parent->getKey());
 
 		// Here we will set the raw attributes to avoid hitting the "fill" method so
 		// that we do not have to worry about a mass accessor rules blocking sets
@@ -198,24 +183,6 @@ abstract class HasOneOrMany extends Relation {
 	}
 
 	/**
-	 * Create an array of new instances of the related model.
-	 *
-	 * @param  array  $records
-	 * @return array
-	 */
-	public function createMany(array $records)
-	{
-		$instances = array();
-
-		foreach ($records as $record)
-		{
-			$instances[] = $this->create($record);
-		}
-
-		return $instances;
-	}
-
-	/**
 	 * Perform an update on all the related models.
 	 *
 	 * @param  array  $attributes
@@ -225,7 +192,7 @@ abstract class HasOneOrMany extends Relation {
 	{
 		if ($this->related->usesTimestamps())
 		{
-			$attributes[$this->updatedAt()] = $this->related->freshTimestamp();
+			$attributes['updated_at'] = $this->related->freshTimestamp();
 		}
 
 		return $this->query->update($attributes);
@@ -239,18 +206,6 @@ abstract class HasOneOrMany extends Relation {
 	public function getForeignKey()
 	{
 		return $this->foreignKey;
-	}
-
-	/**
-	 * Get the plain foreign key.
-	 *
-	 * @return string
-	 */
-	public function getPlainForeignKey()
-	{
-		$segments = explode('.', $this->getForeignKey());
-
-		return $segments[count($segments) - 1];
 	}
 
 }

@@ -1,35 +1,31 @@
-### Delete a user
-
-Deleting users is very simple and easy.
-
-----------
-
-#### Exceptions
-
-##### Cartalyst\Sentry\Users\UserNotFoundException
-
-If the provided user was not found, this exception will be thrown.
+<a id="delete"></a>
+###delete()
 
 ----------
 
-#### Example
+Delete a user object.
+
+`returns` bool
+`throws`  UserNotFoundException
+
+####Example
 
 	try
 	{
-		// Find the user using the user id
+		// Find the user
 		$user = Sentry::getUserProvider()->findById(1);
 
-		// Delete the user
+		// Delete
 		if ($user->delete())
 		{
-			// User was successfully deleted
+			// User deleted
 		}
 		else
 		{
-			// There was a problem deleting the user
+			// User not deleted
 		}
 	}
 	catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
 	{
-		echo 'User was not found.';
+		echo 'User not found.';
 	}

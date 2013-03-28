@@ -27,18 +27,25 @@ use DateTime;
 class Throttle extends Model implements ThrottleInterface {
 
 	/**
-	 * Throttling status.
-	 *
-	 * @var bool
-	 */
-	protected $enabled = true;
-
-	/**
 	 * The table associated with the model.
 	 *
 	 * @var string
 	 */
 	protected $table = 'throttle';
+
+	/**
+	 * Attempt limit.
+	 *
+	 * @var int
+	 */
+	protected $attemptLimit = 5;
+
+	/**
+	 * Suspensions time in minutes.
+	 *
+	 * @var int
+	 */
+	protected $suspensionTime = 15;
 
 	/**
 	 * Indicates if the model should be timestamped.
@@ -48,11 +55,11 @@ class Throttle extends Model implements ThrottleInterface {
 	public $timestamps = false;
 
 	/**
-	 * The attributes that aren't mass assignable.
+	 * Throttling status.
 	 *
-	 * @var array
+	 * @var bool
 	 */
-	protected $guarded = array();
+	protected $enabled = true;
 
 	/**
 	 * The date fields for the model.
@@ -62,20 +69,6 @@ class Throttle extends Model implements ThrottleInterface {
 	protected $dates = array('last_attempt_at', 'suspended_at');
 
 	/**
-	 * Attempt limit.
-	 *
-	 * @var int
-	 */
-	protected static $attemptLimit = 5;
-
-	/**
-	 * Suspensions time in minutes.
-	 *
-	 * @var int
-	 */
-	protected static $suspensionTime = 15;
-
-	/**
 	 * Returns the associated user with the throttler.
 	 *
 	 * @return Cartalyst\Sentry\Users\UserInterface
@@ -83,6 +76,46 @@ class Throttle extends Model implements ThrottleInterface {
 	public function getUser()
 	{
 		return $this->user()->getResults();
+	}
+
+	/**
+	 * Set attempt limit.
+	 *
+	 * @param  int  $limit
+	 */
+	public function setAttemptLimit($limit)
+	{
+		$this->attemptLimit = (int) $limit;
+	}
+
+	/**
+	 * Get attempt limit.
+	 *
+	 * @return  int
+	 */
+	public function getAttemptLimit()
+	{
+		return $this->attemptLimit;
+	}
+
+	/**
+	 * Set suspension time.
+	 *
+	 * @param  int  $minutes
+	 */
+	public function setSuspensionTime($minutes)
+	{
+		$this->suspensionTime = (int) $minutes;
+	}
+
+	/**
+	 * Get suspension time.
+	 *
+	 * @param  int
+	 */
+	public function getSuspensionTime()
+	{
+		return $this->suspensionTime;
 	}
 
 	/**
@@ -110,7 +143,7 @@ class Throttle extends Model implements ThrottleInterface {
 		$this->attempts++;
 		$this->last_attempt_at = $this->freshTimeStamp();
 
-		if ($this->getLoginAttempts() >= static::$attemptLimit)
+		if ($this->getLoginAttempts() >= $this->attemptLimit)
 		{
 			$this->suspend();
 		}
@@ -280,8 +313,7 @@ class Throttle extends Model implements ThrottleInterface {
 	public function clearLoginAttemptsIfAllowed()
 	{
 		$lastAttempt     = clone($this->last_attempt_at);
-		$suspensionTime  = static::$suspensionTime;
-		$clearAttemptsAt = $lastAttempt->modify("+{$suspensionTime} minutes");
+		$clearAttemptsAt = $lastAttempt->modify("+{$this->suspensionTime} minutes");
 		$now             = new DateTime;
 
 		if ($clearAttemptsAt <= $now)
@@ -304,10 +336,9 @@ class Throttle extends Model implements ThrottleInterface {
 	 */
 	public function removeSuspensionIfAllowed()
 	{
-		$suspended      = clone($this->suspended_at);
-		$suspensionTime = static::$suspensionTime;
-		$unsuspendAt    = $suspended->modify("+{$suspensionTime} minutes");
-		$now            = new DateTime;
+		$suspended   = clone($this->suspended_at);
+		$unsuspendAt = $suspended->modify("+{$this->suspensionTime} minutes");
+		$now         = new DateTime;
 
 		if ($unsuspendAt <= $now)
 		{
@@ -368,46 +399,6 @@ class Throttle extends Model implements ThrottleInterface {
 		}
 
 		return $result;
-	}
-
-	/**
-	 * Set attempt limit.
-	 *
-	 * @param  int  $limit
-	 */
-	public static function setAttemptLimit($limit)
-	{
-		static::$attemptLimit = (int) $limit;
-	}
-
-	/**
-	 * Get attempt limit.
-	 *
-	 * @return  int
-	 */
-	public static function getAttemptLimit()
-	{
-		return static::$attemptLimit;
-	}
-
-	/**
-	 * Set suspension time.
-	 *
-	 * @param  int  $minutes
-	 */
-	public static function setSuspensionTime($minutes)
-	{
-		static::$suspensionTime = (int) $minutes;
-	}
-
-	/**
-	 * Get suspension time.
-	 *
-	 * @param  int
-	 */
-	public static function getSuspensionTime()
-	{
-		return static::$suspensionTime;
 	}
 
 }

@@ -41,8 +41,6 @@ class EloquentThrottleTest extends PHPUnit_Framework_TestCase {
 	public function tearDown()
 	{
 		m::close();
-		Throttle::setAttemptLimit(5);
-		Throttle::setSuspensionTime(15);
 	}
 
 	public function testGettingUserReturnsUserObject()
@@ -58,8 +56,9 @@ class EloquentThrottleTest extends PHPUnit_Framework_TestCase {
 
 	public function testAttemptLimits()
 	{
-		Throttle::setAttemptLimit(15);
-		$this->assertEquals(15, Throttle::getAttemptLimit());
+		$throttle = new Throttle;
+		$throttle->setAttemptLimit(15);
+		$this->assertEquals(15, $throttle->getAttemptLimit());
 	}
 
 	public function testDateTimeObjectIsUsedForLastAttemptAt()
@@ -108,7 +107,7 @@ class EloquentThrottleTest extends PHPUnit_Framework_TestCase {
 		// Let's simulate that the suspension time
 		// is 11 minutes however the last attempt was
 		// 10 minutes ago, we'll not reset the attempts
-		Throttle::setSuspensionTime(11);
+		$throttle->setSuspensionTime(11);
 		$lastAttemptAt = new DateTime;
 		$lastAttemptAt->modify('-10 minutes');
 
@@ -119,7 +118,7 @@ class EloquentThrottleTest extends PHPUnit_Framework_TestCase {
 		// Suspension time is 9 minutes now,
 		// our attempts shall be reset
 		$throttle->shouldReceive('save')->once();
-		Throttle::setSuspensionTime(9);
+		$throttle->setSuspensionTime(9);
 		$this->assertEquals(0, $throttle->getLoginAttempts());
 	}
 

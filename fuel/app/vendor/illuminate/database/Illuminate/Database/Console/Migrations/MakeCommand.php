@@ -22,7 +22,7 @@ class MakeCommand extends BaseCommand {
 	protected $description = 'Create a new migration file';
 
 	/**
-	 * The migration creator instance.
+	 * The migration creaotor instance.
 	 *
 	 * @var Illuminate\Database\Migrations\MigrationCreator
 	 */
@@ -66,29 +66,14 @@ class MakeCommand extends BaseCommand {
 
 		$create = $this->input->getOption('create');
 
-		// Now we are ready to write the migration out to disk. Once we've written
-		// the migration out, we will dump-autoload for the entire framework to
-		// make sure that the migrations are registered by the class loaders.
-		$this->writeMigration($name, $table, $create);
-
-		$this->call('dump-autoload');
-	}
-
-	/**
-	 * Write the migration file to disk.
-	 *
-	 * @param  string  $name
-	 * @param  string  $table
-	 * @param  bool    $create
-	 * @return string
-	 */
-	protected function writeMigration($name, $table, $create)
-	{
+		// Now we're ready to get the path where these migrations should be placed
+		// on disk. This may be specified via the package option on the command
+		// and we will verify that option to determine the appropriate paths.
 		$path = $this->getMigrationPath();
 
-		$file = pathinfo($this->creator->create($name, $path, $table, $create), PATHINFO_FILENAME);
+		$this->creator->create($name, $path, $table, $create);
 
-		$this->line("<info>Created Migration:</info> $file");
+		$this->info('Migration created successfully!');
 	}
 
 	/**
