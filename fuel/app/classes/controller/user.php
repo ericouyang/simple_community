@@ -133,7 +133,8 @@ class Controller_User extends Controller_Base
     $data['users'] = Model_User::find('all', array(
       'order_by' => array('last_name'),
       'limit' => $pagination->per_page,
-      'offset' => $pagination->offset
+      'offset' => $pagination->offset,
+      'related' => 'profile'
     ));
     
     $data['pagination'] = $pagination->render();

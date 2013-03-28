@@ -6,7 +6,7 @@ class Controller_Admin_Thread extends Controller_Admin
 	{
 		$data['threads'] = Model_Thread::find('all');
 		$this->template->title = "Threads";
-		$this->template->content = View::forge('admin\thread/index', $data);
+		$this->template->content = View::forge('admin/thread/index', $data);
 
 	}
 
@@ -15,7 +15,7 @@ class Controller_Admin_Thread extends Controller_Admin
 		$data['thread'] = Model_Thread::find($id);
 
 		$this->template->title = "Thread";
-		$this->template->content = View::forge('admin\thread/view', $data);
+		$this->template->content = View::forge('admin/thread/view', $data);
 
 	}
 
@@ -52,7 +52,7 @@ class Controller_Admin_Thread extends Controller_Admin
 		}
 
 		$this->template->title = "Threads";
-		$this->template->content = View::forge('admin\thread/create');
+		$this->template->content = View::forge('admin/thread/create');
 
 	}
 
@@ -95,7 +95,7 @@ class Controller_Admin_Thread extends Controller_Admin
 		}
 
 		$this->template->title = "Threads";
-		$this->template->content = View::forge('admin\thread/edit');
+		$this->template->content = View::forge('admin/thread/edit');
 
 	}
 

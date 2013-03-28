@@ -6,7 +6,7 @@ class Controller_Admin_User extends Controller_Admin
 	{
 		$data['users'] = Model_User::find('all');
 		$this->template->title = "Users";
-		$this->template->content = View::forge('admin\user/index', $data);
+		$this->template->content = View::forge('admin/user/index', $data);
 
 	}
 
@@ -15,7 +15,7 @@ class Controller_Admin_User extends Controller_Admin
 		$data['user'] = Model_User::find($id, array('related' => 'profile'));
 
 		$this->template->title = "User";
-		$this->template->content = View::forge('admin\user/view', $data);
+		$this->template->content = View::forge('admin/user/view', $data);
 
 	}
 
@@ -66,7 +66,7 @@ class Controller_Admin_User extends Controller_Admin
 		}
 
 		$this->template->title = "Users";
-		$this->template->content = View::forge('admin\user/create');
+		$this->template->content = View::forge('admin/user/create');
 
 	}
 
@@ -82,9 +82,9 @@ class Controller_Admin_User extends Controller_Admin
 			$user->last_name = Input::post('last_name');
 			$user->permissions = Input::post('permissions');
 			$user->activated = Input::post('activated');
-			$user->activation_code = Input::post('activation_code');
-			$user->persist_code = Input::post('persist_code');
-			$user->reset_password_code = Input::post('reset_password_code');
+			$user->activation_code = Input::post('activation_hash');
+			$user->persist_code = Input::post('persist_hash');
+			$user->reset_password_code = Input::post('reset_password_hash');
       $user->profile->about = Input::post('about');
       $user->profile->profile_image = Input::post('profile_image');
 
@@ -110,9 +110,9 @@ class Controller_Admin_User extends Controller_Admin
 				$user->last_name = $val->validated('last_name');
 				$user->permissions = $val->validated('permissions');
 				$user->activated = $val->validated('activated');
-				$user->activation_code = $val->validated('activation_code');
-				$user->persist_code = $val->validated('persist_code');
-				$user->reset_password_code = $val->validated('reset_password_code');
+				$user->activation_code = $val->validated('activation_hash');
+				$user->persist_code = $val->validated('persist_hash');
+				$user->reset_password_code = $val->validated('reset_password_hash');
         $user->profile->about = $val->validated('about');
         $user->profile->profile_image = $val->validated('profile_image');
 
@@ -123,7 +123,7 @@ class Controller_Admin_User extends Controller_Admin
 		}
 
 		$this->template->title = "Users";
-		$this->template->content = View::forge('admin\user/edit');
+		$this->template->content = View::forge('admin/user/edit');
 
 	}
 

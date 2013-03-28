@@ -6,7 +6,7 @@ class Controller_Admin_Forum extends Controller_Admin
 	{
 		$data['forums'] = Model_Forum::find('all');
 		$this->template->title = "Forums";
-		$this->template->content = View::forge('admin\forum/index', $data);
+		$this->template->content = View::forge('admin/forum/index', $data);
 
 	}
 
@@ -15,7 +15,7 @@ class Controller_Admin_Forum extends Controller_Admin
 		$data['forum'] = Model_Forum::find($id);
 
 		$this->template->title = "Forum";
-		$this->template->content = View::forge('admin\forum/view', $data);
+		$this->template->content = View::forge('admin/forum/view', $data);
 
 	}
 
@@ -52,7 +52,7 @@ class Controller_Admin_Forum extends Controller_Admin
 		}
 
 		$this->template->title = "Forums";
-		$this->template->content = View::forge('admin\forum/create');
+		$this->template->content = View::forge('admin/forum/create');
 
 	}
 
@@ -95,7 +95,7 @@ class Controller_Admin_Forum extends Controller_Admin
 		}
 
 		$this->template->title = "Forums";
-		$this->template->content = View::forge('admin\forum/edit');
+		$this->template->content = View::forge('admin/forum/edit');
 
 	}
 

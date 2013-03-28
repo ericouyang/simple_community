@@ -6,7 +6,7 @@ class Controller_Admin_Profile extends Controller_Admin
 	{
 		$data['profiles'] = Model_Profile::find('all');
 		$this->template->title = "Profiles";
-		$this->template->content = View::forge('admin\profile/index', $data);
+		$this->template->content = View::forge('admin/profile/index', $data);
 
 	}
 
@@ -15,7 +15,7 @@ class Controller_Admin_Profile extends Controller_Admin
 		$data['profile'] = Model_Profile::find($id);
 
 		$this->template->title = "Profile";
-		$this->template->content = View::forge('admin\profile/view', $data);
+		$this->template->content = View::forge('admin/profile/view', $data);
 
 	}
 
@@ -52,7 +52,7 @@ class Controller_Admin_Profile extends Controller_Admin
 		}
 
 		$this->template->title = "Profiles";
-		$this->template->content = View::forge('admin\profile/create');
+		$this->template->content = View::forge('admin/profile/create');
 
 	}
 
@@ -95,7 +95,7 @@ class Controller_Admin_Profile extends Controller_Admin
 		}
 
 		$this->template->title = "Profiles";
-		$this->template->content = View::forge('admin\profile/edit');
+		$this->template->content = View::forge('admin/profile/edit');
 
 	}
 

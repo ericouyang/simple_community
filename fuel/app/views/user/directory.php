@@ -3,8 +3,8 @@
   <li class="span3">
     <div class="thumbnail">
       <?php
-        if ($user->profile_image)
-          echo Html::anchor($user->get_url(), Html::img($user->profile_image));
+        if ($user->profile->profile_image)
+          echo Html::anchor($user->get_url(), Html::img($user->profile->profile_image));
         else
           echo Html::img("http://placehold.it/210x240");
       ?>
