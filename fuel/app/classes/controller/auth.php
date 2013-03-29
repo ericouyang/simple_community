@@ -86,7 +86,7 @@ class Controller_Auth extends Controller_Base
       
           // Send activation code to the user so he can activate the account
               
-          Session::set_flash('success', 'The activation code is '.$activationCode);
+          Session::set_flash('success', 'Go to: auth/activate/'.$user->id.'/'.$activationCode);
           Response::redirect('/');
       }
       catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
@@ -104,12 +104,12 @@ class Controller_Auth extends Controller_Base
     
   }
   
-  public function action_activate($activation_code)
+  public function action_activate($id, $activation_code)
   {
     try
     {
         // Find the user using the user activation code
-        $user = Sentry::getUserProvider()->findByActivationCode($activation_code);
+        $user = Sentry::getUserProvider()->findById($id);
         
         // Attempt to activate the user
         if ($user->attemptActivation($activation_code))
@@ -123,9 +123,13 @@ class Controller_Auth extends Controller_Base
             Session::set_flash('error', 'There was an issue with activation. Please try again.'); 
         }
     }
+    catch (Cartalyst\Sentry\Users\UserAlreadyActivatedException $e)
+    {
+      Session::set_flash('success', 'Your account is already active!');
+    }
     catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
     {
-        Session::set_flash('error', 'Activation code not found.');
+        Session::set_flash('error', 'User not found.');
     }
     Response::redirect('/');
   }
