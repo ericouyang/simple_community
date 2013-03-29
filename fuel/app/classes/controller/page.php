@@ -5,8 +5,9 @@ class Controller_Page extends Controller_Base
 
 	public function action_index()
 	{
+	  $data['frontpage_text'] = Config::get('simple_community.frontpage_text');
 		$this->template->title = 'Welcome to Simple Community!';
-		$this->template->content = View::forge('page/index');
+		$this->template->content = View::forge('page/index', $data);
 	}
 
 	public function action_about()

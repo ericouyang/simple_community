@@ -48,9 +48,11 @@ class Controller_Auth extends Controller_Base
           Session::set_flash('error', 'Your account is banned.');
       }
     }
-
+    
+    $data['login_text'] = Config::get('simple_community.login_text');
+    
   	$this->template->title = 'Login';
-    $this->template->content = View::forge('auth/login');
+    $this->template->content = View::forge('auth/login', $data);
     
   }
   
@@ -64,44 +66,53 @@ class Controller_Auth extends Controller_Base
   
   public function action_register()
   {
-    if (Input::method() == 'POST')
+    if (Config::get('simple_community.registration_enabled'))
     {
-      $credentials = array(
-        'email' => Input::post('email'),
-        'first_name' => Input::post('first_name'),
-        'last_name' => Input::post('last_name'),
-        'password' => Input::post('password')
-      );
+      if (Input::method() == 'POST')
+      {
+        $credentials = array(
+          'email' => Input::post('email'),
+          'first_name' => Input::post('first_name'),
+          'last_name' => Input::post('last_name'),
+          'password' => Input::post('password')
+        );
+        
+        try
+        {
+            // register user
+            $user = Sentry::register($credentials);
+            
+            // create user profile
+            $profile = new Model_Profile(array('user_id' => $user->id));
+            $profile->save();
+            
+            $activationCode = $user->getActivationCode();
+        
+            // Send activation code to the user so he can activate the account
+            $this->send_auth_email($user->email, Uri::create('/auth/activate?id='.$user->id.'&activation_code='.$activationCode));
+                
+            Session::set_flash('success', 'Go to: /auth/activate?id='.$user->id.'&activation_code='.$activationCode);
+            Response::redirect('/');
+        }
+        catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
+        {
+            Session::set_flash('error', 'The login field is required.');
+        }
+        catch (Cartalyst\Sentry\Users\UserExistsException $e)
+        {
+            Session::set_flash('error', 'This email has already been used. Please log in or use a different address.');
+        }
+      }
+  
+      $data['registration_text'] = Config::get('simple_community.registration_text');
       
-      try
-      {
-          // register user
-          $user = Sentry::register($credentials);
-          
-          // create user profile
-          $profile = new Model_Profile(array('user_id' => $user->id));
-          $profile->save();
-          
-          $activationCode = $user->getActivationCode();
-      
-          // Send activation code to the user so he can activate the account
-              
-          Session::set_flash('success', 'Go to: /auth/activate?id='.$user->id.'&activation_code='.$activationCode);
-          Response::redirect('/');
-      }
-      catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
-      {
-          Session::set_flash('error', 'The login field is required.');
-      }
-      catch (Cartalyst\Sentry\Users\UserExistsException $e)
-      {
-          Session::set_flash('error', 'This email has already been used. Please log in or use a different address.');
-      }
+      $this->template->title = 'Register';
+      $this->template->content = View::forge('auth/register', $data);
     }
-
-    $this->template->title = 'Register';
-    $this->template->content = View::forge('auth/register');
-    
+    else
+    {
+      Response::redirect('/');
+    }
   }
   
   public function action_activate()
@@ -191,7 +202,7 @@ class Controller_Auth extends Controller_Base
     }
   }
   
-  public static function send_auth_email($email, $url)
+  private function send_auth_email($to, $url)
   {
     // Create an instance
     $email = Email::forge();
@@ -200,7 +211,7 @@ class Controller_Auth extends Controller_Base
     $email->from('test@email.me', 'Test');
 
     // Set the to address
-    $email->to($email);
+    $email->to($to);
 
     // Set a subject
     $email->subject('Test Email');

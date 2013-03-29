@@ -54,7 +54,7 @@
              <li class="<?php echo Uri::segment(1) == 'dashboard' ? 'active' : '' ?>">
               <?php echo Html::anchor('dashboard', 'Dashboard') ?>
              </li>
-              <?php if($is_admin): ?>
+              <?php if($is_admin == true): ?>
                 <li>
                   <?php echo Html::anchor('admin', 'Admin') ?>
                 </li>
@@ -69,7 +69,9 @@
 	            </li>
           <?php else: ?>
             <li><?php echo Html::anchor('auth/login', 'Login') ?></li>
-            <li><?php echo Html::anchor('auth/register', 'Register') ?></li>
+            <?php if (Config::get('simple_community.registration_enabled')): ?>
+              <li><?php echo Html::anchor('auth/register', 'Register') ?></li>
+            <?php endif; ?>
 	        <?php endif; ?>
 	        </ul>
 	        </div>

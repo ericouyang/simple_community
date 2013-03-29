@@ -33,7 +33,6 @@
     </form>
   </div>
   <div class="span4">
-    <p><strong>Help text for Registration</strong></p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse interdum laoreet lorem, eget lobortis augue pretium eu. Cras id purus massa. Phasellus blandit semper sapien, sit amet vulputate ipsum fermentum vel. Nullam vel malesuada enim. Nam at tempus diam.</p>
+    <p><?php echo $registration_text; ?></p>
   </div>
 </div>

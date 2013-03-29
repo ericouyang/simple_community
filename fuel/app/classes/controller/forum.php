@@ -6,7 +6,7 @@ class Controller_Forum extends Controller_Base
   {
     parent::before();
     
-    if (!Sentry::check())
+    if (!Config::get('simple_community.forum.is_public') && !Sentry::check())
     {
       Session::set_flash('error', 'You must be logged in to access this page');
       Response::redirect('auth/login?dest='.Uri::string());
