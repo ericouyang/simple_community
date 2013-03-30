@@ -18,6 +18,14 @@
 			</div>
 		</div>
 		<div class="clearfix">
+      <?php echo Form::label('Website', 'website'); ?>
+
+      <div class="input">
+        <?php echo Form::input('website', Input::post('website', isset($profile) ? $profile->website : ''), array('class' => 'span4')); ?>
+
+      </div>
+    </div>
+		<div class="clearfix">
 			<?php echo Form::label('Profile image', 'profile_image'); ?>
 
 			<div class="input">

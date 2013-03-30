@@ -47,6 +47,7 @@ class Controller_User extends Controller_Base
       $user->first_name = Input::post('first_name');
       $user->last_name = Input::post('last_name');
       $user->profile->about = Input::post('about');
+      $user->profile->website = Input::post('website');
 
       // if exists files that are trying to be uploaded
       if (Upload::get_files())
@@ -106,6 +107,7 @@ class Controller_User extends Controller_Base
         $user->last_name = $val->validated('last_name');
         $user->profile->about = $val->validated('about');
         $user->profile->profile_image = $val->validated('profile_image');
+        $user->profile->website = $val->validated('website');
 
         Session::set_flash('error', $val->error());
       }

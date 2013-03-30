@@ -6,6 +6,7 @@
 		<tr>
 			<th>User id</th>
 			<th>About</th>
+			<th>Website</th>
 			<th>Profile image</th>
 			<th></th>
 		</tr>
@@ -15,6 +16,7 @@
 
 			<td><?php echo $profile->user_id; ?></td>
 			<td><?php echo $profile->about; ?></td>
+			<td><?php echo $profile->website; ?></td>
 			<td><?php echo $profile->profile_image; ?></td>
 			<td>
 				<?php echo Html::anchor('admin/profile/view/'.$profile->id, 'View'); ?> |

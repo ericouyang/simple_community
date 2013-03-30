@@ -9,11 +9,14 @@
         if ($user->profile->profile_image)
           echo Html::img($user->profile->profile_image);
         else
-          echo Html::img("http://placehold.it/210x240");
+          echo Html::img("http://placehold.it/210x210");
       ?>
   </div>
   <div class="span3">
     <p><b>Email: </b><?php echo $user->email; ?></p>
+    <?php if ($user->profile->website): ?>
+      <p><b>Website: </b><?php echo Html::anchor($user->profile->website, $user->profile->website); ?></p>
+    <?php endif; ?>
   </div>
   <div class="span6">
     <?php echo Markdown::parse($user->profile->about); ?></p>

@@ -7,6 +7,7 @@ class Model_Profile extends \Orm\Model
 		'id',
 		'user_id',
 		'about',
+		'website',
 		'profile_image',
 		'created_at',
 		'updated_at',

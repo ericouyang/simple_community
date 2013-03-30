@@ -7,6 +7,9 @@
 	<strong>About:</strong>
 	<?php echo $profile->about; ?></p>
 <p>
+  <strong>Website:</strong>
+  <?php echo $profile->website; ?></p>
+<p>
 	<strong>Profile image:</strong>
 	<?php echo $profile->profile_image; ?></p>
 

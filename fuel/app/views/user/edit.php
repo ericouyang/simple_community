@@ -24,6 +24,14 @@
     </div>
   </div>
   <div class="control-group">
+    <?php echo Form::label('Website', 'website', array('class' => 'control-label')); ?>
+
+    <div class="controls">
+      <?php echo Form::input('website', Input::post('website', isset($user) ? $user->profile->website : ''), array('class' => 'span4')); ?>
+
+    </div>
+  </div>
+  <div class="control-group">
     <?php echo Form::label('About', 'about', array('class' => 'control-label')); ?>
 
     <div class="controls">
