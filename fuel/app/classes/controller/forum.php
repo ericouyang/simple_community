@@ -43,7 +43,7 @@ class Controller_Forum extends Controller_Base
     
     // not needed to display thread, for routing consistency sake
     if ($data['thread']->forum_id != $forum_id)
-      return Response::forge(View::forge('errors/404'), 404);
+      return Response::forge(View::forge('error/404'), 404);
     
     $this->template->title = $data['thread']->title;
     $this->template->hide_title = true;
@@ -91,7 +91,7 @@ class Controller_Forum extends Controller_Base
     $forum = Model_Forum::find($forum_id);
       
     if ($forum == null)
-      return Response::forge(View::forge('errors/404'), 404);
+      return Response::forge(View::forge('error/404'), 404);
       
     if (Input::method() == 'POST')
     {
@@ -133,7 +133,7 @@ class Controller_Forum extends Controller_Base
     
     // not needed to create post, for routing consistency sake
     if ($thread->forum_id != $forum_id) // will also catch invalid thread_ids
-      return Response::forge(View::forge('errors/404'), 404);
+      return Response::forge(View::forge('error/404'), 404);
     
     if (Input::method() == 'POST')
     {

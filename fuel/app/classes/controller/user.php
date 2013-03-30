@@ -28,6 +28,9 @@ class Controller_User extends Controller_Base
   {
     $data['user'] = Model_User::find($id, array('related' => 'profile'));
     
+    if ($data['user'] == null)
+      return Response::forge(View::forge('error/404'), 404);
+    
     $this->template->title = $data['user']->get_full_name();
     $this->template->hide_title = true;
     $this->template->content = View::forge('user/profile', $data);
@@ -50,7 +53,7 @@ class Controller_User extends Controller_Base
       {
         // Custom configuration for profile image upload
         $config = array(
-            'path' => DOCROOT.DS.'user_data'.DS.'profile_images',
+            'path' => DOCROOT.'/user_data/profile_images',
             'randomize' => true,
             'ext_whitelist' => array('img', 'jpg', 'jpeg', 'gif', 'png'),
         );
@@ -62,12 +65,12 @@ class Controller_User extends Controller_Base
         if (Upload::is_valid())
         {
           // save them according to the config
-          Upload::save();
+          Upload::save(0);
       
           $profile_image = Upload::get_files(0);
-          $user->profile->profile_image = $profile_image['saved_to'];
+          $user->profile->profile_image = 'user_data/profile_images/'.$profile_image['saved_as'];
           
-          Image::load($profile_image['saved_to'])->preset('thumbnail')->save('thumbnails'.DS.$profile_image['name']);
+          Image::load($profile_image['saved_to'].'/'.$profile_image['saved_as'])->preset('thumbnail')->save($profile_image['saved_to'].'/thumbnails/'.$profile_image['saved_as']);
         }
       
       

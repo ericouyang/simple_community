@@ -54,7 +54,7 @@
              <li class="<?php echo Uri::segment(1) == 'dashboard' ? 'active' : '' ?>">
               <?php echo Html::anchor('dashboard', 'Dashboard') ?>
              </li>
-              <?php if($is_admin == true): ?>
+              <?php if($is_admin): ?>
                 <li>
                   <?php echo Html::anchor('admin', 'Admin') ?>
                 </li>
