@@ -44,6 +44,12 @@ class Model_User extends \Orm\Model
 		return $val;
 	}
   
+  public function is_admin()
+  {
+    $user = Sentry::getUserProvider()->findById($this->id);
+    $admin = Sentry::getGroupProvider()->findByName('Admin');
+    return $user->inGroup($admin);
+  }
   public static function get_url_by_id($id)
   {
     return 'user/'.$id;

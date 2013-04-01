@@ -155,5 +155,31 @@ class Controller_Admin_User extends Controller_Admin
 
 	}
 
+  public function action_promote($id = null)
+  {
+    if ($user = Sentry::getUserProvider()->findById($id))
+    {
+      $admin = Sentry::getGroupProvider()->findByName('Admin');
+      
+      $user->addGroup($admin);
+      
+      Session::set_flash('success', e('User #'.$id.' has been promoted to admin.'));
+    }
+    
+    Response::redirect('admin/user');
+  }
 
+  public function action_demote($id = null)
+  {
+    if ($user = Sentry::getUserProvider()->findById($id))
+    {
+      $admin = Sentry::getGroupProvider()->findByName('Admin');
+      
+      $user->removeGroup($admin);
+      
+      Session::set_flash('success', e('User #'.$id.' has been demoted from admin.'));
+    }
+    
+    Response::redirect('admin/user');
+  }
 }

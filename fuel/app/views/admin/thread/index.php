@@ -4,8 +4,8 @@
 <table class="table table-striped">
 	<thead>
 		<tr>
-			<th>Forum id</th>
-			<th>User id</th>
+			<th>Forum</th>
+			<th>User</th>
 			<th>Title</th>
 			<th></th>
 		</tr>
@@ -13,8 +13,8 @@
 	<tbody>
 <?php foreach ($threads as $thread): ?>		<tr>
 
-			<td><?php echo $thread->forum_id; ?></td>
-			<td><?php echo $thread->user_id; ?></td>
+			<td><?php echo Html::anchor('forum/'.$thread->forum->id, $thread->forum->title); ?></td>
+			<td><?php echo Html::anchor($thread->user->get_url(), $thread->user->get_full_name()); ?></td>
 			<td><?php echo $thread->title; ?></td>
 			<td>
 				<?php echo Html::anchor('admin/thread/view/'.$thread->id, 'View'); ?> |

@@ -7,8 +7,13 @@ class Controller_Admin extends Controller_Base {
 	public function before()
 	{
 	  parent::before();
-
-    if (!$this->is_admin)
+    
+    if (!Sentry::check())
+    {
+      Session::set_flash('error', 'You must be logged in to access this page');
+      Response::redirect('auth/login?dest='.Uri::string());
+    }
+    else if (!$this->is_admin)
     {
       Response::redirect('access_denied');
     }

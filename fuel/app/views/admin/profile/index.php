@@ -4,7 +4,7 @@
 <table class="table table-striped">
 	<thead>
 		<tr>
-			<th>User id</th>
+			<th>User</th>
 			<th>About</th>
 			<th>Website</th>
 			<th>Profile image</th>
@@ -14,7 +14,7 @@
 	<tbody>
 <?php foreach ($profiles as $profile): ?>		<tr>
 
-			<td><?php echo $profile->user_id; ?></td>
+			<td><?php echo Html::anchor($profile->user->get_url(), $profile->user->get_full_name()); ?></td>
 			<td><?php echo $profile->about; ?></td>
 			<td><?php echo $profile->website; ?></td>
 			<td><?php echo $profile->profile_image; ?></td>

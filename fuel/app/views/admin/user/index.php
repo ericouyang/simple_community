@@ -8,11 +8,8 @@
 			<th>Email</th>
 			<th>First name</th>
 			<th>Last name</th>
-			<th>Permissions</th>
 			<th>Activated</th>
-			<th>Activation hash</th>
-			<th>Persist hash</th>
-			<th>Reset password hash</th>
+			<th>Admin</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -23,16 +20,15 @@
 			<td><?php echo $user->email; ?></td>
 			<td><?php echo $user->first_name; ?></td>
 			<td><?php echo $user->last_name; ?></td>
-			<td><?php echo $user->permissions; ?></td>
-			<td><?php echo $user->activated; ?></td>
-			<td><?php echo $user->activation_hash; ?></td>
-			<td><?php echo $user->persist_hash; ?></td>
-			<td><?php echo $user->reset_password_hash; ?></td>
+			<td><?php echo $user->activated ? 'Yes' : 'No' ?></td>
+			<td><?php echo $user->is_admin()? 'Yes' : 'No' ?></td>
 			<td>
 				<?php echo Html::anchor('admin/user/view/'.$user->id, 'View'); ?> |
 				<?php echo Html::anchor('admin/user/edit/'.$user->id, 'Edit'); ?> |
-				<?php echo Html::anchor('admin/user/delete/'.$user->id, 'Delete', array('onclick' => "return confirm('Are you sure?')")); ?>
-
+				<?php echo Html::anchor('admin/user/delete/'.$user->id, 'Delete', array('onclick' => "return confirm('Are you sure?')")); ?> |
+        <?php echo $user->is_admin()
+          ? Html::anchor('admin/user/demote/'.$user->id, 'Demote')
+          : Html::anchor('admin/user/promote/'.$user->id, 'Promote'); ?>
 			</td>
 		</tr>
 <?php endforeach; ?>	</tbody>

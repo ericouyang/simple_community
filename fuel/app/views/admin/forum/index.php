@@ -4,7 +4,7 @@
 <table class="table table-striped">
 	<thead>
 		<tr>
-			<th>User id</th>
+			<th>User</th>
 			<th>Title</th>
 			<th>Description</th>
 			<th></th>
@@ -13,7 +13,7 @@
 	<tbody>
 <?php foreach ($forums as $forum): ?>		<tr>
 
-			<td><?php echo $forum->user_id; ?></td>
+			<td><?php echo Html::anchor($forum->user->get_url(), $forum->user->get_full_name()); ?></td>
 			<td><?php echo $forum->title; ?></td>
 			<td><?php echo $forum->description; ?></td>
 			<td>
