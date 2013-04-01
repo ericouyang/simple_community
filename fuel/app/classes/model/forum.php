@@ -38,4 +38,22 @@ class Model_Forum extends \Orm\Model
   {
     return 'forum/'.$this->id;
   }
+  
+  public function get_num_posts()
+  {
+    $sum = 0;
+    foreach ($this->threads as $thread)
+      $sum += count($thread->posts);
+    
+    return $sum;
+  }
+  
+  public function get_latest_threads()
+  {
+    return Model_Thread::find('all', array(
+      'where' => array(
+        array('forum_id', $this->id)),
+      'limit' => 5
+    ));
+  }
 }

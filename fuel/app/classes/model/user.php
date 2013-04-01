@@ -64,4 +64,9 @@ class Model_User extends \Orm\Model
   {
     return $this->first_name.' '.$this->last_name;
   }
+  
+  public function is_moderator()
+  {
+    return $this->is_admin();
+  }
 }

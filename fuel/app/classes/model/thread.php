@@ -37,5 +37,12 @@ class Model_Thread extends \Orm\Model
   {
     return 'forum/'.$this->forum_id.'/thread/'.$this->id;
   }
-  
+ 
+  public function get_latest_post()
+  {
+    return Model_Post::find('first', array(
+      'where' => array(
+        array('thread_id', $this->id))
+    ));
+  } 
 }

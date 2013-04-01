@@ -11,6 +11,8 @@ class Create_profiles
 			'user_id' => array('constraint' => 11, 'type' => 'int'),
 			'about' => array('type' => 'text', 'null' => true),
 			'website' => array('constraint' => 255, 'type' => 'varchar', 'null' => true),
+			'town_city' => array('constraint' => 255, 'type' => 'varchar', 'null' => true),
+			'state' => array('constraint' => 255, 'type' => 'varchar', 'null' => true),
 			'profile_image' => array('constraint' => 255, 'type' => 'varchar', 'null' => true),
 			'created_at' => array('constraint' => 11, 'type' => 'int', 'null' => true),
 			'updated_at' => array('constraint' => 11, 'type' => 'int', 'null' => true),
