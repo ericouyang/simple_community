@@ -18,4 +18,4 @@
   </li>
 <?php endforeach; ?>
 </ul>
-<?php echo $pagination; ?>
+<?php echo html_entity_decode($pagination); ?>

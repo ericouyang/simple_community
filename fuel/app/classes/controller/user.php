@@ -128,12 +128,14 @@ class Controller_User extends Controller_Base
   public function action_directory()
   {
     $pagination_config = array(
-      'pagination_url' => 'http://localhost/directory/',
-      'per_page'       => 10,
-      'uri_segment'    => 1,
+      'per_page'      => 16,
+      'total_items'   => DB::count_records('users'),
+      'uri_segment'   => 2,
     );
 
     $pagination = Pagination::forge('user_pagination', $pagination_config);
+    
+    $data['pagination'] = $pagination->render();
     
     $data['users'] = Model_User::find('all', array(
       'order_by' => array('last_name'),
@@ -142,7 +144,6 @@ class Controller_User extends Controller_Base
       'related' => 'profile'
     ));
     
-    $data['pagination'] = $pagination->render();
     $this->template->title = 'Directory';
     $this->template->content = View::forge('user/directory', $data);
   }

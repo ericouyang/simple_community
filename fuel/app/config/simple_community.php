@@ -8,7 +8,7 @@ return array(
   'registration_enabled' => true,
   'forum' => array('is_public' => false),
   'frontpage_text' => 
-    'This is a simple community webapp with user profiles, a user directory, and a basic forum'.
+    'This is an open-source simple community webapp with user profiles, a user directory, and a basic forum'.
     'built on top of the PHP framework FuelPHP, Twitter Bootstrap, and the Sentry authentication system.',
   'registration_text' => 
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse interdum laoreet lorem,'.

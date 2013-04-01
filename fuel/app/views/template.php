@@ -111,7 +111,7 @@
 			<p>
 				<a href="https://github.com/ericouyang/simple_community">Simple Community</a> and
 				<a href="http://fuelphp.com">FuelPHP</a> are released under the MIT license.<br>
-				<small>Simple Community Version: 0.1 - FuelPHP Version: <?php echo e(Fuel::VERSION); ?></small>
+				<small>Simple Community Version: 0.1a - FuelPHP Version: <?php echo e(Fuel::VERSION); ?></small>
 			</p>
 		</footer>
 	</div>
