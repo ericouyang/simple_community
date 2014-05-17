@@ -2,9 +2,9 @@
 class Model_User extends \Orm\Model
 {
   protected static $_has_many = array('forums', 'threads', 'posts');
-  
+
   protected static $_has_one = array('profile');
-  
+
 	protected static $_properties = array(
 		'id',
 		'email',
@@ -12,9 +12,9 @@ class Model_User extends \Orm\Model
 		'last_name',
 		'permissions',
 		'activated',
-		'activation_hash',
-		'persist_hash',
-		'reset_password_hash',
+		'activation_code',
+		'persist_code',
+		'reset_password_code',
 		'created_at',
 		'updated_at',
 	);
@@ -43,7 +43,7 @@ class Model_User extends \Orm\Model
 
 		return $val;
 	}
-  
+
   public function is_admin()
   {
     $user = Sentry::getUserProvider()->findById($this->id);
@@ -54,17 +54,17 @@ class Model_User extends \Orm\Model
   {
     return 'user/'.$id;
   }
-  
+
   public function get_url()
   {
     return $this::get_url_by_id($this->id);
   }
-  
+
   public function get_full_name()
   {
     return $this->first_name.' '.$this->last_name;
   }
-  
+
   public function is_moderator()
   {
     return $this->is_admin();

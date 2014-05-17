@@ -1,28 +1,28 @@
 <div class="row">
-  <div class="span8">
-    <?php echo Form::open(array('class' => 'form-horizontal')); ?>
+  <div class="col-md-8">
+    <?php echo Form::open(array('class' => 'form-horizontal', 'role' => 'form')); ?>
       <?php echo Form::input('dest', Input::get('dest', 'dashboard'), array('type' => 'hidden')); ?>
-      <div class="control-group">
-        <label class="control-label" for="email">Email:</label>
-        <div class="controls">
-          <input class="xlarge" name="email" type="email" required="true">
+      <div class="form-group">
+        <label class="col-sm-2 control-label" for="email">Email:</label>
+        <div class="col-sm-8">
+          <input class="form-control" name="email" type="email" required="true">
         </div>
       </div>
-      <div class="control-group">
-        <label class="control-label" for="password">Password:</label>
-        <div class="controls">
-          <input class="xlarge" name="password" placeholder="" type="password" required="true">
-          <span class="help-block"><small>Forgot your password? Click <a href="/auth/reset_password">here</a> to reset it.</small></span>
+      <div class="form-group">
+        <label class="col-sm-2 control-label" for="password">Password:</label>
+        <div class="col-sm-8">
+          <input class="form-control" name="password" placeholder="" type="password" required="true">
+          <span class="help-block">Forgot your password? Click <a href="/auth/reset_password">here</a> to reset it.</span>
         </div>
       </div>
-      <div class="control-group">
-        <div class="controls">
-          <input class="btn primary submit-button" type="submit" value="Login">
+      <div class="form-group">
+        <div class="col-sm-8 col-sm-offset-2">
+          <input class="btn btn-primary submit-button" type="submit" value="Login">
         </div>
       </div>
     </form>
   </div>
-  <div class="span4">
+  <div class="col-md-4">
     <p><?php echo $login_text; ?></p>
   </div>
 </div>

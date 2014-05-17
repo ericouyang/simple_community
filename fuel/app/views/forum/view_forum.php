@@ -19,11 +19,11 @@
   <tbody>
     <?php foreach($forum->threads as $thread): ?>
     <tr>
-      <td class="span8">
+      <td class="col-xs-8">
         <h4><?php echo Html::anchor($thread->get_url(), $thread->title); ?></h4>
         <p><small>Created by: <?php echo Html::anchor($thread->user->get_url(), $thread->user->get_full_name()); ?></small> | Posts: <?php echo count($thread->posts); ?></p>
       </td>
-      <td class="span4">
+      <td class="col-xs-4">
         <?php if ($post = $thread->get_latest_post()) echo $post->body . '<br> -'. Html::anchor($post->user->get_url(), $post->user->get_full_name()); ?>
       </td>
     </tr>

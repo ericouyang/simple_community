@@ -8,7 +8,7 @@ return array(
 		'connection'  => array(
 			'dsn'        => 'mysql:host=localhost;dbname=simple_community',
 			'username'   => 'root',
-			'password'   => '',
+			'password'   => 'root',
 		),
 	),
 );

@@ -1,6 +1,6 @@
-<ul class="thumbnails">
+<div class="row">
 <?php foreach ($users as $user): ?>
-  <li class="span3">
+  <div class="col-xs-6 col-md-3">
     <div class="thumbnail">
       <div style="height:210px;">
       <?php
@@ -15,7 +15,7 @@
         <p><small><?php echo $user->email; ?></small></p>
       </div>
     </div>
-  </li>
+  </div>
 <?php endforeach; ?>
-</ul>
+</div>
 <?php echo html_entity_decode($pagination); ?>
