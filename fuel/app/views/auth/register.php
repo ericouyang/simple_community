@@ -34,5 +34,6 @@
   </div>
   <div class="col-md-4">
     <p><?php echo $registration_text; ?></p>
+    <p>Already have an account? <a href="/auth/login">Login &raquo;</a>
   </div>
 </div>

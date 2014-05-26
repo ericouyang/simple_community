@@ -6,7 +6,7 @@ class Controller_User extends Controller_Base
   public function before()
   {
     parent::before();
-    
+
     if (!Sentry::check())
     {
       Session::set_flash('error', 'You must be logged in to access this page');
@@ -17,25 +17,27 @@ class Controller_User extends Controller_Base
   {
     Response::redirect('user/dashboard');
   }
-  
+
   public function action_dashboard()
   {
+    $data['dashboard_text'] = Config::get('simple_community.dashboard_text');
+
     $this->template->title = 'Dashboard';
-    $this->template->content = View::forge('user/dashboard');
+    $this->template->content = View::forge('user/dashboard', $data);
   }
-  
+
   public function action_profile($id = null)
   {
     $data['user'] = Model_User::find($id, array('related' => 'profile'));
-    
+
     if ($data['user'] == null)
       return Response::forge(View::forge('error/404'), 404);
-    
+
     $this->template->title = $data['user']->get_full_name();
     $this->template->hide_title = true;
     $this->template->content = View::forge('user/profile', $data);
   }
-  
+
   public function action_edit($id = null)
   {
     $user = Model_User::find($id);
@@ -58,23 +60,23 @@ class Controller_User extends Controller_Base
             'randomize' => true,
             'ext_whitelist' => array('img', 'jpg', 'jpeg', 'gif', 'png'),
         );
-        
+
         // process the uploaded files in $_FILES
         Upload::process($config);
-        
+
         // if there are any valid files
         if (Upload::is_valid())
         {
           // save them according to the config
           Upload::save(0);
-      
+
           $profile_image = Upload::get_files(0);
           $user->profile->profile_image = 'user_data/profile_images/'.$profile_image['saved_as'];
-          
+
           Image::load($profile_image['saved_to'].'/'.$profile_image['saved_as'])->preset('thumbnail')->save($profile_image['saved_to'].'/thumbnails/'.$profile_image['saved_as']);
         }
-      
-      
+
+
         // process any errors
         foreach (Upload::get_errors() as $file)
         {
@@ -88,7 +90,7 @@ class Controller_User extends Controller_Base
       if ($user->save())
       {
         Session::set_flash('success', e('Updated profile for user #' . $id));
-  
+
         Response::redirect($user->get_url());
       }
 
@@ -116,15 +118,15 @@ class Controller_User extends Controller_Base
     }
 
     $this->template->title = "Edit profile";
-    $this->template->content = View::forge('user/edit');  
+    $this->template->content = View::forge('user/edit');
   }
-  
+
   public function action_preferences()
   {
     $this->template->title = 'Change preferences';
     $this->template->content = View::forge('user/preferences');
   }
-  
+
   public function action_directory()
   {
     $pagination_config = array(
@@ -134,18 +136,18 @@ class Controller_User extends Controller_Base
     );
 
     $pagination = Pagination::forge('user_pagination', $pagination_config);
-    
+
     $data['pagination'] = $pagination->render();
-    
+
     $data['users'] = Model_User::find('all', array(
       'order_by' => array('last_name'),
       'limit' => $pagination->per_page,
       'offset' => $pagination->offset,
       'related' => 'profile'
     ));
-    
+
     $this->template->title = 'Directory';
     $this->template->content = View::forge('user/directory', $data);
   }
-  
+
 }

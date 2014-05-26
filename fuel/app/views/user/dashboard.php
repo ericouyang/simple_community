@@ -1,1 +1,1 @@
-<p>Welcome! Start engaging with the community.</p>
+<p><?php echo $dashboard_text; ?></p>

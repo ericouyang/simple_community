@@ -2,12 +2,12 @@
 <?php foreach ($users as $user): ?>
   <div class="col-xs-6 col-md-3">
     <div class="thumbnail">
-      <div style="height:210px;">
+      <div>
       <?php
         if ($user->profile->profile_image)
           echo Html::anchor($user->get_url(), Html::img($user->profile->profile_image));
         else
-          echo Html::img("http://placehold.it/210x210");
+          echo Html::img("http://placehold.it/250x250");
       ?>
       </div>
       <div class="caption">

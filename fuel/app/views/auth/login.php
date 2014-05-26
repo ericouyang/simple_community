@@ -24,5 +24,8 @@
   </div>
   <div class="col-md-4">
     <p><?php echo $login_text; ?></p>
+    <?php if (Config::get('simple_community.registration_enabled')): ?>
+    <p>Don't have an account yet? <a href="/auth/register">Register &raquo;</a>
+    <?php endif; ?>
   </div>
 </div>
