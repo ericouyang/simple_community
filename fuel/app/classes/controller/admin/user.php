@@ -1,5 +1,5 @@
 <?php
-class Controller_Admin_User extends Controller_Admin 
+class Controller_Admin_User extends Controller_Admin
 {
 
 	public function action_index()
@@ -34,14 +34,14 @@ class Controller_Admin_User extends Controller_Admin
 					'password' => Input::post('password'),
 					'activated' => 1
 				);
-    
+
         try {
           $user = Sentry::getUserProvider()->create($user_fields);
-          
+
           // create user profile
           $profile = new Model_Profile(array('user_id' => $user->id));
           $profile->save();
-          
+
           Session::set_flash('success', e('Created new user #' . $user->id));
 
           Response::redirect('admin/user');
@@ -82,9 +82,9 @@ class Controller_Admin_User extends Controller_Admin
 			$user->last_name = Input::post('last_name');
 			$user->permissions = Input::post('permissions');
 			$user->activated = Input::post('activated');
-			$user->activation_code = Input::post('activation_hash');
-			$user->persist_code = Input::post('persist_hash');
-			$user->reset_password_code = Input::post('reset_password_hash');
+			$user->activation_code = Input::post('activation_code');
+			$user->persist_code = Input::post('persist_code');
+			$user->reset_password_code = Input::post('reset_password_code');
       $user->profile->about = Input::post('about');
       $user->profile->profile_image = Input::post('profile_image');
 
@@ -110,9 +110,9 @@ class Controller_Admin_User extends Controller_Admin
 				$user->last_name = $val->validated('last_name');
 				$user->permissions = $val->validated('permissions');
 				$user->activated = $val->validated('activated');
-				$user->activation_code = $val->validated('activation_hash');
-				$user->persist_code = $val->validated('persist_hash');
-				$user->reset_password_code = $val->validated('reset_password_hash');
+				$user->activation_code = $val->validated('activation_code');
+				$user->persist_code = $val->validated('persist_code');
+				$user->reset_password_code = $val->validated('reset_password_cod');
         $user->profile->about = $val->validated('about');
         $user->profile->profile_image = $val->validated('profile_image');
 
@@ -132,15 +132,15 @@ class Controller_Admin_User extends Controller_Admin
 		if ($user = Model_User::find($id))
 		{
 			$user->delete();
-      
+
       if ($profile = Model_Profile::find('first', array(
         'where' => array(
           array('user_id', $id),
         ))))
-      { 
+      {
         $profile->delete();
       }
-      
+
       DB::delete('users_groups')->where('user_id', $id)->execute();
 
 			Session::set_flash('success', e('Deleted user and any associated profile and permissions #'.$id));
@@ -160,12 +160,12 @@ class Controller_Admin_User extends Controller_Admin
     if ($user = Sentry::getUserProvider()->findById($id))
     {
       $admin = Sentry::getGroupProvider()->findByName('Admin');
-      
+
       $user->addGroup($admin);
-      
+
       Session::set_flash('success', e('User #'.$id.' has been promoted to admin.'));
     }
-    
+
     Response::redirect('admin/user');
   }
 
@@ -174,12 +174,12 @@ class Controller_Admin_User extends Controller_Admin
     if ($user = Sentry::getUserProvider()->findById($id))
     {
       $admin = Sentry::getGroupProvider()->findByName('Admin');
-      
+
       $user->removeGroup($admin);
-      
+
       Session::set_flash('success', e('User #'.$id.' has been demoted from admin.'));
     }
-    
+
     Response::redirect('admin/user');
   }
 }

@@ -12,11 +12,13 @@ return array(
     'This is an open-source simple community webapp with user profiles, a user directory, and a basic forum'.
     'built on top of the PHP framework FuelPHP, Twitter Bootstrap, and the Sentry authentication system.',
   'registration_text' =>
+<<<EOD
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse interdum laoreet lorem,'.
     'eget lobortis augue pretium eu. Cras id purus massa. Phasellus blandit semper sapien,'.
-    'sit amet vulputate ipsum fermentum vel. Nullam vel malesuada enim. Nam at tempus diam.',
+    'sit amet vulputate ipsum fermentum vel. Nullam vel malesuada enim. Nam at tempus diam.'
+EOD;,
   'login_text' =>
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse interdum laoreet lorem,'.
-    'eget lobortis augue pretium eu. Cras id purus massa. Phasellus blandit semper sapien,'.
-    'sit amet vulputate ipsum fermentum vel. Nullam vel malesuada enim. Nam at tempus diam.',
+<<<EOD
+
+EOD;
 );

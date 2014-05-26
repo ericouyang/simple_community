@@ -9,11 +9,6 @@
 	<meta name="description" content="">
 
 	<?php echo Asset::css('main.min.css'); ?>
-	<style>
-    body {
-      margin: 50px;
-    }
-	</style>
 	<?php echo Asset::js(array('http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js', 'scripts.min.js')); ?>
 	<script>
     $(function() {
@@ -97,7 +92,7 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-xs-12">
+			<div class="col-xs-12 content-header">
 			  <?php if (Session::get_flash('success')): ?>
           <div class="alert alert-success">
             <button class="close" data-dismiss="alert">×</button>
@@ -105,7 +100,7 @@
           </div>
         <?php endif; ?>
         <?php if (Session::get_flash('error')): ?>
-          <div class="alert alert-error">
+          <div class="alert alert-danger">
             <button class="close" data-dismiss="alert">×</button>
             <?php echo implode('<br>', (array)Session::get_flash('error')); ?>
           </div>
