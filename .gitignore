@@ -12,10 +12,12 @@ fuel/app/cache/*/*
 build
 nbproject/
 .idea
+composer.lock
 
 /.htaccess
 db.php
 logs
+fuel/app/config/staging/
 
 fuel/app/config/crypt.php
 public/user_data
